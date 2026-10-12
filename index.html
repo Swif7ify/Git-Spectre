@@ -29,9 +29,9 @@
 
   <style>
     /* ── Theme variables ── */
-    :root { --bg:#09090b; }
+    :root { --bg:#0d0505; }
     html.light { --bg:#f0f4f8; }
-    body { background:var(--bg); font-family:'Inter',sans-serif; }
+    body { background:var(--bg);background-image:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(239,68,68,0.07) 0%,transparent 70%); font-family:'Inter',sans-serif; }
     html.light body { color:#0f172a; }
     html.light .glass { background:rgba(255,255,255,.9)!important; border-color:rgba(0,0,0,.09)!important; }
     html.light .text-zinc-100,html.light .text-zinc-200 { color:#0f172a!important; }
@@ -49,26 +49,26 @@
 
     /* ── Core ── */
     #starfield { position:fixed;inset:0;z-index:0;pointer-events:none; }
-    .neon-cyan  { text-shadow:0 0 8px #22d3ee,0 0 24px #22d3ee44; }
+    .neon-cyan  { text-shadow:0 0 8px #ef4444,0 0 24px #ef444444; }
 
-    @keyframes ring-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,211,238,.6)}50%{box-shadow:0 0 0 16px rgba(34,211,238,0)} }
+    @keyframes ring-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{box-shadow:0 0 0 16px rgba(239,68,68,0)} }
     .avatar-ring { animation:ring-pulse 2.5s ease-in-out infinite; }
     .glass { background:rgba(255,255,255,.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08); }
     .grad-border { position:relative;border-radius:1rem; }
-    .grad-border::before { content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(34,211,238,.4),rgba(139,92,246,.4),rgba(34,211,238,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none; }
-    #searchInput:focus { box-shadow:0 0 0 2px #22d3ee66,0 0 40px #22d3ee22; }
+    .grad-border::before { content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(239,68,68,.4),rgba(249,115,22,.4),rgba(239,68,68,.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none; }
+    #searchInput:focus { box-shadow:0 0 0 2px #ef444466,0 0 40px #ef444422; }
     .repo-card { transition:all .25s ease; }
-    .repo-card:hover { background:rgba(34,211,238,.06);border-color:rgba(34,211,238,.3);transform:translateY(-2px); }
+    .repo-card:hover { background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.3);transform:translateY(-2px); }
     @keyframes grow { from{width:0} }
     .lang-bar { animation:grow .8s ease-out forwards; }
     @keyframes badge-glow { 0%,100%{filter:brightness(1)}50%{filter:brightness(1.3) drop-shadow(0 0 12px currentColor)} }
     .archetype-badge { animation:badge-glow 3s ease-in-out infinite; }
     ::-webkit-scrollbar { width:4px;height:4px; }
     ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb { background:rgba(34,211,238,.3);border-radius:2px; }
+    ::-webkit-scrollbar-thumb { background:rgba(239,68,68,.3);border-radius:2px; }
     .heatmap-cell:hover { transform:scale(1.4);z-index:10; }
     .heatmap-cell { transition:transform .15s ease;border-radius:2px;cursor:default; }
-    .tag-chip:hover { color:#22d3ee!important;border-color:rgba(34,211,238,.4)!important; }
+    .tag-chip:hover { color:#ef4444!important;border-color:rgba(239,68,68,.4)!important; }
     .tag-chip { transition:all .2s ease; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
     .fade-up { animation:fadeUp .5s ease forwards; }
@@ -87,11 +87,11 @@
     }
 
     /* ── History dropdown ── */
-    .history-item:hover { background:rgba(34,211,238,.08); }
+    .history-item:hover { background:rgba(239,68,68,.08); }
     .history-item { transition:background .15s ease; }
 
     /* ── Batch results ── */
-    .batch-row:hover { background:rgba(34,211,238,.04); }
+    .batch-row:hover { background:rgba(239,68,68,.04); }
     .batch-row { transition:background .15s ease;border-bottom:1px solid rgba(255,255,255,.04); }
 
     /* ── Toast ── */
@@ -118,7 +118,7 @@
     .wrapped-card { animation:wrappedReveal .55s cubic-bezier(0.34,1.56,0.64,1) forwards; }
     @keyframes wrappedNum { from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)} }
     .wrapped-stat { animation:wrappedNum .5s ease forwards; }
-    .wrapped-gradient { background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 40%,#0c2340 100%); }
+    .wrapped-gradient { background:linear-gradient(135deg,#0a0505 0%,#1f0a0a 40%,#0c0205 100%); }
     @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(340px) rotate(720deg);opacity:0} }
     .confetti-piece { position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall linear infinite; }
 
@@ -144,26 +144,26 @@
   <div class="flex items-center gap-3.5 select-none">
     <!-- Logo -->
     <div class="relative flex-shrink-0 flex items-center justify-center" style="width:42px;height:42px">
-      <div class="absolute inset-0 rounded-xl" style="background:linear-gradient(145deg,rgba(34,211,238,0.10),rgba(109,40,217,0.16));border:1px solid rgba(34,211,238,0.28);box-shadow:0 0 22px rgba(34,211,238,0.13),inset 0 1px 0 rgba(255,255,255,0.08)"></div>
+      <div class="absolute inset-0 rounded-xl" style="background:linear-gradient(145deg,rgba(239,68,68,0.10),rgba(109,40,217,0.16));border:1px solid rgba(239,68,68,0.28);box-shadow:0 0 22px rgba(239,68,68,0.13),inset 0 1px 0 rgba(255,255,255,0.08)"></div>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="position:relative;z-index:1">
-        <circle cx="12" cy="12" r="9"   stroke="rgba(34,211,238,0.22)" stroke-width="1"/>
-        <circle cx="12" cy="12" r="5.5" stroke="rgba(34,211,238,0.55)" stroke-width="1.2"/>
-        <circle cx="12" cy="12" r="2"   fill="#22d3ee" style="filter:drop-shadow(0 0 4px #22d3ee)"/>
-        <line x1="12" y1="2"    x2="12" y2="5.5"  stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
-        <line x1="12" y1="18.5" x2="12" y2="22"   stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
-        <line x1="2"  y1="12"   x2="5.5" y2="12"  stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
-        <line x1="18.5" y1="12" x2="22"  y2="12"  stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
+        <circle cx="12" cy="12" r="9"   stroke="rgba(239,68,68,0.22)" stroke-width="1"/>
+        <circle cx="12" cy="12" r="5.5" stroke="rgba(239,68,68,0.55)" stroke-width="1.2"/>
+        <circle cx="12" cy="12" r="2"   fill="#ef4444" style="filter:drop-shadow(0 0 4px #ef4444)"/>
+        <line x1="12" y1="2"    x2="12" y2="5.5"  stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
+        <line x1="12" y1="18.5" x2="12" y2="22"   stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
+        <line x1="2"  y1="12"   x2="5.5" y2="12"  stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
+        <line x1="18.5" y1="12" x2="22"  y2="12"  stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" opacity="0.75"/>
       </svg>
     </div>
     <div>
       <div class="flex items-baseline gap-0">
         <span style="font-family:Inter,sans-serif;font-weight:300;font-size:10px;letter-spacing:0.22em;color:#52525b;text-transform:uppercase;padding-right:7px">GIT</span>
-        <div style="width:1px;height:13px;margin-right:7px;flex-shrink:0;background:linear-gradient(180deg,transparent,rgba(34,211,238,0.55),transparent)"></div>
+        <div style="width:1px;height:13px;margin-right:7px;flex-shrink:0;background:linear-gradient(180deg,transparent,rgba(239,68,68,0.55),transparent)"></div>
         <span style="font-family:Inter,sans-serif;font-weight:900;font-size:17px;letter-spacing:-0.03em;text-transform:uppercase;background:linear-gradient(135deg,#f4f4f5 30%,#a1a1aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">SPECTRE</span>
       </div>
       <div class="flex items-center gap-1.5" style="margin-top:3px">
-        <div style="height:1px;width:44px;background:linear-gradient(90deg,rgba(34,211,238,0.7),transparent)"></div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:rgba(34,211,238,0.60);letter-spacing:0.14em">v2.1</span>
+        <div style="height:1px;width:44px;background:linear-gradient(90deg,rgba(239,68,68,0.7),transparent)"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:rgba(239,68,68,0.60);letter-spacing:0.14em">v2.1</span>
       </div>
     </div>
   </div>
@@ -173,7 +173,7 @@
     <div class="flex items-center gap-2">
       <span class="font-mono text-xs text-zinc-500">API</span>
       <div class="w-24 h-1.5 rounded-full bg-white/5 overflow-hidden">
-        <div id="rlBar" class="h-full rounded-full transition-all duration-500" style="width:100%;background:#22d3ee"></div>
+        <div id="rlBar" class="h-full rounded-full transition-all duration-500" style="width:100%;background:#ef4444"></div>
       </div>
       <span id="rlText" class="font-mono text-xs text-zinc-600">—</span>
     </div>
@@ -189,7 +189,7 @@
     </button>
     <!-- Compare -->
     <button onclick="openCompareModal()" title="Compare two profiles (Ctrl+D)"
-      class="hidden md:flex items-center gap-2 font-mono text-xs font-semibold px-3 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 transition-all">
+      class="hidden md:flex items-center gap-2 font-mono text-xs font-semibold px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-300 hover:bg-red-500/20 transition-all">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
       COMPARE
     </button>
@@ -219,7 +219,7 @@
     </button>
     <!-- API Vault -->
     <button id="vaultBtn" onclick="openVault()"
-      class="flex items-center gap-2 font-mono text-xs font-semibold px-3 py-2 rounded-lg bg-violet-500/10 border border-violet-500/30 text-violet-300 hover:bg-violet-500/20 transition-all">
+      class="flex items-center gap-2 font-mono text-xs font-semibold px-3 py-2 rounded-lg bg-orange-500/10 border border-violet-500/30 text-orange-300 hover:bg-violet-500/20 transition-all">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       VAULT
       <span id="tokenStatus" class="w-2 h-2 rounded-full bg-zinc-600"></span>
@@ -373,9 +373,9 @@
 <main class="relative z-10">
 <section id="heroSection" class="flex flex-col items-center justify-center min-h-[calc(100vh-57px)] px-4 sm:px-6 text-center relative">
   <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20"
-       style="background-image:linear-gradient(rgba(34,211,238,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.15) 1px,transparent 1px);background-size:60px 60px;"></div>
+       style="background-image:linear-gradient(rgba(239,68,68,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(239,68,68,.15) 1px,transparent 1px);background-size:60px 60px;"></div>
 
-  <div class="inline-flex items-center gap-2 font-mono text-xs bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 px-3 py-1.5 rounded-full mb-6">
+  <div class="inline-flex items-center gap-2 font-mono text-xs bg-cyan-400/10 border border-cyan-400/20 text-red-300 px-3 py-1.5 rounded-full mb-6">
     <div class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></div>
     INTELLIGENCE SYSTEM v2.1 ONLINE
   </div>
@@ -433,12 +433,12 @@
       <div class="absolute inset-4 rounded-full border border-cyan-400/50 animate-ping" style="animation-duration:1.5s;animation-delay:.3s;"></div>
       <div class="absolute inset-8 rounded-full border border-cyan-400/70 animate-ping" style="animation-duration:1.5s;animation-delay:.6s;"></div>
       <div class="absolute inset-10 rounded-full bg-cyan-400/10 flex items-center justify-center">
-        <svg class="text-cyan-400" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="text-red-400" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
         </svg>
       </div>
     </div>
-    <p class="font-mono text-cyan-400 text-xl font-bold tracking-widest mb-2">SCANNING TARGET</p>
+    <p class="font-mono text-red-400 text-xl font-bold tracking-widest mb-2">SCANNING TARGET</p>
     <p id="scanTarget" class="font-mono text-zinc-400 text-sm"></p>
     <div class="mt-4 flex gap-1 justify-center">
       <div class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style="animation-delay:0s;"></div>
@@ -464,17 +464,17 @@
 
     <div class="flex flex-col md:flex-row items-center md:items-start gap-4 sm:gap-6">
       <div class="relative shrink-0">
-        <img id="avatar" src="" alt="Avatar" class="w-28 h-28 rounded-2xl border-2 border-cyan-500/30 avatar-ring object-cover" />
+        <img id="avatar" src="" alt="Avatar" class="w-28 h-28 rounded-2xl border-2 border-red-500/30 avatar-ring object-cover" />
         <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-lg bg-green-400/20 border border-green-400/40 flex items-center justify-center">
           <div class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></div>
         </div>
       </div>
       <div class="flex-1 text-center md:text-left">
         <div class="flex flex-col md:flex-row md:items-center gap-3 mb-1">
-          <a id="profileName" href="#" target="_blank" class="font-black text-3xl tracking-tight hover:text-cyan-400 transition-colors"></a>
+          <a id="profileName" href="#" target="_blank" class="font-black text-3xl tracking-tight hover:text-red-400 transition-colors"></a>
           <span id="archetypeBadge" class="archetype-badge self-center inline-flex items-center gap-1.5 font-mono text-xs font-bold px-3 py-1.5 rounded-full border"></span>
         </div>
-        <p id="profileLogin" class="font-mono text-cyan-400 text-sm mb-2"></p>
+        <p id="profileLogin" class="font-mono text-red-400 text-sm mb-2"></p>
         <p id="profileBio" class="text-zinc-400 text-sm max-w-xl leading-relaxed mb-3"></p>
         <div class="flex flex-wrap gap-4 text-xs font-mono text-zinc-500 justify-center md:justify-start mb-1">
           <span id="metaLocation" class="flex items-center gap-1.5"></span>
@@ -511,7 +511,7 @@
     </div>
     <div class="glass grad-border rounded-xl p-4 flex flex-col">
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-cyan-400 neon-cyan" id="statRepos">0</p>
+        <p class="font-mono text-2xl font-bold text-red-400 neon-cyan" id="statRepos">0</p>
         <p class="text-xs font-mono text-zinc-500 mt-0.5 uppercase tracking-widest">Repos</p>
       </div>
       <div class="border-t border-white/5 mt-3 pt-2 space-y-1.5 overflow-y-auto" style="max-height:110px" id="reposMiniList"></div>
@@ -526,7 +526,7 @@
     </div>
     <div class="glass grad-border rounded-xl p-4 flex flex-col">
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-violet-400" id="statFollowers">0</p>
+        <p class="font-mono text-2xl font-bold text-orange-400" id="statFollowers">0</p>
         <p class="text-xs font-mono text-zinc-500 mt-0.5 uppercase tracking-widest">Followers</p>
       </div>
       <div class="border-t border-white/5 mt-3 pt-2 space-y-1.5 overflow-y-auto" style="max-height:110px" id="followersMiniList"></div>
@@ -553,10 +553,10 @@
           <span>Less</span>
           <div class="flex gap-0.5">
             <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(255,255,255,0.05)"></div>
-            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(34,211,238,0.2)"></div>
-            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(34,211,238,0.45)"></div>
-            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(34,211,238,0.7)"></div>
-            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(34,211,238,0.95)"></div>
+            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(239,68,68,0.2)"></div>
+            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(239,68,68,0.45)"></div>
+            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(239,68,68,0.7)"></div>
+            <div class="w-2.5 h-2.5 rounded-sm" style="background:rgba(239,68,68,0.95)"></div>
           </div>
           <span>More</span>
         </div>
@@ -570,7 +570,7 @@
     <h2 class="font-bold text-sm tracking-widest uppercase text-zinc-300 mb-4">Community Activity</h2>
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-cyan-400" id="comPrsOpened">0</p>
+        <p class="font-mono text-2xl font-bold text-red-400" id="comPrsOpened">0</p>
         <p class="font-mono text-xs text-zinc-500 mt-1">PRs Opened</p>
       </div>
       <div class="text-center">
@@ -587,7 +587,7 @@
         <p class="font-mono text-xs text-zinc-500 mt-1">Issues Opened</p>
       </div>
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-violet-400" id="comComments">0</p>
+        <p class="font-mono text-2xl font-bold text-orange-400" id="comComments">0</p>
         <p class="font-mono text-xs text-zinc-500 mt-1">Comments</p>
       </div>
     </div>
@@ -600,7 +600,7 @@
       <div class="flex items-center justify-between mb-1">
         <h2 class="font-bold text-sm tracking-widest uppercase text-zinc-300">Language DNA</h2>
         <button id="radarToggleBtn" onclick="toggleRadarMode()"
-          class="font-mono text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-zinc-400 hover:text-cyan-300 hover:border-cyan-500/30 transition-all">KB</button>
+          class="font-mono text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-zinc-400 hover:text-red-300 hover:border-red-500/30 transition-all">KB</button>
       </div>
       <p class="text-xs font-mono text-zinc-600 mb-4" id="radarSubtitle">KB of code per language</p>
       <div class="relative h-64"><canvas id="radarChart"></canvas></div>
@@ -639,11 +639,11 @@
     <h2 class="font-bold text-sm tracking-widest uppercase text-zinc-300 mb-4">Gist Intelligence</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-cyan-400" id="gistTotal">0</p>
+        <p class="font-mono text-2xl font-bold text-red-400" id="gistTotal">0</p>
         <p class="font-mono text-xs text-zinc-500 mt-1">Total Gists</p>
       </div>
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-violet-400" id="gistComments">0</p>
+        <p class="font-mono text-2xl font-bold text-orange-400" id="gistComments">0</p>
         <p class="font-mono text-xs text-zinc-500 mt-1">Comments</p>
       </div>
       <div class="text-center">
@@ -673,7 +673,7 @@
         <p class="font-mono text-xs text-zinc-500 mt-1">Vague %</p>
       </div>
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-cyan-400" id="commitAvgLen">—</p>
+        <p class="font-mono text-2xl font-bold text-red-400" id="commitAvgLen">—</p>
         <p class="font-mono text-xs text-zinc-500 mt-1">Avg. Length</p>
       </div>
       <div class="text-center">
@@ -706,7 +706,7 @@
         <p class="font-mono text-xs text-zinc-500 mt-1">Forks</p>
       </div>
       <div class="text-center">
-        <p class="font-mono text-2xl font-bold text-cyan-400" id="forkRatio">0%</p>
+        <p class="font-mono text-2xl font-bold text-red-400" id="forkRatio">0%</p>
         <p class="font-mono text-xs text-zinc-500 mt-1">Original Ratio</p>
       </div>
     </div>
@@ -720,16 +720,16 @@
       <!-- Mutual -->
       <div class="bg-white/3 border border-white/5 rounded-xl p-4">
         <div class="flex items-center justify-between mb-3">
-          <p class="font-mono text-xs text-cyan-400 uppercase tracking-widest">🤝 Mutual</p>
-          <span id="sgMutualCount" class="font-black text-lg text-cyan-400">0</span>
+          <p class="font-mono text-xs text-red-400 uppercase tracking-widest">🤝 Mutual</p>
+          <span id="sgMutualCount" class="font-black text-lg text-red-400">0</span>
         </div>
         <div id="sgMutualList" class="flex flex-wrap gap-1.5"></div>
       </div>
       <!-- Fans -->
       <div class="bg-white/3 border border-white/5 rounded-xl p-4">
         <div class="flex items-center justify-between mb-3">
-          <p class="font-mono text-xs text-violet-400 uppercase tracking-widest">🌟 Fans</p>
-          <span id="sgFansCount" class="font-black text-lg text-violet-400">0</span>
+          <p class="font-mono text-xs text-orange-400 uppercase tracking-widest">🌟 Fans</p>
+          <span id="sgFansCount" class="font-black text-lg text-orange-400">0</span>
         </div>
         <div id="sgFansList" class="flex flex-wrap gap-1.5"></div>
       </div>
@@ -752,7 +752,7 @@
         <p class="text-xs font-mono text-zinc-600 mt-0.5">Profile README signal analysis</p>
       </div>
       <a id="readmeQualityLink" href="#" target="_blank" rel="noopener"
-        class="font-mono text-xs text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1">
+        class="font-mono text-xs text-red-400 hover:text-red-300 transition-colors flex items-center gap-1">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
         View README
       </a>
@@ -782,7 +782,7 @@
   <!-- 10. TOP REPOSITORIES -->
   <div class="glass grad-border rounded-2xl p-6">
     <h2 class="font-bold text-sm tracking-widest uppercase text-zinc-300 mb-5">
-      Top Repositories &nbsp;<span class="text-cyan-400/60 font-mono normal-case text-xs">(by stars)</span>
+      Top Repositories &nbsp;<span class="text-red-400/60 font-mono normal-case text-xs">(by stars)</span>
     </h2>
     <div id="repoList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
   </div>
@@ -813,12 +813,12 @@
 <!-- =========================================================
      SHARE CARD (off-screen, captured by html2canvas)
      ========================================================= -->
-<div id="shareCard" style="background:#09090b;padding:28px;border-radius:16px;border:1px solid rgba(34,211,238,0.2);font-family:'Inter',sans-serif;color:#f4f4f5">
+<div id="shareCard" style="background:#09090b;padding:28px;border-radius:16px;border:1px solid rgba(239,68,68,0.2);font-family:'Inter',sans-serif;color:#f4f4f5">
   <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
-    <img id="scAvatar" src="" alt="" style="width:60px;height:60px;border-radius:12px;border:2px solid rgba(34,211,238,0.4)">
+    <img id="scAvatar" src="" alt="" style="width:60px;height:60px;border-radius:12px;border:2px solid rgba(239,68,68,0.4)">
     <div style="flex:1;min-width:0">
       <div id="scName" style="font-weight:900;font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-      <div id="scLogin" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#22d3ee"></div>
+      <div id="scLogin" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#ef4444"></div>
       <span id="scArchetype" style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 10px;border-radius:20px;margin-top:4px;display:inline-block"></span>
     </div>
     <div style="text-align:center;flex-shrink:0">
@@ -837,7 +837,7 @@
 
 <!-- Floating Export Button -->
 <button id="exportBtn" onclick="exportPDF()"
-  class="hidden items-center gap-2 font-mono text-xs font-bold px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500/20 to-violet-600/20 border border-cyan-500/30 text-cyan-300 hover:opacity-90 active:scale-95 transition-all shadow-xl shadow-cyan-500/10 backdrop-blur">
+  class="hidden items-center gap-2 font-mono text-xs font-bold px-4 py-3 rounded-xl bg-gradient-to-r from-cyan-500/20 to-violet-600/20 border border-red-500/30 text-red-300 hover:opacity-90 active:scale-95 transition-all shadow-xl shadow-cyan-500/10 backdrop-blur">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
   EXPORT PDF
 </button>
@@ -856,8 +856,9 @@ function safeUrl(u){try{const p=new URL(u).protocol;return(p==='http:'||p==='htt
   const c=document.getElementById('starfield'),ctx=c.getContext('2d');
   let stars=[],W,H;
   function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
-  function init(){resize();stars=Array.from({length:220},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,a:Math.random(),da:(Math.random()-.5)*.004,dx:(Math.random()-.5)*.15,dy:(Math.random()-.5)*.15}));}
-  function draw(){ctx.clearRect(0,0,W,H);for(const s of stars){s.a=Math.max(.05,Math.min(1,s.a+s.da));s.x+=s.dx;s.y+=s.dy;if(s.x<0)s.x=W;if(s.x>W)s.x=0;if(s.y<0)s.y=H;if(s.y>H)s.y=0;ctx.save();ctx.globalAlpha=s.a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();ctx.restore();}requestAnimationFrame(draw);}
+  const starColors=['#fff','#fca5a5','#ef4444','#fbbf24','#fcd34d'];
+  function init(){resize();stars=Array.from({length:220},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.3,a:Math.random(),da:(Math.random()-.5)*.004,dx:(Math.random()-.5)*.15,dy:(Math.random()-.5)*.15,c:starColors[Math.floor(Math.random()*starColors.length)]}));}
+  function draw(){ctx.clearRect(0,0,W,H);for(const s of stars){s.a=Math.max(.05,Math.min(1,s.a+s.da));s.x+=s.dx;s.y+=s.dy;if(s.x<0)s.x=W;if(s.x>W)s.x=0;if(s.y<0)s.y=H;if(s.y>H)s.y=0;ctx.save();ctx.globalAlpha=s.a;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();ctx.restore();}requestAnimationFrame(draw);}
   window.addEventListener('resize',init);init();draw();
 })();
 
@@ -934,7 +935,7 @@ async function runBatch(){
 }
 
 function renderBatchResults(results){
-  const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#8b5cf6','C':'#f97316','D':'#ef4444','E':'#6b7280'};
+  const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#f97316','C':'#f97316','D':'#ef4444','E':'#6b7280'};
   let html=`<div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-left font-mono text-xs text-zinc-600 uppercase tracking-widest border-b border-white/5">
     <th class="pb-2 pr-3">#</th><th class="pb-2 pr-3">Developer</th><th class="pb-2 pr-3">Score</th>
     <th class="pb-2 pr-3 hidden md:table-cell">Archetype</th><th class="pb-2 pr-3 hidden md:table-cell">Lang</th>
@@ -942,7 +943,7 @@ function renderBatchResults(results){
   </tr></thead><tbody>`;
   results.forEach((r,i)=>{
     if(r.error){html+=`<tr><td colspan="7" class="py-3 font-mono text-xs text-red-400 px-1">@${r.username}: ${r.error}</td></tr>`;return;}
-    const col=gc[r.grade]||'#22d3ee';
+    const col=gc[r.grade]||'#ef4444';
     html+=`<tr class="batch-row cursor-pointer" onclick="closeBatchModal();document.getElementById('searchInput').value='${r.username}';runScan()">
       <td class="py-3 pr-3 font-mono text-xs text-zinc-600">${i+1}</td>
       <td class="py-3 pr-3"><div class="flex items-center gap-2 min-w-0">
@@ -953,7 +954,7 @@ function renderBatchResults(results){
       <td class="py-3 pr-3 hidden md:table-cell font-mono text-xs text-zinc-400">${r.archetype}</td>
       <td class="py-3 pr-3 hidden md:table-cell font-mono text-xs" style="color:${getLC(r.top_language)}">${r.top_language}</td>
       <td class="py-3 pr-3 font-mono text-xs text-yellow-400">★ ${r.total_stars}</td>
-      <td class="py-3 font-mono text-xs text-violet-400">${r.followers}</td>
+      <td class="py-3 font-mono text-xs text-orange-400">${r.followers}</td>
     </tr>`;
   });
   html+=`</tbody></table></div>`;
@@ -975,7 +976,7 @@ async function refreshRateLimit(){
     document.getElementById('rlGauge').classList.remove('hidden');
     document.getElementById('rlGauge').classList.add('flex');
     document.getElementById('rlBar').style.width=pct+'%';
-    document.getElementById('rlBar').style.background=pct>50?'#22d3ee':pct>20?'#f59e0b':'#ef4444';
+    document.getElementById('rlBar').style.background=pct>50?'#ef4444':pct>20?'#f59e0b':'#ef4444';
     document.getElementById('rlText').textContent=`${d.remaining}/${d.limit}`;
     document.getElementById('rlBar').title=`${d.remaining} left. Resets ${new Date(d.reset*1000).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
     _rlResetEpoch=d.reset;
@@ -997,7 +998,7 @@ setInterval(refreshRateLimit,60000);
 // ============================================================
 // LANG COLORS
 // ============================================================
-const LC={Python:'#3b82f6',JavaScript:'#f59e0b',TypeScript:'#2563eb',Rust:'#f97316',Go:'#22d3ee',Java:'#ef4444','C':'#8b5cf6','C++':'#a855f7',Ruby:'#e11d48',Kotlin:'#10b981',Swift:'#f43f5e',PHP:'#6366f1','C#':'#06b6d4',Dart:'#14b8a6',Scala:'#dc2626',HTML:'#fb923c',CSS:'#60a5fa',Shell:'#4ade80',Vue:'#34d399',R:'#e879f9',Haskell:'#a78bfa',Elixir:'#8b5cf6',Lua:'#818cf8','Jupyter Notebook':'#f59e0b'};
+const LC={Python:'#3b82f6',JavaScript:'#f59e0b',TypeScript:'#2563eb',Rust:'#f97316',Go:'#ef4444',Java:'#ef4444','C':'#f97316','C++':'#a855f7',Ruby:'#e11d48',Kotlin:'#10b981',Swift:'#f43f5e',PHP:'#6366f1','C#':'#06b6d4',Dart:'#14b8a6',Scala:'#dc2626',HTML:'#fb923c',CSS:'#60a5fa',Shell:'#4ade80',Vue:'#34d399',R:'#e879f9',Haskell:'#a78bfa',Elixir:'#f97316',Lua:'#818cf8','Jupyter Notebook':'#f59e0b'};
 function getLC(n){if(!n||n==='N/A')return'#71717a';if(LC[n])return LC[n];const h=(n.split('').reduce((a,c)=>a+c.charCodeAt(0),0)*37)%360;return`hsl(${h},65%,60%)`;}
 
 // ============================================================
@@ -1046,8 +1047,8 @@ function clearHistory(){localStorage.removeItem('gs_history');const list=documen
 function buildScoreRing(score){
   const{total,grade,breakdown}=score;
   const r=54,circ=2*Math.PI*r,offset=circ*(1-Math.min(total,1000)/1000);
-  const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#8b5cf6','C':'#f97316','D':'#ef4444','E':'#6b7280'};
-  const col=gc[grade]||'#22d3ee';
+  const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#f97316','C':'#f97316','D':'#ef4444','E':'#6b7280'};
+  const col=gc[grade]||'#ef4444';
   const maxS={stars:300,followers:200,diversity:150,repos:100,age:80,activity:70};
   const lm={stars:'Stars',followers:'Social',diversity:'Diversity',repos:'Repos',age:'Tenure',activity:'Activity'};
   const barsHtml=Object.entries(breakdown).map(([k,v])=>`
@@ -1088,7 +1089,7 @@ function buildScoreRing(score){
 function buildOrgs(orgs){
   const el=document.getElementById('orgChips');
   if(!orgs||!orgs.length){el.innerHTML='';return;}
-  el.innerHTML=`<div class="flex flex-wrap gap-2 mt-3">${orgs.map(o=>`<a href="${safeUrl(o.url)}" target="_blank" rel="noopener" title="@${esc(o.login)}" class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:text-zinc-200 transition-all text-xs font-mono text-zinc-400"><img src="${esc(o.avatar_url)}" class="w-4 h-4 rounded-sm" loading="lazy"/>${esc(o.login)}</a>`).join('')}</div>`;
+  el.innerHTML=`<div class="flex flex-wrap gap-2 mt-3">${orgs.map(o=>`<a href="${safeUrl(o.url)}" target="_blank" rel="noopener" title="@${esc(o.login)}" class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-red-500/30 hover:text-zinc-200 transition-all text-xs font-mono text-zinc-400"><img src="${esc(o.avatar_url)}" class="w-4 h-4 rounded-sm" loading="lazy"/>${esc(o.login)}</a>`).join('')}</div>`;
 }
 
 // ============================================================
@@ -1100,7 +1101,7 @@ function buildStreaks(s){
   el.innerHTML=`<div class="flex flex-wrap gap-2 mt-3">
     ${s.current>0?`<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20"><span>🔥</span><div><p class="font-black text-sm text-orange-400 leading-none">${s.current}d</p><p class="font-mono text-xs text-zinc-600">Current</p></div></div>`:''}
     <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-yellow-500/10 border border-yellow-500/20"><span>⚡</span><div><p class="font-black text-sm text-yellow-400 leading-none">${s.longest}d</p><p class="font-mono text-xs text-zinc-600">Best</p></div></div>
-    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20"><span>📅</span><div><p class="font-black text-sm text-cyan-400 leading-none">${s.total_active_days}</p><p class="font-mono text-xs text-zinc-600">Active Days</p></div></div>
+    <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20"><span>📅</span><div><p class="font-black text-sm text-red-400 leading-none">${s.total_active_days}</p><p class="font-mono text-xs text-zinc-600">Active Days</p></div></div>
   </div>`;
 }
 
@@ -1153,7 +1154,7 @@ function buildHeatmap(data){
   const cc=n=>{
     if(!n)return'rgba(255,255,255,0.04)';
     const p=n/maxC;
-    return p>.75?'rgba(34,211,238,0.95)':p>.5?'rgba(34,211,238,0.65)':p>.25?'rgba(34,211,238,0.4)':'rgba(34,211,238,0.2)';
+    return p>.75?'rgba(239,68,68,0.95)':p>.5?'rgba(239,68,68,0.65)':p>.25?'rgba(239,68,68,0.4)':'rgba(239,68,68,0.2)';
   };
 
   const dayLabels=['Mon','','Wed','','Fri','','Sun'];
@@ -1182,7 +1183,7 @@ function buildHeatmap(data){
     while(col.length<7)col.push(null);
     col.forEach(c=>{
       if(c){
-        const glow=c.count?';box-shadow:0 0 4px rgba(34,211,238,0.35)':'';
+        const glow=c.count?';box-shadow:0 0 4px rgba(239,68,68,0.35)':'';
         html+=`<div class="heatmap-cell" style="width:10px;height:10px;background:${cc(c.count)}${glow}" title="${c.date}: ${c.count} commit${c.count!==1?'s':''}"></div>`;
       } else {
         html+='<div style="width:10px;height:10px;background:transparent"></div>';
@@ -1211,7 +1212,7 @@ const _em=t=>`<p class="font-mono text-center" style="font-size:9px;color:#3f3f4
 
 function buildStatLists(tr,fl,fw,starred_repos){
   const rl=document.getElementById('reposMiniList');
-  rl.innerHTML=tr&&tr.length?tr.slice(0,7).map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="text-zinc-700 group-hover:text-cyan-500 transition-colors shrink-0">${_rSvg}</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">${esc(r.name)}</span></a>`).join(''):_em('No repos yet');
+  rl.innerHTML=tr&&tr.length?tr.slice(0,7).map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="text-zinc-700 group-hover:text-red-500 transition-colors shrink-0">${_rSvg}</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">${esc(r.name)}</span></a>`).join(''):_em('No repos yet');
   const sl=document.getElementById('starsMiniList');
   const sr=(starred_repos||[]).slice(0,7);
   sl.innerHTML=sr.length?sr.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="shrink-0" style="color:#ca8a04;font-size:10px">★</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate flex-1" style="font-size:10px">${esc(r.name)}</span><span class="font-mono shrink-0" style="font-size:9px;color:#713f12">${r.stars>0?r.stars:''}</span></a>`).join(''):_em('No starred repos');
@@ -1235,7 +1236,7 @@ function buildActivityHours(grid){
   document.getElementById('chronotypeBadge').textContent=computeChronotype(grid);
   const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   const maxV=Math.max(...grid.flat(),1);
-  const cb=v=>{const p=v/maxV;return p>.75?'rgba(139,92,246,0.9)':p>.5?'rgba(139,92,246,0.6)':p>.2?'rgba(139,92,246,0.3)':p>0?'rgba(139,92,246,0.12)':'rgba(255,255,255,0.03)';};
+  const cb=v=>{const p=v/maxV;return p>.75?'rgba(249,115,22,0.9)':p>.5?'rgba(249,115,22,0.6)':p>.2?'rgba(249,115,22,0.3)':p>0?'rgba(249,115,22,0.12)':'rgba(255,255,255,0.03)';};
   let html='<div class="overflow-x-auto"><div class="flex mb-1 ml-8">';
   for(let h=0;h<24;h+=6)html+=`<div style="flex:6 0 0;text-align:center;font-size:9px;font-family:'JetBrains Mono',monospace;color:#52525b">${h}h</div>`;
   html+='</div>';
@@ -1270,7 +1271,7 @@ function buildLangEvolution(data){
   const datasets=allLangs.map(lang=>({label:lang,data:years.map(y=>data[y][lang]||0),backgroundColor:getLC(lang)+'99',borderColor:getLC(lang),borderWidth:1}));
   const canvas=document.getElementById('langEvoChart');
   if(langEvoInst){langEvoInst.destroy();langEvoInst=null;}
-  langEvoInst=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels:years,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'rgba(255,255,255,0.5)',font:{family:'JetBrains Mono',size:9},boxWidth:8,padding:8}},tooltip:{backgroundColor:'rgba(9,9,11,0.92)',borderColor:'rgba(34,211,238,0.3)',borderWidth:1,titleFont:{family:'JetBrains Mono',size:11},bodyFont:{family:'JetBrains Mono',size:11}}},scales:{x:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.45)',font:{family:'JetBrains Mono',size:10}}},y:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.45)',font:{family:'JetBrains Mono',size:10}}}}}});
+  langEvoInst=new Chart(canvas.getContext('2d'),{type:'bar',data:{labels:years,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'rgba(255,255,255,0.5)',font:{family:'JetBrains Mono',size:9},boxWidth:8,padding:8}},tooltip:{backgroundColor:'rgba(9,9,11,0.92)',borderColor:'rgba(239,68,68,0.3)',borderWidth:1,titleFont:{family:'JetBrains Mono',size:11},bodyFont:{family:'JetBrains Mono',size:11}}},scales:{x:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.45)',font:{family:'JetBrains Mono',size:10}}},y:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.45)',font:{family:'JetBrains Mono',size:10}}}}}});
 }
 
 // ============================================================
@@ -1283,7 +1284,7 @@ function buildGistSection(gists){
   animCount(document.getElementById('gistTotal'),gists.total);
   animCount(document.getElementById('gistComments'),gists.total_comments);
   document.getElementById('gistLang').textContent=gists.top_language||'—';
-  if(gists.most_forked)document.getElementById('gistMostForked').innerHTML=`<a href="${safeUrl(gists.most_forked.url)}" target="_blank" rel="noopener" class="text-cyan-400 hover:underline">${esc(gists.most_forked.description)}</a> <span class="text-zinc-600 ml-1">(${gists.most_forked.forks} forks)</span>`;
+  if(gists.most_forked)document.getElementById('gistMostForked').innerHTML=`<a href="${safeUrl(gists.most_forked.url)}" target="_blank" rel="noopener" class="text-red-400 hover:underline">${esc(gists.most_forked.description)}</a> <span class="text-zinc-600 ml-1">(${gists.most_forked.forks} forks)</span>`;
 }
 
 // ============================================================
@@ -1307,7 +1308,7 @@ function buildCommunity(community, prMergeRate){
   animCount(document.getElementById('comComments'),community.issue_comments);
   const extEl=document.getElementById('externalRepos');
   if((community.external_repos||[]).length){
-    extEl.innerHTML=`<p class="font-mono text-xs text-zinc-600 uppercase tracking-widest mb-2 mt-4 pt-4 border-t border-white/5">External Contributions</p><div class="flex flex-wrap gap-2">${community.external_repos.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="font-mono text-xs text-zinc-400 hover:text-cyan-400 transition-colors px-2 py-1 rounded bg-white/5 border border-white/10 hover:border-cyan-500/30">${esc(r.name)}</a>`).join('')}</div>`;
+    extEl.innerHTML=`<p class="font-mono text-xs text-zinc-600 uppercase tracking-widest mb-2 mt-4 pt-4 border-t border-white/5">External Contributions</p><div class="flex flex-wrap gap-2">${community.external_repos.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="font-mono text-xs text-zinc-400 hover:text-red-400 transition-colors px-2 py-1 rounded bg-white/5 border border-white/10 hover:border-red-500/30">${esc(r.name)}</a>`).join('')}</div>`;
   }else{extEl.innerHTML='';}
 }
 
@@ -1395,7 +1396,7 @@ document.getElementById('wrappedModal').addEventListener('click',e=>{if(e.target
 function spawnConfetti(){
   const el=document.getElementById('wrappedConfetti');
   el.innerHTML='';
-  const colors=['#f59e0b','#10b981','#06b6d4','#8b5cf6','#f43f5e','#22d3ee','#a855f7'];
+  const colors=['#f59e0b','#10b981','#06b6d4','#f97316','#f43f5e','#ef4444','#a855f7'];
   for(let i=0;i<22;i++){
     const p=document.createElement('div');
     p.className='confetti-piece';
@@ -1415,7 +1416,7 @@ function renderWrapped(w){
   const topEv=eventTypeLabels[w.top_event_type]||w.top_event_type||'—';
 
   const stats=[
-    {label:'Commits This Year', value:w.year_commits.toLocaleString(), color:'#22d3ee', icon:'🔥'},
+    {label:'Commits This Year', value:w.year_commits.toLocaleString(), color:'#ef4444', icon:'🔥'},
     {label:'Top Language', value:w.top_language, color:getLC(w.top_language), icon:'💻'},
     {label:'Longest Streak', value:w.longest_streak+'d', color:'#f59e0b', icon:'⚡'},
     {label:'New Repos', value:w.new_repos_year, color:'#10b981', icon:'📦'},
@@ -1477,7 +1478,7 @@ function buildForkPanel(stats,forkDetails){
   document.getElementById('forkOwnCount').textContent=own;
   document.getElementById('forkForkCount').textContent=forked;
   document.getElementById('forkRatio').textContent=Math.round(own/tot*100)+'%';
-  document.getElementById('forkList').innerHTML=forkDetails.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex flex-col gap-1 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-cyan-500/20 hover:bg-white/5 transition-all group"><span class="font-mono text-xs text-zinc-300 group-hover:text-cyan-400 transition-colors truncate">${esc(r.name)}</span><div class="flex items-center justify-between"><span class="font-mono text-xs" style="color:${getLC(r.language)}">${esc(r.language)}</span>${r.stars?`<span class="font-mono text-xs text-yellow-500">★ ${r.stars}</span>`:''}</div></a>`).join('');
+  document.getElementById('forkList').innerHTML=forkDetails.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex flex-col gap-1 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-red-500/20 hover:bg-white/5 transition-all group"><span class="font-mono text-xs text-zinc-300 group-hover:text-red-400 transition-colors truncate">${esc(r.name)}</span><div class="flex items-center justify-between"><span class="font-mono text-xs" style="color:${getLC(r.language)}">${esc(r.language)}</span>${r.stars?`<span class="font-mono text-xs text-yellow-500">★ ${r.stars}</span>`:''}</div></a>`).join('');
 }
 
 // ============================================================
@@ -1494,7 +1495,7 @@ function toggleRadarMode(){
 function buildRadar(labels,vals){
   const canvas=document.getElementById('radarChart');
   if(chartInst){chartInst.destroy();chartInst=null;}
-  chartInst=new Chart(canvas.getContext('2d'),{type:'radar',data:{labels,datasets:[{label:_rMode==='kb'?'KB':'Repos',data:vals,fill:true,backgroundColor:'rgba(34,211,238,.12)',borderColor:'rgba(34,211,238,.8)',pointBackgroundColor:labels.map(getLC),pointBorderColor:'rgba(0,0,0,.5)',pointBorderWidth:1.5,pointRadius:5,pointHoverRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(9,9,11,.9)',borderColor:'rgba(34,211,238,.3)',borderWidth:1,titleFont:{family:'JetBrains Mono',size:11},bodyFont:{family:'JetBrains Mono',size:11},callbacks:{label:c=>`${c.label}: ${c.raw} ${_rMode==='kb'?'KB':'repos'}`}}},scales:{r:{grid:{color:'rgba(255,255,255,.06)'},angleLines:{color:'rgba(255,255,255,.06)'},ticks:{display:false,backdropColor:'transparent'},pointLabels:{color:'rgba(255,255,255,.7)',font:{family:'JetBrains Mono',size:11,weight:'600'}}}}}});
+  chartInst=new Chart(canvas.getContext('2d'),{type:'radar',data:{labels,datasets:[{label:_rMode==='kb'?'KB':'Repos',data:vals,fill:true,backgroundColor:'rgba(239,68,68,.12)',borderColor:'rgba(239,68,68,.8)',pointBackgroundColor:labels.map(getLC),pointBorderColor:'rgba(0,0,0,.5)',pointBorderWidth:1.5,pointRadius:5,pointHoverRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(9,9,11,.9)',borderColor:'rgba(239,68,68,.3)',borderWidth:1,titleFont:{family:'JetBrains Mono',size:11},bodyFont:{family:'JetBrains Mono',size:11},callbacks:{label:c=>`${c.label}: ${c.raw} ${_rMode==='kb'?'KB':'repos'}`}}},scales:{r:{grid:{color:'rgba(255,255,255,.06)'},angleLines:{color:'rgba(255,255,255,.06)'},ticks:{display:false,backdropColor:'transparent'},pointLabels:{color:'rgba(255,255,255,.7)',font:{family:'JetBrains Mono',size:11,weight:'600'}}}}}});
 }
 
 // ============================================================
@@ -1535,7 +1536,7 @@ function buildRepos(repos){
     card.className='repo-card block glass border border-white/5 rounded-xl p-4 cursor-pointer no-underline';
     card.innerHTML=`
       <div class="flex items-start justify-between gap-2 mb-2">
-        <h3 class="font-mono text-sm font-bold text-cyan-300 truncate">${r.name}</h3>
+        <h3 class="font-mono text-sm font-bold text-red-300 truncate">${r.name}</h3>
         <div class="flex items-center gap-1.5 shrink-0 mt-0.5">
           ${health.emoji?`<span title="${health.label}" style="font-size:11px">${health.emoji}</span>`:''}
           <svg class="opacity-40" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
@@ -1561,8 +1562,8 @@ function buildRepos(repos){
 // ============================================================
 function populateShareCard(data){
   const{profile,score,archetype,languages,streaks,stats}=data;
-  const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#8b5cf6','C':'#f97316','D':'#ef4444','E':'#6b7280'};
-  const col=gc[score.grade]||'#22d3ee';
+  const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#f97316','C':'#f97316','D':'#ef4444','E':'#6b7280'};
+  const col=gc[score.grade]||'#ef4444';
   document.getElementById('scAvatar').src=profile.avatar_url;
   document.getElementById('scName').textContent=profile.name;
   document.getElementById('scLogin').textContent='@'+profile.login;
@@ -1572,7 +1573,7 @@ function populateShareCard(data){
   const gradeEl=document.getElementById('scGrade');gradeEl.textContent=score.grade;gradeEl.style.color=col;
   const langs=Object.entries(languages).slice(0,4);const tot=langs.reduce((s,[,v])=>s+v,0)||1;
   document.getElementById('scLangs').innerHTML=langs.map(([l,v])=>{const p=Math.round(v/tot*100);const c=getLC(l);return`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;font-family:'JetBrains Mono',monospace;color:#a1a1aa"><span>${l}</span><span>${p}%</span></div><div style="background:rgba(255,255,255,0.08);border-radius:3px;height:3px"><div style="width:${p}%;background:${c};border-radius:3px;height:3px"></div></div></div>`;}).join('');
-  document.getElementById('scStats').innerHTML=`<div style="text-align:center;flex:1"><div style="font-size:18px;font-weight:900;color:#f59e0b">${stats.total_stars}</div><div style="font-size:9px;color:#52525b;font-family:monospace">STARS</div></div><div style="text-align:center;flex:1"><div style="font-size:18px;font-weight:900;color:#8b5cf6">${profile.followers}</div><div style="font-size:9px;color:#52525b;font-family:monospace">FOLLOWERS</div></div><div style="text-align:center;flex:1"><div style="font-size:18px;font-weight:900;color:#22d3ee">${stats.own_repos}</div><div style="font-size:9px;color:#52525b;font-family:monospace">REPOS</div></div>`;
+  document.getElementById('scStats').innerHTML=`<div style="text-align:center;flex:1"><div style="font-size:18px;font-weight:900;color:#f59e0b">${stats.total_stars}</div><div style="font-size:9px;color:#52525b;font-family:monospace">STARS</div></div><div style="text-align:center;flex:1"><div style="font-size:18px;font-weight:900;color:#f97316">${profile.followers}</div><div style="font-size:9px;color:#52525b;font-family:monospace">FOLLOWERS</div></div><div style="text-align:center;flex:1"><div style="font-size:18px;font-weight:900;color:#ef4444">${stats.own_repos}</div><div style="font-size:9px;color:#52525b;font-family:monospace">REPOS</div></div>`;
   document.getElementById('scStreaks').textContent=streaks.current>0?`🔥 ${streaks.current}d streak`:'';
 }
 async function generateCard(){
@@ -1604,7 +1605,7 @@ async function runCompare(){
   const token=localStorage.getItem('gs_token')||'';
   const cSec=document.getElementById('compareSection');const cContent=document.getElementById('compareSectionContent');
   cSec.classList.remove('hidden');
-  cContent.innerHTML='<div class="text-center py-20 font-mono text-cyan-400 animate-pulse text-lg tracking-widest">DUAL SCAN IN PROGRESS...</div>';
+  cContent.innerHTML='<div class="text-center py-20 font-mono text-red-400 animate-pulse text-lg tracking-widest">DUAL SCAN IN PROGRESS...</div>';
   cSec.scrollIntoView({behavior:'smooth',block:'start'});
   try{
     const resp=await fetch('/api/compare',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username_a:ua,username_b:ub,github_token:token||null})});
@@ -1619,17 +1620,17 @@ function renderCompare(data){
   function miniCard(u){
     const{profile,stats,score,archetype,languages,streaks}=u;
     const lE=Object.entries(languages).slice(0,5);const tot=lE.reduce((s,[,v])=>s+v,0)||1;
-    const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#8b5cf6','C':'#f97316','D':'#ef4444','E':'#6b7280'};
-    const sc=gc[score.grade]||'#22d3ee';const r=36,circ=2*Math.PI*r;
+    const gc={'S+':'#f59e0b','S':'#10b981','A':'#06b6d4','B':'#f97316','C':'#f97316','D':'#ef4444','E':'#6b7280'};
+    const sc=gc[score.grade]||'#ef4444';const r=36,circ=2*Math.PI*r;
     return`<div class="glass grad-border rounded-2xl p-6">
-      <div class="flex items-center gap-4 mb-5"><img src="${profile.avatar_url}" class="w-16 h-16 rounded-xl border-2 border-cyan-500/30 object-cover"/><div class="min-w-0"><h3 class="font-black text-lg truncate">${profile.name}</h3><p class="font-mono text-cyan-400 text-sm">@${profile.login}</p><span class="inline-flex mt-1 font-mono text-xs font-bold px-2 py-0.5 rounded-full border" style="background:${archetype.glow}22;border-color:${archetype.glow}55;color:${archetype.glow}">${archetype.label}</span></div></div>
+      <div class="flex items-center gap-4 mb-5"><img src="${profile.avatar_url}" class="w-16 h-16 rounded-xl border-2 border-red-500/30 object-cover"/><div class="min-w-0"><h3 class="font-black text-lg truncate">${profile.name}</h3><p class="font-mono text-red-400 text-sm">@${profile.login}</p><span class="inline-flex mt-1 font-mono text-xs font-bold px-2 py-0.5 rounded-full border" style="background:${archetype.glow}22;border-color:${archetype.glow}55;color:${archetype.glow}">${archetype.label}</span></div></div>
       <div class="flex items-center gap-4 mb-5"><div class="relative shrink-0" style="width:80px;height:80px"><svg width="80" height="80" class="-rotate-90"><circle cx="40" cy="40" r="${r}" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/><circle cx="40" cy="40" r="${r}" fill="none" stroke="${sc}" stroke-width="8" stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-score.total/1000)}" stroke-linecap="round" style="filter:drop-shadow(0 0 6px ${sc}66)"/></svg><div class="absolute inset-0 flex flex-col items-center justify-center"><span class="font-black text-sm leading-none">${score.total}</span><span class="font-black text-xs" style="color:${sc}">${score.grade}</span></div></div>
-      <div class="grid grid-cols-2 gap-2 flex-1"><div class="text-center"><p class="font-black text-base text-cyan-400">${stats.own_repos}</p><p class="font-mono text-xs text-zinc-600">Repos</p></div><div class="text-center"><p class="font-black text-base text-yellow-400">${stats.total_stars}</p><p class="font-mono text-xs text-zinc-600">Stars</p></div><div class="text-center"><p class="font-black text-base text-violet-400">${profile.followers}</p><p class="font-mono text-xs text-zinc-600">Followers</p></div><div class="text-center"><p class="font-black text-base text-orange-400">${streaks.current||0}d</p><p class="font-mono text-xs text-zinc-600">Streak</p></div></div></div>
+      <div class="grid grid-cols-2 gap-2 flex-1"><div class="text-center"><p class="font-black text-base text-red-400">${stats.own_repos}</p><p class="font-mono text-xs text-zinc-600">Repos</p></div><div class="text-center"><p class="font-black text-base text-yellow-400">${stats.total_stars}</p><p class="font-mono text-xs text-zinc-600">Stars</p></div><div class="text-center"><p class="font-black text-base text-orange-400">${profile.followers}</p><p class="font-mono text-xs text-zinc-600">Followers</p></div><div class="text-center"><p class="font-black text-base text-orange-400">${streaks.current||0}d</p><p class="font-mono text-xs text-zinc-600">Streak</p></div></div></div>
       <div class="space-y-2">${lE.map(([l,b])=>{const p=Math.round(b/tot*100);const c=getLC(l);return`<div><div class="flex justify-between mb-0.5"><span class="font-mono text-xs text-zinc-400">${l}</span><span class="font-mono text-xs text-zinc-600">${p}%</span></div><div class="bg-white/5 rounded-full h-1 overflow-hidden"><div class="h-full rounded-full" style="width:${p}%;background:${c}"></div></div></div>`;}).join('')}</div>
     </div>`;
   }
   const metrics=[{label:'Dev Score',a:user_a.score.total,b:user_b.score.total},{label:'Stars',a:user_a.stats.total_stars,b:user_b.stats.total_stars},{label:'Followers',a:user_a.profile.followers,b:user_b.profile.followers},{label:'Repos',a:user_a.stats.own_repos,b:user_b.stats.own_repos},{label:'Languages',a:Object.keys(user_a.languages).length,b:Object.keys(user_b.languages).length},{label:'Streak',a:user_a.streaks.current||0,b:user_b.streaks.current||0}];
-  document.getElementById('compareSectionContent').innerHTML=`<div class="grid grid-cols-1 lg:grid-cols-[1fr_180px_1fr] gap-6 items-start"><div class="fade-up" style="animation-delay:0s">${miniCard(user_a)}</div><div class="flex flex-col items-center py-4 lg:py-8"><div class="font-black text-4xl text-zinc-700 mb-6">VS</div><div class="space-y-2 w-full">${metrics.map(m=>{const aW=m.a>m.b,bW=m.b>m.a;return`<div class="glass rounded-lg py-2 px-3 text-center"><p class="font-mono text-xs text-zinc-600 mb-1">${m.label}</p><div class="flex items-center justify-between"><span class="font-black text-sm ${aW?'text-cyan-400':'text-zinc-600'}">${m.a.toLocaleString()}</span><span class="font-mono text-xs text-zinc-700">${aW?'←':bW?'→':'='}</span><span class="font-black text-sm ${bW?'text-cyan-400':'text-zinc-600'}">${m.b.toLocaleString()}</span></div></div>`;}).join('')}</div></div><div class="fade-up" style="animation-delay:0.1s">${miniCard(user_b)}</div></div>`;
+  document.getElementById('compareSectionContent').innerHTML=`<div class="grid grid-cols-1 lg:grid-cols-[1fr_180px_1fr] gap-6 items-start"><div class="fade-up" style="animation-delay:0s">${miniCard(user_a)}</div><div class="flex flex-col items-center py-4 lg:py-8"><div class="font-black text-4xl text-zinc-700 mb-6">VS</div><div class="space-y-2 w-full">${metrics.map(m=>{const aW=m.a>m.b,bW=m.b>m.a;return`<div class="glass rounded-lg py-2 px-3 text-center"><p class="font-mono text-xs text-zinc-600 mb-1">${m.label}</p><div class="flex items-center justify-between"><span class="font-black text-sm ${aW?'text-red-400':'text-zinc-600'}">${m.a.toLocaleString()}</span><span class="font-mono text-xs text-zinc-700">${aW?'←':bW?'→':'='}</span><span class="font-black text-sm ${bW?'text-red-400':'text-zinc-600'}">${m.b.toLocaleString()}</span></div></div>`;}).join('')}</div></div><div class="fade-up" style="animation-delay:0.1s">${miniCard(user_b)}</div></div>`;
 }
 
 // ============================================================
@@ -1664,8 +1665,8 @@ function copyShareLink(){
   navigator.clipboard.writeText(url).then(()=>{
     showToast('Link copied!','🔗');
     const btn=document.getElementById('shareBtn');const orig=btn.innerHTML;
-    btn.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> COPIED!';
-    btn.style.color='#22d3ee';setTimeout(()=>{btn.innerHTML=orig;btn.style.color='';},2000);
+    btn.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> COPIED!';
+    btn.style.color='#ef4444';setTimeout(()=>{btn.innerHTML=orig;btn.style.color='';},2000);
   }).catch(()=>alert('Copy: '+url));
 }
 function initFromURL(){
@@ -1743,7 +1744,7 @@ function renderDossier(data){
   document.getElementById('metaCompany').innerHTML=bizSvg+profile.company;
   document.getElementById('metaJoined').innerHTML=calSvg+'Since '+profile.created_at;
   const blogEl=document.getElementById('metaBlog');
-  if(profile.blog){blogEl.innerHTML=`${lnkSvg}<a href="${safeUrl(profile.blog.startsWith('http')?profile.blog:'https://'+profile.blog)}" target="_blank" rel="noopener" class="hover:text-cyan-400 transition-colors">${esc(profile.blog.replace(/^https?:\/\//,'').slice(0,28))}</a>`;}
+  if(profile.blog){blogEl.innerHTML=`${lnkSvg}<a href="${safeUrl(profile.blog.startsWith('http')?profile.blog:'https://'+profile.blog)}" target="_blank" rel="noopener" class="hover:text-red-400 transition-colors">${esc(profile.blog.replace(/^https?:\/\//,'').slice(0,28))}</a>`;}
   else blogEl.innerHTML='';
 
   const badge=document.getElementById('archetypeBadge');
@@ -1782,7 +1783,7 @@ function renderDossier(data){
   const ppEl=document.getElementById('peakPersonaBadge');
   if(peak_hour&&peak_hour.persona&&peak_hour.persona!=='Ghost Coder'){
     ppEl.classList.remove('hidden');
-    ppEl.innerHTML=`<div class="flex flex-wrap gap-2"><div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20"><span class="font-mono text-xs font-bold text-violet-300">${peak_hour.persona}</span><span class="font-mono text-xs text-zinc-600">· peaks ${peak_hour.hour}</span><span class="font-mono text-xs text-zinc-700">· ${peak_hour.day}s</span></div></div>`;
+    ppEl.innerHTML=`<div class="flex flex-wrap gap-2"><div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/20"><span class="font-mono text-xs font-bold text-orange-300">${peak_hour.persona}</span><span class="font-mono text-xs text-zinc-600">· peaks ${peak_hour.hour}</span><span class="font-mono text-xs text-zinc-700">· ${peak_hour.day}s</span></div></div>`;
   } else { ppEl.classList.add('hidden'); }
 
   // Roast
@@ -1828,3 +1829,4 @@ window.addEventListener('load',()=>{
 </script>
 </body>
 </html>
+

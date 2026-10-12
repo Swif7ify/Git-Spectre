@@ -844,6 +844,12 @@
 
 <script>
 // ============================================================
+// SECURITY HELPERS
+// ============================================================
+function esc(s){const d=document.createElement('div');d.textContent=String(s??'');return d.innerHTML;}
+function safeUrl(u){try{const p=new URL(u).protocol;return(p==='http:'||p==='https:')?u:'#';}catch{return'#';}}
+
+// ============================================================
 // STARFIELD
 // ============================================================
 (function(){
@@ -1082,7 +1088,7 @@ function buildScoreRing(score){
 function buildOrgs(orgs){
   const el=document.getElementById('orgChips');
   if(!orgs||!orgs.length){el.innerHTML='';return;}
-  el.innerHTML=`<div class="flex flex-wrap gap-2 mt-3">${orgs.map(o=>`<a href="${o.url}" target="_blank" rel="noopener" title="@${o.login}" class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:text-zinc-200 transition-all text-xs font-mono text-zinc-400"><img src="${o.avatar_url}" class="w-4 h-4 rounded-sm" loading="lazy"/>${o.login}</a>`).join('')}</div>`;
+  el.innerHTML=`<div class="flex flex-wrap gap-2 mt-3">${orgs.map(o=>`<a href="${safeUrl(o.url)}" target="_blank" rel="noopener" title="@${esc(o.login)}" class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:text-zinc-200 transition-all text-xs font-mono text-zinc-400"><img src="${esc(o.avatar_url)}" class="w-4 h-4 rounded-sm" loading="lazy"/>${esc(o.login)}</a>`).join('')}</div>`;
 }
 
 // ============================================================
@@ -1205,14 +1211,14 @@ const _em=t=>`<p class="font-mono text-center" style="font-size:9px;color:#3f3f4
 
 function buildStatLists(tr,fl,fw){
   const rl=document.getElementById('reposMiniList');
-  rl.innerHTML=tr&&tr.length?tr.slice(0,7).map(r=>`<a href="${r.url}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="text-zinc-700 group-hover:text-cyan-500 transition-colors shrink-0">${_rSvg}</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">${r.name}</span></a>`).join(''):_em('No repos yet');
+  rl.innerHTML=tr&&tr.length?tr.slice(0,7).map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="text-zinc-700 group-hover:text-cyan-500 transition-colors shrink-0">${_rSvg}</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">${esc(r.name)}</span></a>`).join(''):_em('No repos yet');
   const sl=document.getElementById('starsMiniList');
   const sr=(tr||[]).filter(r=>r.stars>0).slice(0,7);
-  sl.innerHTML=sr.length?sr.map(r=>`<a href="${r.url}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="shrink-0" style="color:#ca8a04;font-size:10px">★</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate flex-1" style="font-size:10px">${r.name}</span><span class="font-mono shrink-0" style="font-size:9px;color:#713f12">${r.stars}</span></a>`).join(''):_em('No starred repos');
+  sl.innerHTML=sr.length?sr.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><span class="shrink-0" style="color:#ca8a04;font-size:10px">★</span><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate flex-1" style="font-size:10px">${esc(r.name)}</span><span class="font-mono shrink-0" style="font-size:9px;color:#713f12">${r.stars}</span></a>`).join(''):_em('No starred repos');
   const fll=document.getElementById('followersMiniList');
-  fll.innerHTML=fl&&fl.length?fl.slice(0,8).map(f=>`<a href="${f.url}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><img src="${f.avatar_url}" class="shrink-0 rounded-full" style="width:14px;height:14px" loading="lazy"/><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">@${f.login}</span></a>`).join(''):_em('No followers yet');
+  fll.innerHTML=fl&&fl.length?fl.slice(0,8).map(f=>`<a href="${safeUrl(f.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><img src="${esc(f.avatar_url)}" class="shrink-0 rounded-full" style="width:14px;height:14px" loading="lazy"/><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">@${esc(f.login)}</span></a>`).join(''):_em('No followers yet');
   const fwl=document.getElementById('followingMiniList');
-  fwl.innerHTML=fw&&fw.length?fw.slice(0,8).map(f=>`<a href="${f.url}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><img src="${f.avatar_url}" class="shrink-0 rounded-full" style="width:14px;height:14px" loading="lazy"/><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">@${f.login}</span></a>`).join(''):_em('Not following anyone');
+  fwl.innerHTML=fw&&fw.length?fw.slice(0,8).map(f=>`<a href="${safeUrl(f.url)}" target="_blank" rel="noopener" class="flex items-center gap-1.5 group min-w-0"><img src="${esc(f.avatar_url)}" class="shrink-0 rounded-full" style="width:14px;height:14px" loading="lazy"/><span class="font-mono text-zinc-500 group-hover:text-zinc-200 transition-colors truncate" style="font-size:10px">@${esc(f.login)}</span></a>`).join(''):_em('Not following anyone');
 }
 
 // ============================================================
@@ -1277,7 +1283,7 @@ function buildGistSection(gists){
   animCount(document.getElementById('gistTotal'),gists.total);
   animCount(document.getElementById('gistComments'),gists.total_comments);
   document.getElementById('gistLang').textContent=gists.top_language||'—';
-  if(gists.most_forked)document.getElementById('gistMostForked').innerHTML=`<a href="${gists.most_forked.url}" target="_blank" rel="noopener" class="text-cyan-400 hover:underline">${gists.most_forked.description}</a> <span class="text-zinc-600 ml-1">(${gists.most_forked.forks} forks)</span>`;
+  if(gists.most_forked)document.getElementById('gistMostForked').innerHTML=`<a href="${safeUrl(gists.most_forked.url)}" target="_blank" rel="noopener" class="text-cyan-400 hover:underline">${esc(gists.most_forked.description)}</a> <span class="text-zinc-600 ml-1">(${gists.most_forked.forks} forks)</span>`;
 }
 
 // ============================================================
@@ -1301,7 +1307,7 @@ function buildCommunity(community, prMergeRate){
   animCount(document.getElementById('comComments'),community.issue_comments);
   const extEl=document.getElementById('externalRepos');
   if((community.external_repos||[]).length){
-    extEl.innerHTML=`<p class="font-mono text-xs text-zinc-600 uppercase tracking-widest mb-2 mt-4 pt-4 border-t border-white/5">External Contributions</p><div class="flex flex-wrap gap-2">${community.external_repos.map(r=>`<a href="${r.url}" target="_blank" rel="noopener" class="font-mono text-xs text-zinc-400 hover:text-cyan-400 transition-colors px-2 py-1 rounded bg-white/5 border border-white/10 hover:border-cyan-500/30">${r.name}</a>`).join('')}</div>`;
+    extEl.innerHTML=`<p class="font-mono text-xs text-zinc-600 uppercase tracking-widest mb-2 mt-4 pt-4 border-t border-white/5">External Contributions</p><div class="flex flex-wrap gap-2">${community.external_repos.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="font-mono text-xs text-zinc-400 hover:text-cyan-400 transition-colors px-2 py-1 rounded bg-white/5 border border-white/10 hover:border-cyan-500/30">${esc(r.name)}</a>`).join('')}</div>`;
   }else{extEl.innerHTML='';}
 }
 
@@ -1452,7 +1458,7 @@ function buildSocialGraph(sg){
   function avatarRow(list,el){
     const e=document.getElementById(el);
     if(!list||!list.length){e.innerHTML='<span class="font-mono text-xs text-zinc-700">none in top 30</span>';return;}
-    e.innerHTML=list.map(u=>`<a href="${u.url}" target="_blank" rel="noopener" title="@${u.login}"><img src="${u.avatar_url}" alt="${u.login}" class="sg-avatar" loading="lazy"/></a>`).join('');
+    e.innerHTML=list.map(u=>`<a href="${safeUrl(u.url)}" target="_blank" rel="noopener" title="@${esc(u.login)}"><img src="${esc(u.avatar_url)}" alt="${esc(u.login)}" class="sg-avatar" loading="lazy"/></a>`).join('');
   }
   avatarRow(sg.mutual,'sgMutualList');
   avatarRow(sg.fans,'sgFansList');
@@ -1471,7 +1477,7 @@ function buildForkPanel(stats,forkDetails){
   document.getElementById('forkOwnCount').textContent=own;
   document.getElementById('forkForkCount').textContent=forked;
   document.getElementById('forkRatio').textContent=Math.round(own/tot*100)+'%';
-  document.getElementById('forkList').innerHTML=forkDetails.map(r=>`<a href="${r.url}" target="_blank" rel="noopener" class="flex flex-col gap-1 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-cyan-500/20 hover:bg-white/5 transition-all group"><span class="font-mono text-xs text-zinc-300 group-hover:text-cyan-400 transition-colors truncate">${r.name}</span><div class="flex items-center justify-between"><span class="font-mono text-xs" style="color:${getLC(r.language)}">${r.language}</span>${r.stars?`<span class="font-mono text-xs text-yellow-500">★ ${r.stars}</span>`:''}</div></a>`).join('');
+  document.getElementById('forkList').innerHTML=forkDetails.map(r=>`<a href="${safeUrl(r.url)}" target="_blank" rel="noopener" class="flex flex-col gap-1 p-3 rounded-xl bg-white/3 border border-white/5 hover:border-cyan-500/20 hover:bg-white/5 transition-all group"><span class="font-mono text-xs text-zinc-300 group-hover:text-cyan-400 transition-colors truncate">${esc(r.name)}</span><div class="flex items-center justify-between"><span class="font-mono text-xs" style="color:${getLC(r.language)}">${esc(r.language)}</span>${r.stars?`<span class="font-mono text-xs text-yellow-500">★ ${r.stars}</span>`:''}</div></a>`).join('');
 }
 
 // ============================================================
@@ -1520,7 +1526,7 @@ function buildRepos(repos){
   if(!repos.length){c.innerHTML='<p class="col-span-3 text-center text-zinc-600 font-mono text-sm py-8">No public repositories found.</p>';return;}
   repos.forEach(r=>{
     const col=getLC(r.language||'Unknown');
-    const topics=r.topics.map(t=>`<span class="px-1.5 py-0.5 rounded-full bg-white/5 text-zinc-500 font-mono text-xs">${t}</span>`).join('');
+    const topics=r.topics.map(t=>`<span class="px-1.5 py-0.5 rounded-full bg-white/5 text-zinc-500 font-mono text-xs">${esc(t)}</span>`).join('');
     const sizeStr=r.size>1024?`${(r.size/1024).toFixed(1)}MB`:`${r.size}KB`;
     const updated=r.updated_at?r.updated_at.slice(0,7):'';
     const health=getRepoHealth(r.updated_at);
@@ -1737,7 +1743,7 @@ function renderDossier(data){
   document.getElementById('metaCompany').innerHTML=bizSvg+profile.company;
   document.getElementById('metaJoined').innerHTML=calSvg+'Since '+profile.created_at;
   const blogEl=document.getElementById('metaBlog');
-  if(profile.blog){blogEl.innerHTML=`${lnkSvg}<a href="${profile.blog.startsWith('http')?profile.blog:'https://'+profile.blog}" target="_blank" rel="noopener" class="hover:text-cyan-400 transition-colors">${profile.blog.replace(/^https?:\/\//,'').slice(0,28)}</a>`;}
+  if(profile.blog){blogEl.innerHTML=`${lnkSvg}<a href="${safeUrl(profile.blog.startsWith('http')?profile.blog:'https://'+profile.blog)}" target="_blank" rel="noopener" class="hover:text-cyan-400 transition-colors">${esc(profile.blog.replace(/^https?:\/\//,'').slice(0,28))}</a>`;}
   else blogEl.innerHTML='';
 
   const badge=document.getElementById('archetypeBadge');

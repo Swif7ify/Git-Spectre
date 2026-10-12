@@ -368,6 +368,19 @@ async def _fetch_following(client: httpx.AsyncClient, username: str, headers: Di
     return resp.json()
 
 
+async def _fetch_starred_repos(client: httpx.AsyncClient, username: str, headers: Dict) -> List[Dict]:
+    """Fetch up to 30 repos the user has starred on GitHub."""
+    resp = await _get_with_retry(
+        client, f"{GITHUB_API}/users/{username}/starred",
+        headers=headers,
+        params={"per_page": 30, "sort": "created", "direction": "desc"},
+    )
+    if resp.status_code in (403, 404):
+        return []
+    resp.raise_for_status()
+    return resp.json()
+
+
 # ------------------------------------------------------------
 # Analytics — existing
 # ------------------------------------------------------------
@@ -969,7 +982,7 @@ async def _run_analysis(username: str, token: Optional[str]) -> Dict[str, Any]:
         try:
             (
                 profile, repos, events, orgs, gists, followers_raw, following_raw,
-                cal_heatmap,
+                starred_raw, cal_heatmap,
             ) = await asyncio.gather(
                 _fetch_profile(client, username, headers),
                 _fetch_repos(client, username, headers),
@@ -978,6 +991,7 @@ async def _run_analysis(username: str, token: Optional[str]) -> Dict[str, Any]:
                 _fetch_gists(client, username, headers),
                 _fetch_followers(client, username, headers),
                 _fetch_following(client, username, headers),
+                _fetch_starred_repos(client, username, headers),
                 _fetch_contribution_calendar(client, username),
             )
         except HTTPException:
@@ -1064,6 +1078,16 @@ async def _run_analysis(username: str, token: Optional[str]) -> Dict[str, Any]:
                 "url":        f.get("html_url", f"https://github.com/{f['login']}"),
             }
             for f in following_raw[:10]
+        ],
+        "starred_repos": [
+            {
+                "name":        r.get("full_name") or r.get("name", ""),
+                "url":         r.get("html_url", ""),
+                "stars":       r.get("stargazers_count", 0),
+                "language":    r.get("language") or "",
+                "description": (r.get("description") or "")[:80],
+            }
+            for r in starred_raw[:30]
         ],
     }
 

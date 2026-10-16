@@ -5,7 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [3.0.0] — 2026-10-16
+
+### Added — Step 1: Gamification Layer
+- **Developer Level System** — XP-based ranking from Intern → Junior → Mid → Senior → Staff → Principal → Legend, derived from Dev Score™. Animated XP ring + progress bar with pulsing rank label.
+- **15 Achievement Badges** — Unlockable with rarity tiers (Common / Rare / Epic / Legendary):
+  - 🦉 Night Owl, 🔥 Streak King, 🌐 Polyglot, 🌍 Open Source Hero
+  - 🤝 Community Builder, ⭐ Star Collector, 🍴 Fork Collector, 🧙 Gist Wizard
+  - 🔀 External Contributor, 📅 GitHub Veteran, 📦 Prolific Creator
+  - 🏆 Legend, 💯 Centurion, 🌅 Early Adopter, ⚡ Marathon Runner
+- Locked badges shown in grayscale; unlocked badges animate in with spring bounce effect.
+- Rarity glow: Legendary (red), Epic (purple), Rare (blue).
+- Backend: `_compute_achievements()`, `_compute_dev_level()` in `main.py`.
+- Version bump in navbar and hero badge: **v3.0**.
+
+---
+
 ## [2.2.1] — 2026-10-08
+
 
 ### Security
 - **XSS fix** — `/embed/{username}` and `/api/badge/{username}` now escape all

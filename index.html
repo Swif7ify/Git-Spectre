@@ -125,6 +125,21 @@
     /* ── README quality signals ── */
     .signal-row { display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04); }
     .signal-row:last-child { border-bottom:none; }
+
+    /* ── Achievement badges ── */
+    @keyframes badgeUnlock { 0%{transform:scale(0.7) rotate(-10deg);opacity:0} 70%{transform:scale(1.1) rotate(2deg)} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+    .badge-card { transition:all .2s ease;cursor:default; }
+    .badge-card.unlocked { animation:badgeUnlock .5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    .badge-card.locked { opacity:0.28;filter:grayscale(1); }
+    .badge-rarity-legendary { box-shadow:0 0 18px rgba(239,68,68,0.5),0 0 40px rgba(239,68,68,0.15)!important;border-color:rgba(239,68,68,0.5)!important; }
+    .badge-rarity-epic      { box-shadow:0 0 12px rgba(168,85,247,0.4)!important;border-color:rgba(168,85,247,0.4)!important; }
+    .badge-rarity-rare      { box-shadow:0 0 10px rgba(59,130,246,0.35)!important;border-color:rgba(59,130,246,0.35)!important; }
+
+    /* ── Dev Level XP bar ── */
+    @keyframes xpFill { from{width:0} }
+    .xp-bar { animation:xpFill 1.4s cubic-bezier(0.4,0,0.2,1) forwards; }
+    @keyframes rankPulse { 0%,100%{filter:brightness(1) drop-shadow(0 0 6px currentColor)} 50%{filter:brightness(1.4) drop-shadow(0 0 18px currentColor)} }
+    .rank-label { animation:rankPulse 3s ease-in-out infinite; }
   </style>
 </head>
 
@@ -163,7 +178,7 @@
       </div>
       <div class="flex items-center gap-1.5" style="margin-top:3px">
         <div style="height:1px;width:44px;background:linear-gradient(90deg,rgba(239,68,68,0.7),transparent)"></div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:rgba(239,68,68,0.60);letter-spacing:0.14em">v2.1</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:rgba(239,68,68,0.60);letter-spacing:0.14em">v3.0</span>
       </div>
     </div>
   </div>
@@ -377,7 +392,7 @@
 
   <div class="inline-flex items-center gap-2 font-mono text-xs bg-cyan-400/10 border border-cyan-400/20 text-red-300 px-3 py-1.5 rounded-full mb-6">
     <div class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></div>
-    INTELLIGENCE SYSTEM v2.1 ONLINE
+    INTELLIGENCE SYSTEM v3.0 ONLINE
   </div>
 
   <h1 class="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-none">
@@ -777,6 +792,45 @@
       </div>
     </div>
     <div id="readmeSignals" class="space-y-0"></div>
+  </div>
+
+  <!-- 9.7 DEV LEVEL + ACHIEVEMENTS -->
+  <div id="gamificationCard" class="hidden glass grad-border rounded-2xl p-6 mb-6">
+    <!-- Developer Level -->
+    <div class="flex flex-col md:flex-row gap-6 mb-6">
+      <div id="devLevelCard" class="flex-shrink-0 glass rounded-2xl p-5 flex items-center gap-5 md:w-72">
+        <div class="relative shrink-0" style="width:80px;height:80px">
+          <svg width="80" height="80" class="-rotate-90">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="7"/>
+            <circle id="xpArc" cx="40" cy="40" r="34" fill="none" stroke="#ef4444" stroke-width="7"
+              stroke-linecap="round" stroke-dasharray="213.63" stroke-dashoffset="213.63"
+              style="transition:stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1);filter:drop-shadow(0 0 8px currentColor)"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span id="xpPct" class="font-black text-base leading-none">0%</span>
+          </div>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-mono text-xs text-zinc-600 uppercase tracking-widest mb-1">Dev Level</p>
+          <p id="rankLabel" class="font-black text-2xl rank-label mb-0.5">Intern</p>
+          <p id="rankDesc" class="font-mono text-xs text-zinc-500 leading-relaxed mb-2"></p>
+          <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+            <div id="xpBar" class="xp-bar h-full rounded-full" style="width:0%;background:#ef4444"></div>
+          </div>
+          <div class="flex justify-between mt-1">
+            <span id="xpCurrent" class="font-mono text-xs text-zinc-700">0 XP</span>
+            <span id="xpNextRank" class="font-mono text-xs text-zinc-700"></span>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold text-sm tracking-widest uppercase text-zinc-300">Achievements</h2>
+          <span id="achieveCount" class="font-mono text-xs text-zinc-600"></span>
+        </div>
+        <div id="achievementGrid" class="grid grid-cols-3 sm:grid-cols-5 gap-2"></div>
+      </div>
+    </div>
   </div>
 
   <!-- 10. TOP REPOSITORIES -->
@@ -1441,6 +1495,60 @@ function renderWrapped(w){
   }).join('');
 }
 
+// ============================================================
+// DEV LEVEL + ACHIEVEMENTS
+// ============================================================
+function buildGamification(achievements, devLevel) {
+  const card = document.getElementById('gamificationCard');
+  if (!achievements || !devLevel) { card.classList.add('hidden'); return; }
+  card.classList.remove('hidden');
+
+  // Dev Level ring
+  const circ = 213.63;
+  const offset = circ * (1 - devLevel.xp_pct / 100);
+  const arc = document.getElementById('xpArc');
+  const pctEl = document.getElementById('xpPct');
+  const rankEl = document.getElementById('rankLabel');
+  const descEl = document.getElementById('rankDesc');
+  const barEl = document.getElementById('xpBar');
+  const curEl = document.getElementById('xpCurrent');
+  const nxtEl = document.getElementById('xpNextRank');
+
+  arc.style.stroke = devLevel.color;
+  rankEl.textContent = devLevel.rank;
+  rankEl.style.color = devLevel.color;
+  descEl.textContent = devLevel.description;
+  barEl.style.background = devLevel.color;
+  curEl.textContent = devLevel.xp + ' XP';
+  nxtEl.textContent = devLevel.next_rank ? 'Next: ' + devLevel.next_rank : '🏆 MAX RANK';
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    arc.style.strokeDashoffset = offset;
+    barEl.style.width = devLevel.xp_pct + '%';
+    pctEl.textContent = devLevel.xp_pct + '%';
+    pctEl.style.color = devLevel.color;
+  }));
+
+  // Achievements
+  const rarityColors = { legendary: '#ef4444', epic: '#a855f7', rare: '#3b82f6', common: '#71717a' };
+  const rarityLabel  = { legendary: 'LEGENDARY', epic: 'EPIC', rare: 'RARE', common: 'COMMON' };
+  const unlocked = achievements.filter(a => a.unlocked).length;
+  document.getElementById('achieveCount').textContent = `${unlocked}/${achievements.length} unlocked`;
+
+  document.getElementById('achievementGrid').innerHTML = achievements.map((a, i) => {
+    const col = rarityColors[a.rarity] || '#71717a';
+    const rl  = rarityLabel[a.rarity] || 'COMMON';
+    const cls = a.unlocked ? 'badge-card unlocked badge-rarity-' + a.rarity : 'badge-card locked';
+    const delay = a.unlocked ? `animation-delay:${i * 0.05}s` : '';
+    return `<div class="${cls} flex flex-col items-center gap-1 p-2.5 rounded-xl bg-white/3 border border-white/10" 
+      style="${delay}" title="${esc(a.label)}: ${esc(a.desc)}">
+      <span style="font-size:1.5rem;line-height:1">${a.icon}</span>
+      <span class="font-mono text-center" style="font-size:9px;font-weight:700;color:${a.unlocked ? col : '#52525b'};word-break:break-word;line-height:1.2">${esc(a.label)}</span>
+      ${a.unlocked ? `<span class="font-mono" style="font-size:7.5px;color:${col};opacity:0.7">${rl}</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
 function copyBadgeSnippet(){
   if(!_wrappedUsername)return;
   const badge=`[![Git-Spectre](https://git-spectre.vercel.app/api/badge/${_wrappedUsername})](https://git-spectre.vercel.app/?u=${_wrappedUsername})`;
@@ -1721,7 +1829,7 @@ async function runScan(){
 // RENDER DOSSIER (v2.1 — all panels)
 // ============================================================
 function renderDossier(data){
-  const{profile,stats,languages,archetype,top_repos,score,heatmap,activity_hours,streaks,topics,lang_evolution,gists,orgs,cached,followers_list,following_list,starred_repos,community,commit_messages,fork_details,lang_repo_counts,peak_hour,star_velocity,roast,social_graph,pr_merge_rate,readme_quality,wrapped}=data;
+  const{profile,stats,languages,archetype,top_repos,score,heatmap,activity_hours,streaks,topics,lang_evolution,gists,orgs,cached,followers_list,following_list,starred_repos,community,commit_messages,fork_details,lang_repo_counts,peak_hour,star_velocity,roast,social_graph,pr_merge_rate,readme_quality,wrapped,achievements,dev_level}=data;
 
   // Cached badge
   const cb=document.getElementById('cachedBadge');
@@ -1771,6 +1879,7 @@ function renderDossier(data){
   buildForkPanel(stats,fork_details||[]);
   buildSocialGraph(social_graph||null);
   buildReadmeQuality(readme_quality||null);
+  buildGamification(achievements||null, dev_level||null);
   buildStatLists(top_repos,followers_list||[],following_list||[],starred_repos||[]);
 
   // GitHub Wrapped data — store globally for modal

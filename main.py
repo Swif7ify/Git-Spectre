@@ -781,6 +781,115 @@ def _compute_roast(langs: Dict, repos: List[Dict], profile: Dict,
     return " ".join(lines[:2])
 
 
+def _account_age_years(profile: Dict) -> float:
+    try:
+        return (
+            datetime.now(timezone.utc)
+            - datetime.fromisoformat(profile.get("created_at", "").replace("Z", "+00:00"))
+        ).days / 365
+    except Exception:
+        return 0.0
+
+
+def _account_year(profile: Dict) -> int:
+    try:
+        return int(profile.get("created_at", "2099")[:4])
+    except Exception:
+        return 2099
+
+
+def _compute_achievements(
+    langs: Dict, repos: List[Dict], profile: Dict,
+    events: List[Dict], streaks: Dict, gists: Dict,
+) -> List[Dict[str, Any]]:
+    """Unlock achievement badges based on developer data."""
+    own       = [r for r in repos if not r.get("fork")]
+    stars     = sum(r.get("stargazers_count", 0) for r in own)
+    followers = profile.get("followers", 0)
+    longest   = streaks.get("longest", 0)
+    num_langs = len(langs)
+    forks_cnt = len([r for r in repos if r.get("fork")])
+
+    night_pushes = 0
+    for e in events:
+        if e.get("type") == "PushEvent":
+            ts = e.get("created_at", "")
+            try:
+                hour = datetime.fromisoformat(ts.replace("Z", "+00:00")).hour
+                if hour >= 22 or hour <= 4:
+                    night_pushes += 1
+            except Exception:
+                pass
+
+    login = profile.get("login", "").lower()
+    ext_repos = {
+        e.get("repo", {}).get("name", "")
+        for e in events
+        if e.get("type") == "PushEvent"
+        and not e.get("repo", {}).get("name", "").lower().startswith(f"{login}/")
+        and e.get("repo", {}).get("name")
+    }
+
+    def badge(key, icon, label, desc, unlocked, rarity="common"):
+        return {"key": key, "icon": icon, "label": label, "desc": desc, "unlocked": unlocked, "rarity": rarity}
+
+    return [
+        badge("night_owl",      "🦉", "Night Owl",           "Made 5+ pushes between 22:00–04:00 UTC",    night_pushes >= 5,                    "rare"),
+        badge("streak_king",    "🔥", "Streak King",          "Maintained a 7+ day commit streak",         longest >= 7,                         "epic"),
+        badge("polyglot",       "🌐", "Polyglot",             "Used 5+ programming languages",             num_langs >= 5,                       "rare"),
+        badge("open_source",    "🌍", "Open Source Hero",     "Earned 10+ stars on own projects",          stars >= 10,                          "epic"),
+        badge("community",      "🤝", "Community Builder",    "Has 50+ followers on GitHub",               followers >= 50,                      "rare"),
+        badge("star_collector", "⭐", "Star Collector",       "Earned 100+ total stars",                   stars >= 100,                         "epic"),
+        badge("fork_collector", "🍴", "Fork Collector",       "Has 10+ forked repos in collection",        forks_cnt >= 10,                      "common"),
+        badge("gist_wizard",    "🧙", "Gist Wizard",          "Published 5+ public gists",                 gists.get("total", 0) >= 5,           "common"),
+        badge("contributor",    "🔀", "External Contributor", "Pushed code to 3+ external repos",          len(ext_repos) >= 3,                  "rare"),
+        badge("veteran",        "📅", "GitHub Veteran",       "Account is 3+ years old",                   _account_age_years(profile) >= 3,     "epic"),
+        badge("prolific",       "📦", "Prolific Creator",     "Created 20+ original repositories",         len(own) >= 20,                       "rare"),
+        badge("legend",         "🏆", "Legend",               "Earned 1000+ total stars",                  stars >= 1000,                        "legendary"),
+        badge("centurion",      "💯", "Centurion",            "Has 100+ followers",                        followers >= 100,                     "epic"),
+        badge("early_bird",     "🌅", "Early Adopter",        "Joined GitHub in 2015 or earlier",          _account_year(profile) <= 2015,       "legendary"),
+        badge("marathon",       "⚡", "Marathon Runner",      "30+ day longest commit streak",             longest >= 30,                        "legendary"),
+    ]
+
+
+def _compute_dev_level(score_total: int) -> Dict[str, Any]:
+    """XP-based developer level derived from 0–1000 Dev Score."""
+    levels = [
+        (0,    "Intern",    "#6b7280", "Just getting started on the journey."),
+        (150,  "Junior",    "#3b82f6", "Foundations solid. Growing fast."),
+        (300,  "Mid",       "#10b981", "Capable and reliable. Getting things done."),
+        (450,  "Senior",    "#f59e0b", "Experienced, architectural thinker."),
+        (600,  "Staff",     "#f97316", "Multiplies team output. Deep expertise."),
+        (750,  "Principal", "#a855f7", "Sets technical direction. Industry-level impact."),
+        (900,  "Legend",    "#ef4444", "Top 1%. Mythical output. The stuff of changelog lore."),
+    ]
+    current_level = levels[0]
+    next_level    = levels[1]
+    for i, lvl in enumerate(levels):
+        if score_total >= lvl[0]:
+            current_level = lvl
+            next_level = levels[i + 1] if i + 1 < len(levels) else None
+        else:
+            break
+
+    xp_current = current_level[0]
+    xp_next    = next_level[0] if next_level else 1000
+    xp_in_level = score_total - xp_current
+    xp_needed   = xp_next - xp_current
+    pct = int(min(xp_in_level / xp_needed * 100, 100)) if xp_needed > 0 else 100
+
+    return {
+        "rank":        current_level[1],
+        "color":       current_level[2],
+        "description": current_level[3],
+        "xp":          score_total,
+        "xp_current":  xp_current,
+        "xp_next":     xp_next,
+        "xp_pct":      pct,
+        "next_rank":   next_level[1] if next_level else None,
+    }
+
+
 def _compute_readme_quality(readme: Dict[str, Any]) -> Dict[str, Any]:
     """Score the user's profile README 0–100 across 6 signals."""
     if not readme.get("found") or not readme.get("content"):
@@ -1101,8 +1210,16 @@ async def _run_analysis(username: str, token: Optional[str]) -> Dict[str, Any]:
         lang_bytes, result["heatmap"],
     )
 
+    # Gamification: achievements + developer level
+    gists_stats = result["gists"]
+    result["achievements"] = _compute_achievements(
+        lang_bytes, repos, profile, events, streaks_data, gists_stats,
+    )
+    result["dev_level"] = _compute_dev_level(result["score"]["total"])
+
     _cache_set(cache_key, result)
     return result
+
 
 
 async def _fetch_readme_for_quality(username: str, headers: Dict) -> Dict[str, Any]:

@@ -1296,6 +1296,12 @@ async def serve_spa() -> FileResponse:
     return FileResponse(str(BASE_DIR / "index.html"))
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+@app.get("/favicon.svg", include_in_schema=False)
+async def serve_favicon() -> FileResponse:
+    return FileResponse(str(_static_dir / "icon.svg"), media_type="image/svg+xml")
+
+
 @limiter.limit("15/minute")
 @app.post("/api/analyze")
 async def analyze(request: Request, payload: AnalyzeRequest) -> Dict[str, Any]:

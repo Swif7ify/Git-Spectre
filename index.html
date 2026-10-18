@@ -3,17 +3,34 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Git-Spectre | Developer Deep-Profiler & GitHub Analytics Engine</title>
-		<meta name="description" content="Ultra-premium cinematic GitHub profile analyzer. Uncover developer archetypes, language DNA, commit quality, PR activity, contribution heatmaps, and repository intelligence." />
+		<title>
+			Git-Spectre | Developer Deep-Profiler & GitHub Analytics Engine
+		</title>
+		<meta
+			name="description"
+			content="Ultra-premium cinematic GitHub profile analyzer. Uncover developer archetypes, language DNA, commit quality, PR activity, contribution heatmaps, and repository intelligence."
+		/>
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Git-Spectre | Developer Deep-Profiler" />
-		<meta property="og:description" content="Uncover developer archetypes, language DNA, and repository intelligence from any GitHub profile." />
+		<meta
+			property="og:title"
+			content="Git-Spectre | Developer Deep-Profiler"
+		/>
+		<meta
+			property="og:description"
+			content="Uncover developer archetypes, language DNA, and repository intelligence from any GitHub profile."
+		/>
 		<meta property="og:url" content="https://git-spectre.vercel.app/" />
 		<meta name="twitter:card" content="summary_large_image" />
+		<!-- Favicon -->
+		<link rel="icon" type="image/svg+xml" href="/static/icon.svg" />
+		<link rel="alternate icon" href="/favicon.ico" />
 		<!-- Google Fonts: Inter & JetBrains Mono -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<!-- TailwindCSS CDN + Config -->
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script>
@@ -56,7 +73,9 @@
 		<!-- Theme stylesheet -->
 		<link rel="stylesheet" href="/static/css/theme.css" />
 	</head>
-	<body class="min-h-screen w-full bg-canvas font-sans text-ink antialiased selection:bg-lime selection:text-onlime">
+	<body
+		class="min-h-screen w-full bg-canvas font-sans text-ink antialiased selection:bg-lime selection:text-onlime"
+	>
 		<!-- Telemetry Grid Background Canvas & Matte Noise Overlay -->
 		<canvas id="spectre-telemetry" aria-hidden="true"></canvas>
 		<div class="noise-overlay" aria-hidden="true"></div>
@@ -64,59 +83,192 @@
 		<!-- =========================================================
        1. NAVIGATION BAR
        ========================================================= -->
-		<nav aria-label="Global" class="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-xl" >
-			<div class="mx-auto flex h-16 max-w-[1320px] items-center gap-4 px-4 sm:px-6" >
+		<nav
+			aria-label="Global"
+			class="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-xl"
+		>
+			<div
+				class="mx-auto flex h-16 max-w-[1320px] items-center gap-4 px-4 sm:px-6"
+			>
 				<!-- Logo Home Button -->
-				<button id="navLogoBtn" class="flex items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Git Spectre home" >
-					<span class="relative grid h-9 w-9 place-items-center rounded-xl border border-line bg-raised/60 backdrop-blur" >
-						<svg viewBox="0 0 24 24" class="h-5 w-5 text-accent" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" >
-							<circle cx="12" cy="12" r="7.5" />
-							<circle cx="12" cy="12" r="2.2" class="fill-lime stroke-none" />
-							<path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4" stroke-linecap="round" />
-						</svg>
+				<button
+					id="navLogoBtn"
+					class="flex items-center gap-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+					aria-label="Git Spectre home"
+				>
+					<span
+						class="relative grid h-9 w-9 place-items-center hover:scale-105"
+					>
+						<img
+							src="/static/icon.svg"
+							class="h-6 w-6 object-contain"
+							alt=""
+							aria-hidden="true"
+						/>
 					</span>
-					<span class="flex items-center gap-2.5 font-mono text-[13px] font-bold tracking-[0.2em] text-ink" >
-						GIT
-						<span class="h-4 w-px bg-accent shadow-[0_0_8px_rgb(var(--accent))]" aria-hidden="true" ></span>SPECTRE</span>
-					<span class="hidden rounded-full border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted sm:inline" >v3.0</span
+					<img
+						src="/static/text-icon.svg"
+						class="h-[18px] w-auto object-contain"
+						alt="Git Spectre"
+					/>
+					<span
+						class="hidden rounded-full border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted sm:inline"
+						>v3.0</span
 					>
 				</button>
 				<!-- Nav Actions -->
 				<div class="ml-auto flex items-center gap-1.5">
 					<!-- Live API Rate Limit Gauge -->
-					<div id="navRlGauge" class="hidden items-center gap-3 rounded-lg border border-line bg-surface px-3 py-1.5 sm:flex" title="GitHub API quota remaining" >
-						<span class="font-mono text-[10px] font-semibold tracking-[0.18em] text-muted" >API</span
+					<div
+						id="navRlGauge"
+						class="hidden items-center gap-3 rounded-lg border border-line bg-surface px-3 py-1.5 sm:flex"
+						title="GitHub API quota remaining"
+					>
+						<span
+							class="font-mono text-[10px] font-semibold tracking-[0.18em] text-muted"
+							>API</span
 						>
-						<div class="h-1.5 w-20 overflow-hidden rounded-full bg-raised" >
-							<div id="navRlBar" class="h-full rounded-full bg-ok transition-all duration-300" style="width: 100%" ></div>
+						<div
+							class="h-1.5 w-20 overflow-hidden rounded-full bg-raised"
+						>
+							<div
+								id="navRlBar"
+								class="h-full rounded-full bg-ok transition-all duration-300"
+								style="width: 100%"
+							></div>
 						</div>
-						<span id="navRlText" class="font-mono text-[11px] tabular-nums text-ink" >—/—</span
+						<span
+							id="navRlText"
+							class="font-mono text-[11px] tabular-nums text-ink"
+							>—/—</span
 						>
-						<span id="navRlTimer" class="hidden border-l border-line pl-2.5 font-mono text-[11px] tabular-nums text-danger" ></span>
+						<span
+							id="navRlTimer"
+							class="hidden border-l border-line pl-2.5 font-mono text-[11px] tabular-nums text-danger"
+						></span>
 					</div>
-					<span class="mx-1 hidden h-6 w-px bg-line md:block" aria-hidden="true" ></span>
+					<span
+						class="mx-1 hidden h-6 w-px bg-line md:block"
+						aria-hidden="true"
+					></span>
 					<!-- Compare Modal Button -->
-					<button id="navCompareBtn" aria-label="Compare two developers" class="inline-flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent" >
-						<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
+					<button
+						id="navCompareBtn"
+						aria-label="Compare two developers"
+						class="inline-flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+					>
+						<span class="flex items-center text-muted"
+							><svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path
+									d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"
+								/></svg
+						></span>
 						<span class="hidden lg:inline">Compare</span>
-						<kbd class="hidden lg:inline-flex rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted" >^D</kbd>
+						<kbd
+							class="hidden lg:inline-flex rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted"
+							>^D</kbd
+						>
 					</button>
 					<!-- Batch Screener Button -->
-					<button id="navBatchBtn" aria-label="Batch screener" class="inline-flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent" >
-						<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.1ZM21 16l-9 5.2-9-5.2M21 8l-9-5.2-9 5.2M12 2.8v18.4"/></svg></span>
+					<button
+						id="navBatchBtn"
+						aria-label="Batch screener"
+						class="inline-flex h-9 items-center gap-2 rounded-lg px-2.5 text-[13px] font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+					>
+						<span class="flex items-center text-muted"
+							><svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path
+									d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.1ZM21 16l-9 5.2-9-5.2M21 8l-9-5.2-9 5.2M12 2.8v18.4"
+								/></svg
+						></span>
 						<span class="hidden lg:inline">Batch</span>
-						<kbd class="hidden lg:inline-flex rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted" >^B</kbd>
+						<kbd
+							class="hidden lg:inline-flex rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted"
+							>^B</kbd
+						>
 					</button>
 					<!-- Theme Toggle Button -->
-					<button id="navThemeBtn" aria-label="Toggle theme" class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent" >
-						<span id="navIconMoon" class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span>
-						<span id="navIconSun" class="hidden items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
+					<button
+						id="navThemeBtn"
+						aria-label="Toggle theme"
+						class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+					>
+						<span
+							id="navIconMoon"
+							class="flex items-center text-muted"
+							><svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path
+									d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+								/></svg
+						></span>
+						<span
+							id="navIconSun"
+							class="hidden items-center text-muted"
+							><svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<circle cx="12" cy="12" r="4" />
+								<path
+									d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+								/></svg
+						></span>
 					</button>
 					<!-- API Vault Button -->
-					<button id="navVaultBtn" aria-label="API Vault" class="ml-1 inline-flex h-9 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-[13px] font-medium text-ink transition-colors duration-150 hover:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent" >
+					<button
+						id="navVaultBtn"
+						aria-label="API Vault"
+						class="ml-1 inline-flex h-9 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-[13px] font-medium text-ink transition-colors duration-150 hover:border-accent/60 focus:outline-none focus:ring-2 focus:ring-accent"
+					>
 						<span class="relative flex items-center">
-							<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg>
-							<span id="navVaultDot" class="absolute -right-1 -top-1 h-2 w-2 rounded-full ring-2 ring-surface bg-faint" aria-hidden="true" ></span>
+							<svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4 text-muted"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<circle cx="7.5" cy="15.5" r="5.5" />
+								<path
+									d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"
+								/>
+							</svg>
+							<span
+								id="navVaultDot"
+								class="absolute -right-1 -top-1 h-2 w-2 rounded-full ring-2 ring-surface bg-faint"
+								aria-hidden="true"
+							></span>
 						</span>
 						<span class="hidden sm:inline">Vault</span>
 					</button>
@@ -128,86 +280,225 @@
        ========================================================= -->
 		<main class="w-full">
 			<!-- HERO SECTION -->
-			<section id="heroSection" class="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 pb-28 pt-16" >
-				<div class="flex w-full max-w-4xl flex-col items-center text-center" >
+			<section
+				id="heroSection"
+				class="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 pb-28 pt-16"
+			>
+				<div
+					class="flex w-full max-w-4xl flex-col items-center text-center"
+				>
 					<!-- Intelligence badge -->
-					<div class="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-3.5 py-1.5" >
-						<span class="font-mono text-[11px] font-medium tracking-[0.16em] text-muted" >INTELLIGENCE SYSTEM v3 ONLINE</span
+					<div
+						class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 shadow-sm"
+					>
+						<img
+							src="/static/icon.svg"
+							class="h-3.5 w-3.5 object-contain"
+							alt=""
+							aria-hidden="true"
+						/>
+						<span
+							class="font-mono text-[11px] font-medium tracking-[0.16em] text-muted"
+							>INTELLIGENCE SYSTEM v3 ONLINE</span
 						>
 					</div>
 					<!-- Hero Title -->
-					<h1 class="mt-8 font-semibold leading-[0.88] tracking-[-0.045em] text-ink" style="font-size: clamp(3.25rem, 9.5vw, 7.5rem)" >
+					<h1
+						class="mt-8 font-semibold leading-[0.88] tracking-[-0.045em] text-ink"
+						style="font-size: clamp(3.25rem, 9.5vw, 7.5rem)"
+					>
 						PROFILE<br />
-						<span class="bg-[linear-gradient(95deg,rgb(var(--accent))_10%,rgb(var(--limeink))_95%)] bg-clip-text text-transparent" >SPECTRE</span
+						<span
+							class="bg-[linear-gradient(95deg,rgb(var(--accent))_10%,rgb(var(--limeink))_95%)] bg-clip-text text-transparent"
+							>SPECTRE</span
 						>
 					</h1>
-					<p class="mt-6 text-lg text-muted sm:text-xl font-normal">Developer deep-profiler & GitHub analytics engine</p>
+					<p class="mt-6 text-lg text-muted sm:text-xl font-normal">
+						Developer deep-profiler & GitHub analytics engine
+					</p>
 					<!-- Capabilities list -->
-					<ul class="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-xs text-muted" aria-label="Capabilities" >
+					<ul
+						class="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-xs text-muted"
+						aria-label="Capabilities"
+					>
 						<li class="flex items-center gap-3">Heatmaps</li>
 						<li class="flex items-center gap-3">
-							<span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true" ></span
-							>Streaks</li>
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Streaks
+						</li>
 						<li class="flex items-center gap-3">
-							<span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true" ></span
-							>Archetypes</li>
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Archetypes
+						</li>
 						<li class="flex items-center gap-3">
-							<span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true" ></span
-							>Compare</li>
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Compare
+						</li>
 						<li class="flex items-center gap-3">
-							<span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true" ></span
-							>Export</li>
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Export
+						</li>
 					</ul>
 					<!-- Search input form wrapper -->
-					<div id="searchWrapper" class="relative mt-9 w-full max-w-2xl text-left" >
-						<form id="searchForm" class="flex h-16 items-center gap-3 rounded-2xl border border-line bg-surface pl-5 pr-2 shadow-2xl transition-colors duration-150 focus-within:border-accent" >
-							<svg viewBox="0 0 24 24" class="h-5 w-5 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
-							<input id="searchInput" type="text" placeholder="Enter GitHub handle or URL (e.g. torvalds)" autocomplete="off" spellcheck="false" class="h-full min-w-0 flex-1 bg-transparent font-mono text-[15px] text-ink placeholder:text-muted/70 focus:outline-none" />
-							<kbd class="hidden sm:inline-flex rounded border border-line bg-raised px-2 py-1 font-mono text-[10px] text-muted" >^K</kbd
+					<div
+						id="searchWrapper"
+						class="relative mt-9 w-full max-w-2xl text-left"
+					>
+						<form
+							id="searchForm"
+							class="flex h-16 items-center gap-3 rounded-2xl border border-line bg-surface pl-5 pr-2 shadow-2xl transition-colors duration-150 focus-within:border-accent"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								class="h-5 w-5 text-muted shrink-0"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
 							>
-							<button type="submit" id="searchSubmitBtn" class="h-12 shrink-0 rounded-xl bg-lime px-6 font-mono text-[13px] font-bold tracking-[0.16em] text-onlime shadow-lg shadow-lime/20 transition-all duration-150 hover:brightness-105 active:scale-[0.98]" >SCAN</button>
+								<circle cx="11" cy="11" r="8" />
+								<line x1="21" x2="16.65" y1="21" y2="16.65" />
+							</svg>
+							<input
+								id="searchInput"
+								type="text"
+								placeholder="Enter GitHub handle or URL (e.g. torvalds)"
+								autocomplete="off"
+								spellcheck="false"
+								class="h-full min-w-0 flex-1 bg-transparent font-mono text-[15px] text-ink placeholder:text-muted/70 focus:outline-none"
+							/>
+							<kbd
+								class="hidden sm:inline-flex rounded border border-line bg-raised px-2 py-1 font-mono text-[10px] text-muted"
+								>^K</kbd
+							>
+							<button
+								type="submit"
+								id="searchSubmitBtn"
+								class="h-12 shrink-0 rounded-xl bg-lime px-6 font-mono text-[13px] font-bold tracking-[0.16em] text-onlime shadow-lg shadow-lime/20 transition-all duration-150 hover:brightness-105 active:scale-[0.98]"
+							>
+								SCAN
+							</button>
 						</form>
-						<p id="searchError" class="hidden mt-2 pl-2 text-xs text-danger font-mono" ></p>
+						<p
+							id="searchError"
+							class="hidden mt-2 pl-2 text-xs text-danger font-mono"
+						></p>
 						<!-- History Dropdown -->
-						<div id="searchDropdown" class="hidden absolute inset-x-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl" >
-							<div class="flex items-center justify-between border-b border-line px-4 py-2.5" >
-								<span class="font-mono text-xs font-medium text-muted" >Recent Scans</span
+						<div
+							id="searchDropdown"
+							class="hidden absolute inset-x-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl"
+						>
+							<div
+								class="flex items-center justify-between border-b border-line px-4 py-2.5"
+							>
+								<span
+									class="font-mono text-xs font-medium text-muted"
+									>Recent Scans</span
 								>
-								<button type="button" id="historyClearBtn" class="text-xs text-muted hover:text-danger font-mono" >Clear</button>
+								<button
+									type="button"
+									id="historyClearBtn"
+									class="text-xs text-muted hover:text-danger font-mono"
+								>
+									Clear
+								</button>
 							</div>
-							<ul id="historyList" class="scroll-thin max-h-64 overflow-y-auto py-1" ></ul>
+							<ul
+								id="historyList"
+								class="scroll-thin max-h-64 overflow-y-auto py-1"
+							></ul>
 						</div>
 					</div>
 					<!-- Quick picks -->
-					<div class="mt-5 flex flex-wrap items-center justify-center gap-2" >
+					<div
+						class="mt-5 flex flex-wrap items-center justify-center gap-2"
+					>
 						<span class="mr-1 text-xs text-muted">Try</span>
-						<button type="button" data-quickpick="torvalds" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60" >torvalds</button>
-						<button type="button" data-quickpick="gvanrossum" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60" >gvanrossum</button>
-						<button type="button" data-quickpick="antirez" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60" >antirez</button>
-						<button type="button" data-quickpick="karpathy" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60" >karpathy</button>
+						<button
+							type="button"
+							data-quickpick="torvalds"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							torvalds
+						</button>
+						<button
+							type="button"
+							data-quickpick="gvanrossum"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							gvanrossum
+						</button>
+						<button
+							type="button"
+							data-quickpick="antirez"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							antirez
+						</button>
+						<button
+							type="button"
+							data-quickpick="karpathy"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							karpathy
+						</button>
 					</div>
 				</div>
 				<!-- Bottom Keyboard Shortcuts Strip -->
-				<ul class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex font-mono text-xs text-muted" aria-label="Shortcuts" >
+				<ul
+					class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex font-mono text-xs text-muted"
+					aria-label="Shortcuts"
+				>
 					<li class="flex items-center gap-1.5">
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5" >Ctrl+K</kbd
-						>Search</li>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+K</kbd
+						>Search
+					</li>
 					<li class="flex items-center gap-1.5">
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5" >Ctrl+E</kbd
-						>PDF</li>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+E</kbd
+						>PDF
+					</li>
 					<li class="flex items-center gap-1.5">
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5" >Ctrl+D</kbd
-						>Compare</li>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+D</kbd
+						>Compare
+					</li>
 					<li class="flex items-center gap-1.5">
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5" >Ctrl+B</kbd
-						>Batch</li>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+B</kbd
+						>Batch
+					</li>
 					<li class="flex items-center gap-1.5">
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5" >Ctrl+T</kbd
-						>Theme</li>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+T</kbd
+						>Theme
+					</li>
 				</ul>
 			</section>
 			<!-- DOSSIER VIEW -->
-			<main id="dossierSection" class="relative z-10 hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6" >
+			<main
+				id="dossierSection"
+				class="relative z-10 hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6"
+			>
 				<!-- 1. Identity Card -->
 				<div id="identityCardContainer"></div>
 				<!-- 2. Quick Explorer Panels -->
@@ -215,101 +506,263 @@
 				<!-- 3. Progression Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider" >Progression</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true" ></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Progression
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="gamificationContainer"></div>
 				</section>
 				<!-- 4. Activity Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider" >Activity & Contributions</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true" ></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Activity & Contributions
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="activityContainer"></div>
 				</section>
 				<!-- 5. Stack & Community Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider" >Stack & Community</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true" ></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Stack & Community
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="radarDnaContainer"></div>
 				</section>
 				<!-- 6. Code Quality Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider" >Code Quality Intelligence</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true" ></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Code Quality Intelligence
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="codeQualityContainer"></div>
 				</section>
 				<!-- 7. Top Repositories Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider" >Top Repositories</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true" ></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Top Repositories
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="reposContainer"></div>
 				</section>
 			</main>
 			<!-- COMPARE VIEW -->
-			<main id="compareSection" class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6" >
+			<main
+				id="compareSection"
+				class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6"
+			>
 				<div id="compareViewContainer"></div>
 			</main>
 		</main>
 		<!-- =========================================================
        3. FLOATING ACTION DOCK
        ========================================================= -->
-		<aside id="actionDock" aria-label="Dossier actions" class="hidden fixed bottom-4 right-4 z-30 flex items-center gap-1.5 rounded-2xl border border-line bg-surface p-1.5 shadow-2xl sm:bottom-6 sm:right-6" >
-			<button type="button" id="dockBtnPdf" class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors" >
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></svg>
+		<aside
+			id="actionDock"
+			aria-label="Dossier actions"
+			class="hidden fixed bottom-4 right-4 z-30 flex items-center gap-1.5 rounded-2xl border border-line bg-surface p-1.5 shadow-2xl sm:bottom-6 sm:right-6"
+		>
+			<button
+				type="button"
+				id="dockBtnPdf"
+				class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-muted shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+					/>
+					<path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8" />
+				</svg>
 				<span class="hidden sm:inline">Export PDF</span>
-				<kbd class="hidden md:inline-flex rounded border border-line bg-surface px-1 py-0.5 text-[9px] text-muted">^E</kbd>
+				<kbd
+					class="hidden md:inline-flex rounded border border-line bg-surface px-1 py-0.5 text-[9px] text-muted"
+					>^E</kbd
+				>
 			</button>
-			<button type="button" id="dockBtnCard" class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors" >
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+			<button
+				type="button"
+				id="dockBtnCard"
+				class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-muted shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+					<circle cx="9" cy="9" r="2" />
+					<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+				</svg>
 				<span class="hidden sm:inline">Share Card</span>
 			</button>
-			<button type="button" id="dockBtnBadge" class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors" >
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+			<button
+				type="button"
+				id="dockBtnBadge"
+				class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-muted shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+					<path
+						d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+					/>
+				</svg>
 				<span class="hidden sm:inline">Copy Badge</span>
 			</button>
-			<button type="button" id="dockBtnWrapped" class="inline-flex h-9 items-center gap-2 rounded-xl bg-lime px-3.5 text-xs font-bold text-onlime shadow-sm hover:brightness-105 active:scale-95 transition-all" >
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-onlime shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+			<button
+				type="button"
+				id="dockBtnWrapped"
+				class="inline-flex h-9 items-center gap-2 rounded-xl bg-lime px-3.5 text-xs font-bold text-onlime shadow-sm hover:brightness-105 active:scale-95 transition-all"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-onlime shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+					/>
+				</svg>
 				<span>Wrapped</span>
 			</button>
 		</aside>
 		<!-- =========================================================
        4. SCAN OVERLAY (RADAR SWEEP)
        ========================================================= -->
-		<div id="scanOverlay" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-canvas/95 px-6 backdrop-blur-md" role="status" >
-			<div class="flex w-full max-w-2xl flex-col items-center gap-10 md:flex-row md:items-center" >
+		<div
+			id="scanOverlay"
+			class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-canvas/95 px-6 backdrop-blur-md"
+			role="status"
+		>
+			<div
+				class="flex w-full max-w-2xl flex-col items-center gap-10 md:flex-row md:items-center"
+			>
 				<!-- Radar Circle Animation -->
 				<div class="relative h-56 w-56 shrink-0" aria-hidden="true">
-					<div class="absolute inset-0 rounded-full border border-line" ></div>
-					<div class="absolute inset-6 rounded-full border border-line" ></div>
-					<div class="absolute inset-14 rounded-full border border-line" ></div>
-					<div class="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-line" ></div>
-					<div class="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-line" ></div>
+					<div
+						class="absolute inset-0 rounded-full border border-line"
+					></div>
+					<div
+						class="absolute inset-6 rounded-full border border-line"
+					></div>
+					<div
+						class="absolute inset-14 rounded-full border border-line"
+					></div>
+					<div
+						class="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-line"
+					></div>
+					<div
+						class="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-line"
+					></div>
 					<!-- Conic Gradient Sweep -->
-					<div class="absolute inset-0 rounded-full animate-radar-sweep" style=" background: conic-gradient( from 0deg, rgb(var(--accent) / 0.5), transparent 75deg ); " ></div>
+					<div
+						class="absolute inset-0 rounded-full animate-radar-sweep"
+						style="
+							background: conic-gradient(
+								from 0deg,
+								rgb(var(--accent) / 0.5),
+								transparent 75deg
+							);
+						"
+					></div>
 					<!-- Pulsing wave -->
-					<div class="absolute inset-0 rounded-full border border-accent animate-radar-pulse" ></div>
-					<span class="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_rgb(var(--accent))]" ></span>
+					<div
+						class="absolute inset-0 rounded-full border border-accent animate-radar-pulse"
+					></div>
+					<div
+						class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid h-8 w-8 place-items-center"
+					>
+						<img
+							src="/static/icon.svg"
+							class="h-6 w-6 object-contain drop-shadow-[0_0_8px_rgb(var(--accent))]"
+							alt=""
+						/>
+					</div>
 				</div>
 				<!-- Scan Steps & Terminal Output -->
 				<div class="w-full flex-1 font-mono">
 					<p class="text-sm text-muted">
-						<span class="text-lime font-bold">&gt;</span> Initiating deep scan on: <span id="scanTargetText" class="text-ink font-bold" ></span>
-						<span class="inline-block h-3.5 w-1.5 translate-y-0.5 bg-accent animate-pulse ml-0.5" ></span>
+						<span class="text-lime font-bold">&gt;</span> Initiating
+						deep scan on:
+						<span
+							id="scanTargetText"
+							class="text-ink font-bold"
+						></span>
+						<span
+							class="inline-block h-3.5 w-1.5 translate-y-0.5 bg-accent animate-pulse ml-0.5"
+						></span>
 					</p>
 					<ol id="scanStepsList" class="mt-5 space-y-2.5"></ol>
 					<div class="mt-6 flex items-center gap-3">
-						<div class="h-1 flex-1 overflow-hidden rounded-full bg-raised" >
-							<div id="scanProgressBar" class="h-full rounded-full bg-accent transition-all duration-300" style="width: 10%" ></div>
+						<div
+							class="h-1 flex-1 overflow-hidden rounded-full bg-raised"
+						>
+							<div
+								id="scanProgressBar"
+								class="h-full rounded-full bg-accent transition-all duration-300"
+								style="width: 10%"
+							></div>
 						</div>
-						<span id="scanProgressPct" class="w-10 text-right text-xs tabular-nums text-muted font-mono" >10%</span
+						<span
+							id="scanProgressPct"
+							class="w-10 text-right text-xs tabular-nums text-muted font-mono"
+							>10%</span
 						>
 					</div>
 				</div>
@@ -319,99 +772,242 @@
        5. MODALS (VAULT, COMPARE, BATCH, WRAPPED)
        ========================================================= -->
 		<!-- API Vault Modal -->
-		<div id="vaultModal" class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" >
-			<div class="relative w-full max-w-md rounded-2xl border border-line bg-surface shadow-2xl p-6" >
-				<div class="flex items-start justify-between border-b border-line pb-4 mb-5" >
+		<div
+			id="vaultModal"
+			class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+		>
+			<div
+				class="relative w-full max-w-md rounded-2xl border border-line bg-surface shadow-2xl p-6"
+			>
+				<div
+					class="flex items-start justify-between border-b border-line pb-4 mb-5"
+				>
 					<div>
-						<h2 class="font-mono text-sm font-semibold tracking-wider text-ink uppercase" >API Vault</h2>
+						<h2
+							class="font-mono text-sm font-semibold tracking-wider text-ink uppercase"
+						>
+							API Vault
+						</h2>
 						<p class="text-xs text-muted mt-0.5">
 							Store a GitHub Personal Access Token in
 							localStorage.
 						</p>
 					</div>
-					<button type="button" data-close-modal="vaultModal" class="text-muted hover:text-ink text-lg font-bold" >×</button>
+					<button
+						type="button"
+						data-close-modal="vaultModal"
+						class="text-muted hover:text-ink text-lg font-bold"
+					>
+						×
+					</button>
 				</div>
-				<div class="flex items-center justify-between rounded-xl border border-line bg-raised/50 px-4 py-2.5 mb-4 text-xs" >
+				<div
+					class="flex items-center justify-between rounded-xl border border-line bg-raised/50 px-4 py-2.5 mb-4 text-xs"
+				>
 					<span class="flex items-center gap-2 text-ink font-medium">
 						<span class="h-2 w-2 rounded-full bg-lime"></span>
 						<span id="vaultStatusText">Checking token...</span>
 					</span>
-					<span id="vaultStatusLimit" class="font-mono text-muted" >60 req/hr</span
+					<span id="vaultStatusLimit" class="font-mono text-muted"
+						>60 req/hr</span
 					>
 				</div>
-				<label class="block text-xs font-mono text-muted mb-1.5 uppercase tracking-wider" >GitHub Personal Access Token</label
+				<label
+					class="block text-xs font-mono text-muted mb-1.5 uppercase tracking-wider"
+					>GitHub Personal Access Token</label
 				>
-				<div class="flex items-center rounded-xl border border-line bg-canvas pr-1 mb-2" >
-					<input id="vaultTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-transparent px-3 py-2.5 font-mono text-sm text-ink outline-none" />
-					<button type="button" id="vaultTokenToggle" class="px-2 text-muted hover:text-ink text-sm flex items-center justify-center" aria-label="Toggle password visibility">
-						<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+				<div
+					class="flex items-center rounded-xl border border-line bg-canvas pr-1 mb-2"
+				>
+					<input
+						id="vaultTokenInput"
+						type="password"
+						placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+						class="w-full bg-transparent px-3 py-2.5 font-mono text-sm text-ink outline-none"
+					/>
+					<button
+						type="button"
+						id="vaultTokenToggle"
+						class="px-2 text-muted hover:text-ink text-sm flex items-center justify-center"
+						aria-label="Toggle password visibility"
+					>
+						<svg
+							viewBox="0 0 24 24"
+							class="h-4 w-4"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
+							/>
+							<circle cx="12" cy="12" r="3" />
+						</svg>
 					</button>
 				</div>
-				<p id="vaultError" class="text-xs text-danger font-mono mb-2" ></p>
+				<p
+					id="vaultError"
+					class="text-xs text-danger font-mono mb-2"
+				></p>
 				<p class="text-[12px] text-muted leading-relaxed mb-5">
 					Stored strictly in your browser. Bumps the API limit from 60
 					to 5,000 requests/hour.
 				</p>
 				<div class="flex gap-3">
-					<button type="button" id="vaultSaveBtn" class="flex-1 py-2.5 rounded-xl bg-lime font-mono text-xs font-bold text-onlime hover:brightness-105 transition-all" >LOCK IN TOKEN</button>
-					<button type="button" id="vaultPurgeBtn" class="px-4 py-2.5 rounded-xl border border-danger/40 font-mono text-xs text-danger hover:bg-danger/10 transition-colors" >PURGE</button>
+					<button
+						type="button"
+						id="vaultSaveBtn"
+						class="flex-1 py-2.5 rounded-xl bg-lime font-mono text-xs font-bold text-onlime hover:brightness-105 transition-all"
+					>
+						LOCK IN TOKEN
+					</button>
+					<button
+						type="button"
+						id="vaultPurgeBtn"
+						class="px-4 py-2.5 rounded-xl border border-danger/40 font-mono text-xs text-danger hover:bg-danger/10 transition-colors"
+					>
+						PURGE
+					</button>
 				</div>
 			</div>
 		</div>
 		<!-- Compare Modal -->
-		<div id="compareModal" class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" >
-			<div class="relative w-full max-w-lg rounded-2xl border border-line bg-surface shadow-2xl p-6" >
-				<div class="flex items-start justify-between border-b border-line pb-4 mb-5" >
+		<div
+			id="compareModal"
+			class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+		>
+			<div
+				class="relative w-full max-w-lg rounded-2xl border border-line bg-surface shadow-2xl p-6"
+			>
+				<div
+					class="flex items-start justify-between border-b border-line pb-4 mb-5"
+				>
 					<div>
-						<h2 class="font-mono text-sm font-semibold tracking-wider text-ink uppercase" >Dual Target Scan</h2>
-						<p class="text-xs text-muted mt-0.5">Compare two developers side by side.</p>
+						<h2
+							class="font-mono text-sm font-semibold tracking-wider text-ink uppercase"
+						>
+							Dual Target Scan
+						</h2>
+						<p class="text-xs text-muted mt-0.5">
+							Compare two developers side by side.
+						</p>
 					</div>
-					<button type="button" data-close-modal="compareModal" class="text-muted hover:text-ink text-lg font-bold" >×</button>
+					<button
+						type="button"
+						data-close-modal="compareModal"
+						class="text-muted hover:text-ink text-lg font-bold"
+					>
+						×
+					</button>
 				</div>
 				<form id="compareForm" class="space-y-4">
 					<div>
-						<label class="block font-mono text-xs text-muted mb-1 uppercase tracking-wider" >Target Alpha (User A)</label
+						<label
+							class="block font-mono text-xs text-muted mb-1 uppercase tracking-wider"
+							>Target Alpha (User A)</label
 						>
-						<input id="compareInputA" type="text" placeholder="e.g. torvalds" class="w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 font-mono text-sm text-ink outline-none focus:border-accent" />
+						<input
+							id="compareInputA"
+							type="text"
+							placeholder="e.g. torvalds"
+							class="w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 font-mono text-sm text-ink outline-none focus:border-accent"
+						/>
 					</div>
 					<div>
-						<label class="block font-mono text-xs text-muted mb-1 uppercase tracking-wider" >Target Beta (User B)</label
+						<label
+							class="block font-mono text-xs text-muted mb-1 uppercase tracking-wider"
+							>Target Beta (User B)</label
 						>
-						<input id="compareInputB" type="text" placeholder="e.g. gvanrossum" class="w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 font-mono text-sm text-ink outline-none focus:border-accent" />
+						<input
+							id="compareInputB"
+							type="text"
+							placeholder="e.g. gvanrossum"
+							class="w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 font-mono text-sm text-ink outline-none focus:border-accent"
+						/>
 					</div>
-					<p id="compareError" class="text-xs text-danger font-mono" ></p>
-					<button type="submit" class="w-full py-3 rounded-xl bg-lime font-mono text-xs font-bold text-onlime hover:brightness-105 transition-all" >INITIATE DUAL SCAN</button>
+					<p
+						id="compareError"
+						class="text-xs text-danger font-mono"
+					></p>
+					<button
+						type="submit"
+						class="w-full py-3 rounded-xl bg-lime font-mono text-xs font-bold text-onlime hover:brightness-105 transition-all"
+					>
+						INITIATE DUAL SCAN
+					</button>
 				</form>
 			</div>
 		</div>
 		<!-- Batch Screener Modal -->
-		<div id="batchModal" class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" >
-			<div class="relative w-full max-w-2xl rounded-2xl border border-line bg-surface shadow-2xl p-6" >
-				<div class="flex items-start justify-between border-b border-line pb-4 mb-4" >
+		<div
+			id="batchModal"
+			class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+		>
+			<div
+				class="relative w-full max-w-2xl rounded-2xl border border-line bg-surface shadow-2xl p-6"
+			>
+				<div
+					class="flex items-start justify-between border-b border-line pb-4 mb-4"
+				>
 					<div>
-						<h2 class="font-mono text-sm font-semibold tracking-wider text-ink uppercase" >Batch Screener</h2>
+						<h2
+							class="font-mono text-sm font-semibold tracking-wider text-ink uppercase"
+						>
+							Batch Screener
+						</h2>
 						<p class="text-xs text-muted mt-0.5">
 							Rank up to 10 profiles by Developer Score™. One
 							target per line.
 						</p>
 					</div>
-					<button type="button" data-close-modal="batchModal" class="text-muted hover:text-ink text-lg font-bold" >×</button>
+					<button
+						type="button"
+						data-close-modal="batchModal"
+						class="text-muted hover:text-ink text-lg font-bold"
+					>
+						×
+					</button>
 				</div>
 				<div id="batchFormView">
 					<form id="batchForm" class="space-y-4">
-						<textarea id="batchTextarea" rows="6" placeholder="torvalds&#10;gvanrossum&#10;antirez&#10;https://github.com/karpathy" class="w-full resize-none rounded-xl border border-line bg-canvas px-3.5 py-3 font-mono text-sm text-ink outline-none focus:border-accent" ></textarea>
-						<p id="batchError" class="text-xs text-danger font-mono" ></p>
-						<button type="submit" id="batchRunBtn" class="w-full py-3 rounded-xl bg-lime font-mono text-xs font-bold text-onlime hover:brightness-105 transition-all" >INITIATE BATCH SCAN</button>
+						<textarea
+							id="batchTextarea"
+							rows="6"
+							placeholder="torvalds&#10;gvanrossum&#10;antirez&#10;https://github.com/karpathy"
+							class="w-full resize-none rounded-xl border border-line bg-canvas px-3.5 py-3 font-mono text-sm text-ink outline-none focus:border-accent"
+						></textarea>
+						<p
+							id="batchError"
+							class="text-xs text-danger font-mono"
+						></p>
+						<button
+							type="submit"
+							id="batchRunBtn"
+							class="w-full py-3 rounded-xl bg-lime font-mono text-xs font-bold text-onlime hover:brightness-105 transition-all"
+						>
+							INITIATE BATCH SCAN
+						</button>
 					</form>
 				</div>
 				<div id="batchResultsView" class="hidden">
 					<div class="flex items-center justify-between pb-3">
-						<button type="button" id="batchBackBtn" class="text-xs text-muted hover:text-ink font-mono" >&larr; Edit targets</button>
-						<span class="text-xs text-muted font-mono" >Click a row to inspect</span
+						<button
+							type="button"
+							id="batchBackBtn"
+							class="text-xs text-muted hover:text-ink font-mono"
+						>
+							&larr; Edit targets
+						</button>
+						<span class="text-xs text-muted font-mono"
+							>Click a row to inspect</span
 						>
 					</div>
 					<div class="scroll-thin overflow-x-auto max-h-80">
-						<table class="w-full min-w-[580px] text-left text-xs font-mono" >
+						<table
+							class="w-full min-w-[580px] text-left text-xs font-mono"
+						>
 							<thead>
 								<tr class="border-y border-line text-muted">
 									<th class="px-4 py-2.5">#</th>
@@ -419,8 +1015,12 @@
 									<th class="px-4 py-2.5">Score</th>
 									<th class="px-4 py-2.5">Archetype</th>
 									<th class="px-4 py-2.5">Top Lang</th>
-									<th class="px-4 py-2.5 text-right">Stars</th>
-									<th class="px-4 py-2.5 text-right">Followers</th>
+									<th class="px-4 py-2.5 text-right">
+										Stars
+									</th>
+									<th class="px-4 py-2.5 text-right">
+										Followers
+									</th>
 								</tr>
 							</thead>
 							<tbody id="batchTableBody"></tbody>
@@ -430,56 +1030,223 @@
 			</div>
 		</div>
 		<!-- GitHub Wrapped Modal -->
-		<div id="wrappedModal" class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" >
-			<div class="relative w-full max-w-2xl overflow-hidden rounded-3xl p-8 sm:p-10 text-white shadow-2xl" style=" background: linear-gradient( 140deg, #2a1572 0%, #5b3be8 45%, #8b6cff 70%, #c6f432 130% ); " >
-				<div id="wrappedConfetti" class="absolute inset-0 overflow-hidden pointer-events-none" ></div>
-				<button type="button" data-close-modal="wrappedModal" class="absolute right-5 top-5 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" >×</button>
+		<div
+			id="wrappedModal"
+			class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+		>
+			<div
+				class="relative w-full max-w-2xl overflow-hidden rounded-3xl p-8 sm:p-10 text-white shadow-2xl"
+				style="
+					background: linear-gradient(
+						140deg,
+						#2a1572 0%,
+						#5b3be8 45%,
+						#8b6cff 70%,
+						#c6f432 130%
+					);
+				"
+			>
+				<div
+					id="wrappedConfetti"
+					class="absolute inset-0 overflow-hidden pointer-events-none"
+				></div>
+				<button
+					type="button"
+					data-close-modal="wrappedModal"
+					class="absolute right-5 top-5 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
+				>
+					×
+				</button>
 				<div class="relative z-10">
 					<div class="flex items-center gap-3">
-						<img id="wrappedAvatar" src="" alt="" class="h-10 w-10 rounded-full ring-2 ring-white/40 object-cover" />
-						<span id="wrappedLogin" class="font-mono text-xs tracking-widest text-white/80" ></span>
+						<img
+							id="wrappedAvatar"
+							src=""
+							alt=""
+							class="h-10 w-10 rounded-full ring-2 ring-white/40 object-cover"
+						/>
+						<span
+							id="wrappedLogin"
+							class="font-mono text-xs tracking-widest text-white/80"
+						></span>
 					</div>
-					<h2 class="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl leading-tight" >
+					<h2
+						class="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl leading-tight"
+					>
 						Your Year,<br />Unwrapped.
 					</h2>
 					<div class="mt-8 grid gap-3 sm:grid-cols-4">
-						<div class="rounded-2xl bg-lime p-5 text-onlime flex flex-col justify-between sm:col-span-2 sm:row-span-2" >
+						<div
+							class="rounded-2xl bg-lime p-5 text-onlime flex flex-col justify-between sm:col-span-2 sm:row-span-2"
+						>
 							<div>
-								<p class="text-xs font-semibold uppercase tracking-wider opacity-75" >Contributions This Year</p>
-								<p id="wrappedCommits" class="mt-2 font-mono text-5xl font-black tabular-nums" >0</p>
+								<p
+									class="text-xs font-semibold uppercase tracking-wider opacity-75"
+								>
+									Contributions This Year
+								</p>
+								<p
+									id="wrappedCommits"
+									class="mt-2 font-mono text-5xl font-black tabular-nums"
+								>
+									0
+								</p>
 							</div>
 							<div class="mt-4">
-								<p class="text-xs font-semibold uppercase tracking-wider opacity-75" >Biggest Repository</p>
-								<p id="wrappedBiggestRepo" class="font-mono text-lg font-bold truncate" >—</p>
+								<p
+									class="text-xs font-semibold uppercase tracking-wider opacity-75"
+								>
+									Biggest Repository
+								</p>
+								<p
+									id="wrappedBiggestRepo"
+									class="font-mono text-lg font-bold truncate"
+								>
+									—
+								</p>
 							</div>
 						</div>
 						<div id="wrappedTilesContainer" class="contents"></div>
 					</div>
-					<div class="mt-8 flex items-center justify-between border-t border-white/15 pt-4" >
-						<span class="font-mono text-[11px] tracking-widest text-white/70" >GIT-SPECTRE // 2026</span
+					<div
+						class="mt-8 flex items-center justify-between border-t border-white/15 pt-4"
+					>
+						<span
+							class="font-mono text-[11px] tracking-widest text-white/70"
+							>GIT-SPECTRE // 2026</span
 						>
-						<button type="button" id="wrappedShareBtn" class="rounded-full bg-white px-5 py-2 font-mono text-xs font-bold text-[#2A1572] hover:bg-white/90 transition-all" >Share Card</button>
+						<button
+							type="button"
+							id="wrappedShareBtn"
+							class="rounded-full bg-white px-5 py-2 font-mono text-xs font-bold text-[#2A1572] hover:bg-white/90 transition-all"
+						>
+							Share Card
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- Offscreen Share Card (for html2canvas) -->
-		<div id="shareCardOffscreen" style=" position: fixed; left: -9999px; top: 0; width: 600px; height: 315px; background: #09090b; padding: 28px; border-radius: 16px; border: 1px solid rgba(139, 108, 255, 0.3); font-family: &quot;Inter&quot;, sans-serif; color: #f0f0f3; box-sizing: border-box; " >
-			<div style=" display: flex; align-items: center; gap: 16px; margin-bottom: 20px; " >
-				<img id="scAvatar" src="" alt="" style=" width: 60px; height: 60px; border-radius: 12px; border: 2px solid #8b6cff; " />
+		<div
+			id="shareCardOffscreen"
+			style="
+				position: fixed;
+				left: -9999px;
+				top: 0;
+				width: 600px;
+				height: 315px;
+				background: #09090b;
+				padding: 28px;
+				border-radius: 16px;
+				border: 1px solid rgba(139, 108, 255, 0.3);
+				font-family: &quot;Inter&quot;, sans-serif;
+				color: #f0f0f3;
+				box-sizing: border-box;
+			"
+		>
+			<div
+				style="
+					display: flex;
+					align-items: center;
+					gap: 16px;
+					margin-bottom: 20px;
+				"
+			>
+				<img
+					id="scAvatar"
+					src=""
+					alt=""
+					style="
+						width: 60px;
+						height: 60px;
+						border-radius: 12px;
+						border: 2px solid #8b6cff;
+					"
+				/>
 				<div style="flex: 1; min-width: 0">
-					<div id="scName" style=" font-weight: 900; font-size: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; " ></div>
-					<div id="scLogin" style=" font-family: &quot;JetBrains Mono&quot;, monospace; font-size: 13px; color: #8b6cff; " ></div>
-					<span id="scArchetype" style=" font-family: &quot;JetBrains Mono&quot;, monospace; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 20px; background: rgba(198, 244, 50, 0.15); color: #c6f432; display: inline-block; margin-top: 4px; " ></span>
+					<div
+						id="scName"
+						style="
+							font-weight: 900;
+							font-size: 20px;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						"
+					></div>
+					<div
+						id="scLogin"
+						style="
+							font-family: &quot;JetBrains Mono&quot;, monospace;
+							font-size: 13px;
+							color: #8b6cff;
+						"
+					></div>
+					<span
+						id="scArchetype"
+						style="
+							font-family: &quot;JetBrains Mono&quot;, monospace;
+							font-size: 10px;
+							font-weight: 700;
+							padding: 2px 10px;
+							border-radius: 20px;
+							background: rgba(198, 244, 50, 0.15);
+							color: #c6f432;
+							display: inline-block;
+							margin-top: 4px;
+						"
+					></span>
 				</div>
 				<div style="text-align: right">
-					<div id="scScore" style=" font-size: 32px; font-weight: 900; color: #c6f432; " ></div>
-					<div id="scGrade" style=" font-size: 16px; font-weight: 900; color: #c6f432; " ></div>
+					<div
+						id="scScore"
+						style="
+							font-size: 32px;
+							font-weight: 900;
+							color: #c6f432;
+						"
+					></div>
+					<div
+						id="scGrade"
+						style="
+							font-size: 16px;
+							font-weight: 900;
+							color: #c6f432;
+						"
+					></div>
 				</div>
 			</div>
 			<div id="scLangs" style="margin-bottom: 16px"></div>
-			<div id="scStats" style=" display: flex; gap: 16px; font-family: &quot;JetBrains Mono&quot;, monospace; font-size: 11px; color: #a1a1aa; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 16px; " ></div>
-			<div style=" margin-top: 16px; font-family: &quot;JetBrains Mono&quot;, monospace; font-size: 10px; color: #52525b; letter-spacing: 0.15em; " >GIT-SPECTRE // DEVELOPER DEEP-PROFILER</div>
+			<div
+				id="scStats"
+				style="
+					display: flex;
+					gap: 16px;
+					font-family: &quot;JetBrains Mono&quot;, monospace;
+					font-size: 11px;
+					color: #a1a1aa;
+					border-top: 1px solid rgba(255, 255, 255, 0.08);
+					padding-top: 16px;
+				"
+			></div>
+			<div
+				style="
+					margin-top: 16px;
+					font-family: &quot;JetBrains Mono&quot;, monospace;
+					font-size: 10px;
+					color: #52525b;
+					letter-spacing: 0.15em;
+					display: flex;
+					align-items: center;
+					gap: 8px;
+				"
+			>
+				<img
+					src="/static/icon.svg"
+					style="width: 14px; height: 14px"
+					alt=""
+				/>GIT-SPECTRE // DEVELOPER DEEP-PROFILER
+			</div>
 		</div>
 		<!-- Application Entry Point -->
 		<script type="module" src="/static/js/app.js"></script>

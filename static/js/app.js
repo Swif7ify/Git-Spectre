@@ -20,6 +20,7 @@ import { renderRepos } from './components/repos.js';
 import { renderCompareView } from './components/compare.js';
 import { initModals, openModal, closeModal, openWrappedModal } from './components/modals.js';
 import { exportPdf, exportShareCard, copyBadgeSnippet } from './export.js';
+import { initBackground } from './components/background.js';
 
 // View Transition Helper
 function setView(view) {
@@ -133,8 +134,9 @@ function initShortcuts() {
 
 // Initialize Application
 window.addEventListener('DOMContentLoaded', () => {
-  // Apply saved theme
+  // Apply saved theme & initialize telemetry grid canvas background
   applyTheme(getTheme());
+  initBackground();
 
   // Initialize Nav
   initNav({

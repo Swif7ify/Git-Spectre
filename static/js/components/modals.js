@@ -164,13 +164,24 @@ export function initModals({ onRunCompare, onOpenDossier, onExportPdf, onShareCa
     });
   }
 
+  function getBatchGradeBadge(grade) {
+    const g = String(grade || 'E').toUpperCase();
+    let color = 'bg-raised text-muted border-line';
+    if (g.startsWith('S')) color = 'bg-lime/15 text-limeink border-lime/30';
+    else if (g === 'A') color = 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30';
+    else if (g === 'B') color = 'bg-accent/15 text-accent border-accent/30';
+    else if (g === 'C') color = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+    else if (g === 'D') color = 'bg-orange-500/15 text-orange-400 border-orange-500/30';
+    return `<span class="inline-flex items-center justify-center rounded px-1.5 py-0.5 font-mono text-[10px] font-bold border leading-none shrink-0 ${color}">${esc(g)}</span>`;
+  }
+
   function renderBatchTable(results) {
     if (!batchTableBody) return;
     batchTableBody.innerHTML = results.map((r, i) => {
       if (r.error) {
         return `
           <tr class="border-b border-line text-xs font-mono text-danger">
-            <td class="px-4 py-3">${i + 1}</td>
+            <td class="px-4 py-3 text-center">${i + 1}</td>
             <td colspan="6" class="px-4 py-3">@${esc(r.username)}: ${esc(r.error)}</td>
           </tr>
         `;
@@ -179,24 +190,26 @@ export function initModals({ onRunCompare, onOpenDossier, onExportPdf, onShareCa
       return `
         <tr data-batch-login="${esc(r.username)}"
           class="group cursor-pointer border-b border-line transition-colors hover:bg-raised text-xs">
-          <td class="px-4 py-3 font-mono ${i === 0 ? 'text-limeink font-bold' : 'text-muted'}">${i + 1}</td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 font-mono text-center whitespace-nowrap ${i === 0 ? 'text-limeink font-bold' : 'text-muted'}">${i + 1}</td>
+          <td class="px-4 py-3 min-w-[170px]">
             <div class="flex items-center gap-3">
-              <img src="${avatarUrl(r.username, 50)}" alt="" class="h-6 w-6 rounded-full object-cover shrink-0" />
+              <img src="${avatarUrl(r.username, 50)}" alt="" class="h-7 w-7 rounded-full object-cover shrink-0 ring-1 ring-line" />
               <div class="min-w-0">
                 <p class="font-medium text-ink truncate">${esc(r.name || r.username)}</p>
-                <p class="font-mono text-[11px] text-muted">@${esc(r.username)}</p>
+                <p class="font-mono text-[11px] text-muted truncate">@${esc(r.username)}</p>
               </div>
             </div>
           </td>
-          <td class="px-4 py-3 font-mono">
-            <span class="font-bold text-ink">${r.score}</span>
-            <span class="ml-1.5 rounded bg-accent/15 px-1.5 py-0.5 font-bold text-[10px] text-accent">${esc(r.grade || 'E')}</span>
+          <td class="px-4 py-3 font-mono whitespace-nowrap">
+            <div class="inline-flex items-center gap-2">
+              <span class="font-bold text-ink text-sm tabular-nums">${r.score}</span>
+              ${getBatchGradeBadge(r.grade)}
+            </div>
           </td>
-          <td class="px-4 py-3 font-mono text-[11px] text-muted">${esc(r.archetype || '')}</td>
-          <td class="px-4 py-3 font-mono text-[11px] text-ink">${esc(r.top_language || 'N/A')}</td>
-          <td class="px-4 py-3 text-right font-mono text-ink">${compact(r.total_stars || 0)}</td>
-          <td class="px-4 py-3 text-right font-mono text-ink">${compact(r.followers || 0)}</td>
+          <td class="px-4 py-3 font-mono text-[11px] text-muted whitespace-nowrap">${esc(r.archetype || '—')}</td>
+          <td class="px-4 py-3 font-mono text-[11px] text-ink whitespace-nowrap">${esc(r.top_language || 'N/A')}</td>
+          <td class="px-4 py-3 text-right font-mono text-ink whitespace-nowrap">${compact(r.total_stars || 0)}</td>
+          <td class="px-4 py-3 text-right font-mono text-ink whitespace-nowrap">${compact(r.followers || 0)}</td>
         </tr>
       `;
     }).join('');

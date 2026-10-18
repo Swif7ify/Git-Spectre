@@ -69,7 +69,7 @@ export function mountModalTemplates() {
 
     <!-- Batch Screener Modal -->
     <div id="batchModal" class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div class="relative w-full max-w-2xl rounded-2xl border border-line bg-surface shadow-2xl p-6">
+      <div class="relative w-full max-w-2xl sm:max-w-3xl lg:max-w-4xl rounded-2xl border border-line bg-surface shadow-2xl p-6">
         <div class="flex items-start justify-between border-b border-line pb-4 mb-4">
           <div>
             <h2 class="font-mono text-sm font-semibold tracking-wider text-ink uppercase">Batch Screener</h2>
@@ -89,17 +89,17 @@ export function mountModalTemplates() {
             <button type="button" id="batchBackBtn" class="text-xs text-muted hover:text-ink font-mono">&larr; Edit targets</button>
             <span class="text-xs text-muted font-mono">Click a row to inspect</span>
           </div>
-          <div class="scroll-thin overflow-x-auto max-h-80">
-            <table class="w-full min-w-[580px] text-left text-xs font-mono">
+          <div class="scroll-thin overflow-x-auto max-h-96">
+            <table class="w-full min-w-[620px] text-left text-xs font-mono">
               <thead>
                 <tr class="border-y border-line text-muted">
-                  <th class="px-4 py-2.5">#</th>
-                  <th class="px-4 py-2.5">Developer</th>
-                  <th class="px-4 py-2.5">Score</th>
-                  <th class="px-4 py-2.5">Archetype</th>
-                  <th class="px-4 py-2.5">Top Lang</th>
-                  <th class="px-4 py-2.5 text-right">Stars</th>
-                  <th class="px-4 py-2.5 text-right">Followers</th>
+                  <th class="px-4 py-2.5 w-10 text-center">#</th>
+                  <th class="px-4 py-2.5 min-w-[170px]">Developer</th>
+                  <th class="px-4 py-2.5 whitespace-nowrap min-w-[110px]">Score</th>
+                  <th class="px-4 py-2.5 whitespace-nowrap min-w-[140px]">Archetype</th>
+                  <th class="px-4 py-2.5 whitespace-nowrap">Top Lang</th>
+                  <th class="px-4 py-2.5 text-right whitespace-nowrap">Stars</th>
+                  <th class="px-4 py-2.5 text-right whitespace-nowrap">Followers</th>
                 </tr>
               </thead>
               <tbody id="batchTableBody"></tbody>

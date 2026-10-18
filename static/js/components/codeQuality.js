@@ -221,11 +221,11 @@ export function renderCodeQuality(dossier) {
           </div>
 
           <div class="mt-5 space-y-2.5">
-            <figure class="rounded-xl border border-line bg-canvas p-3">
+            <figure class="rounded-xl border border-line bg-raised p-3">
               <figcaption class="text-[11px] font-medium text-ok">Most detailed message</figcaption>
               <blockquote class="mt-1 font-mono text-xs text-ink/90 line-clamp-2">"${esc(bestCommit)}"</blockquote>
             </figure>
-            <figure class="rounded-xl border border-line bg-canvas p-3">
+            <figure class="rounded-xl border border-line bg-raised p-3">
               <figcaption class="text-[11px] font-medium text-danger">Shortest message</figcaption>
               <blockquote class="mt-1 font-mono text-xs text-ink/90 line-clamp-1">"${esc(worstCommit)}"</blockquote>
             </figure>

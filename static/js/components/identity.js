@@ -53,7 +53,7 @@ export function renderIdentity(dossier) {
 
   // Persona
   const personaText = peak_hour && peak_hour.persona && peak_hour.persona !== 'Ghost Coder'
-    ? `<span class="inline-flex items-center gap-2 rounded-full border border-line bg-raised/60 px-3 py-1.5 text-xs text-ink">
+    ? `<span class="inline-flex items-center gap-2 rounded-full border border-line bg-raised px-3 py-1.5 text-xs text-ink">
         <span class="font-medium text-accent">${esc(peak_hour.persona)}</span>
         <span class="text-muted">· peaks ${esc(peak_hour.hour || '00:00')} · ${esc(peak_hour.day || 'weekdays')}s</span>
       </span>`
@@ -65,7 +65,7 @@ export function renderIdentity(dossier) {
         <span class="mr-1 text-xs text-muted">Organizations</span>
         ${orgs.map(o => `
           <a href="${safeUrl(o.url || `https://github.com/${o.login}`)}" target="_blank" rel="noreferrer"
-            class="inline-flex items-center gap-1.5 rounded-full border border-line py-0.5 pl-0.5 pr-2.5 text-xs text-ink transition-colors duration-150 hover:border-accent/60">
+            class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-0.5 pl-0.5 pr-2.5 text-xs text-ink transition-colors duration-150 hover:border-accent/60">
             <img src="${avatarUrl(o.login, 40)}" class="h-5 w-5 rounded-md object-cover" alt="" />
             ${esc(o.login)}
           </a>
@@ -75,7 +75,7 @@ export function renderIdentity(dossier) {
 
   // Roast
   const roastHtml = roast
-    ? `<figure class="mt-6 overflow-hidden rounded-xl border border-line bg-canvas">
+    ? `<figure class="mt-6 overflow-hidden rounded-xl border border-line bg-raised">
         <figcaption class="flex items-center justify-between border-b border-line px-4 py-2 font-mono text-[11px] text-muted">
           <span>// roast.exe</span>
           <span class="flex gap-1.5" aria-hidden="true">
@@ -151,7 +151,7 @@ export function renderIdentity(dossier) {
         </div>
 
         <!-- Right Score column -->
-        <aside class="border-t border-line bg-raised/30 p-6 sm:p-8 lg:border-l lg:border-t-0 flex flex-col justify-between">
+        <aside class="border-t border-line bg-raised p-6 sm:p-8 lg:border-l lg:border-t-0 flex flex-col justify-between">
           <div>
             <div class="flex items-baseline justify-between">
               <h2 class="text-sm font-semibold text-ink">

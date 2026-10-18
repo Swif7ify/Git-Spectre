@@ -141,3 +141,25 @@ html.light .noise-overlay {
   opacity: 0.02;
 }
 
+/* ── Stacking & Solid Surface Enforcement ── */
+#heroSection {
+  position: relative;
+  z-index: 10;
+}
+
+#dossierSection,
+#compareSection {
+  position: relative;
+  z-index: 10;
+}
+
+.bg-surface {
+  background-color: rgb(var(--surface));
+  opacity: 1;
+}
+
+.bg-raised {
+  background-color: rgb(var(--raised));
+  opacity: 1;
+}
+

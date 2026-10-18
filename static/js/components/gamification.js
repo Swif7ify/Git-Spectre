@@ -118,7 +118,7 @@ export function renderGamification(dossier) {
 
             return `
               <li title="${esc(desc || name)}"
-                class="relative flex flex-col items-center rounded-xl p-3 text-center border border-line bg-raised/40 transition-transform duration-200 hover:scale-105 ${
+                class="relative flex flex-col items-center rounded-xl p-3 text-center border border-line bg-raised transition-transform duration-200 hover:scale-105 ${
                   isUnlocked ? 'ring-1 ring-white/10' : 'opacity-35 grayscale'
                 }">
                 <span class="grid h-10 w-10 place-items-center rounded-full text-lg"

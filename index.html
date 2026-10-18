@@ -207,7 +207,7 @@
 				</ul>
 			</section>
 			<!-- DOSSIER VIEW -->
-			<main id="dossierSection" class="hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6" >
+			<main id="dossierSection" class="relative z-10 hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6" >
 				<!-- 1. Identity Card -->
 				<div id="identityCardContainer"></div>
 				<!-- 2. Quick Explorer Panels -->
@@ -254,14 +254,14 @@
 				</section>
 			</main>
 			<!-- COMPARE VIEW -->
-			<main id="compareSection" class="hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6" >
+			<main id="compareSection" class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6" >
 				<div id="compareViewContainer"></div>
 			</main>
 		</main>
 		<!-- =========================================================
        3. FLOATING ACTION DOCK
        ========================================================= -->
-		<aside id="actionDock" aria-label="Dossier actions" class="hidden fixed bottom-4 right-4 z-30 flex items-center gap-1.5 rounded-2xl border border-line bg-surface/90 p-1.5 shadow-2xl backdrop-blur-xl sm:bottom-6 sm:right-6" >
+		<aside id="actionDock" aria-label="Dossier actions" class="hidden fixed bottom-4 right-4 z-30 flex items-center gap-1.5 rounded-2xl border border-line bg-surface p-1.5 shadow-2xl sm:bottom-6 sm:right-6" >
 			<button type="button" id="dockBtnPdf" class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors" >
 				<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></svg>
 				<span class="hidden sm:inline">Export PDF</span>

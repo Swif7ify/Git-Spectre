@@ -53,7 +53,7 @@ export function renderActivity(dossier) {
 
   // Heatmap level color
   function getHeatClass(count) {
-    if (!count || count <= 0) return 'bg-raised/80';
+    if (!count || count <= 0) return 'bg-raised';
     if (count <= 2) return 'bg-accent/40';
     if (count <= 5) return 'bg-accent/70';
     if (count <= 9) return 'bg-accent';
@@ -137,7 +137,7 @@ export function renderActivity(dossier) {
 
   function getHourClass(val, isPeak) {
     if (isPeak) return 'bg-lime';
-    if (!val || val <= 0) return 'bg-raised/70';
+    if (!val || val <= 0) return 'bg-raised';
     const r = val / maxHourVal;
     if (r > 0.66) return 'bg-accent';
     if (r > 0.33) return 'bg-accent/65';
@@ -216,7 +216,7 @@ export function renderActivity(dossier) {
           </div>
           <div class="flex items-center gap-1.5 text-[11px] text-muted font-mono">
             <span>Less</span>
-            <span class="h-2.5 w-2.5 rounded-[2px] bg-raised/80"></span>
+            <span class="h-2.5 w-2.5 rounded-[2px] bg-raised"></span>
             <span class="h-2.5 w-2.5 rounded-[2px] bg-accent/40"></span>
             <span class="h-2.5 w-2.5 rounded-[2px] bg-accent/70"></span>
             <span class="h-2.5 w-2.5 rounded-[2px] bg-accent"></span>

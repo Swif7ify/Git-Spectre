@@ -31,6 +31,42 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 BASE_DIR = Path(__file__).resolve().parent
+
+# Automatically load .env file if present
+_env_path = BASE_DIR / ".env"
+if _env_path.exists():
+    try:
+        for _line in _env_path.read_text(encoding="utf-8").splitlines():
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _k, _v = _line.split("=", 1)
+                _k, _v = _k.strip(), _v.strip().strip("'\"")
+                if _k and _v and (_k not in os.environ or not os.environ[_k].strip()):
+                    os.environ[_k] = _v
+    except Exception:
+        pass
+
+
+def _get_server_token() -> Optional[str]:
+    """Return GITHUB_TOKEN from os.environ or re-read directly from .env."""
+    tok = os.environ.get("GITHUB_TOKEN")
+    if tok and tok.strip():
+        return tok.strip()
+    env_file = BASE_DIR / ".env"
+    if env_file.exists():
+        try:
+            for line in env_file.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    k, v = k.strip(), v.strip().strip("'\"")
+                    if k == "GITHUB_TOKEN" and v:
+                        os.environ["GITHUB_TOKEN"] = v
+                        return v
+        except Exception:
+            pass
+    return None
+
 logger = logging.getLogger("git-spectre")
 
 import httpx
@@ -38,6 +74,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi import Path as FPath
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -112,6 +149,12 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     return response
+
+
+# Mount static assets directory
+_static_dir = BASE_DIR / "static"
+if _static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
 
 
 GITHUB_API  = "https://api.github.com"
@@ -1256,14 +1299,14 @@ async def serve_spa() -> FileResponse:
 @limiter.limit("15/minute")
 @app.post("/api/analyze")
 async def analyze(request: Request, payload: AnalyzeRequest) -> Dict[str, Any]:
-    token = payload.github_token or os.getenv("GITHUB_TOKEN")
+    token = payload.github_token or _get_server_token()
     return await _run_analysis(payload.username, token)
 
 
 @limiter.limit("8/minute")
 @app.post("/api/compare")
 async def compare(request: Request, payload: CompareRequest) -> Dict[str, Any]:
-    token = payload.github_token or os.getenv("GITHUB_TOKEN")
+    token = payload.github_token or _get_server_token()
     try:
         result_a, result_b = await asyncio.gather(
             _run_analysis(payload.username_a, token),
@@ -1281,7 +1324,7 @@ async def batch_analyze(request: Request, payload: BatchRequest) -> List[Dict[st
     usernames = payload.usernames  # already validated & stripped by Pydantic
     if not usernames:
         raise HTTPException(422, "At least one username required.")
-    token = payload.github_token or os.getenv("GITHUB_TOKEN")
+    token = payload.github_token or _get_server_token()
     results = await asyncio.gather(
         *[_run_analysis(u, token) for u in usernames],
         return_exceptions=True,
@@ -1318,7 +1361,7 @@ async def embed_profile(
     ),
 ) -> HTMLResponse:
     """Minimal embeddable profile card for portfolios and READMEs."""
-    token = os.getenv("GITHUB_TOKEN")
+    token = _get_server_token()
     try:
         data = await _run_analysis(username.strip(), token)
     except HTTPException as exc:
@@ -1388,7 +1431,7 @@ async def embed_profile(
 
 @app.get("/api/rate-limit")
 async def rate_limit_endpoint() -> Dict[str, Any]:
-    headers = _build_headers(os.getenv("GITHUB_TOKEN"))
+    headers = _build_headers(_get_server_token())
     async with httpx.AsyncClient(timeout=httpx.Timeout(10.0)) as client:
         resp = await _get_with_retry(client, f"{GITHUB_API}/rate_limit", headers=headers)
         resp.raise_for_status()
@@ -1412,7 +1455,7 @@ async def get_readme(
 ) -> Dict[str, Any]:
     """Fetch the user's profile README from their username/username repo."""
     import base64 as _b64
-    token   = os.getenv("GITHUB_TOKEN")
+    token   = _get_server_token()
     headers = _build_headers(token)
     async with httpx.AsyncClient(timeout=httpx.Timeout(12.0)) as client:
         resp = await client.get(
@@ -1456,7 +1499,7 @@ async def badge_svg(
     ),
 ) -> Response:
     """Return a dynamic shields.io-style SVG badge: Dev Score + Grade."""
-    token = os.getenv("GITHUB_TOKEN")
+    token = _get_server_token()
     try:
         data = await _run_analysis(username.strip(), token)
     except HTTPException:

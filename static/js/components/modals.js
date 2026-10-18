@@ -7,8 +7,11 @@ import { getToken, setToken, clearToken } from '../state.js';
 import { parseTarget, showToast, compact, full, avatarUrl, esc, icon } from '../utils.js';
 import { updateVaultStatus, refreshRateLimit } from './nav.js';
 import { batchAnalyze } from '../api.js';
+import { mountModalTemplates } from './modalTemplates.js';
 
 export function initModals({ onRunCompare, onOpenDossier, onExportPdf, onShareCard, onCopyBadge, onOpenWrapped }) {
+  mountModalTemplates();
+
   // ── Setup Action Dock ──
   const dock = document.getElementById('actionDock');
   const btnDockPdf = document.getElementById('dockBtnPdf');

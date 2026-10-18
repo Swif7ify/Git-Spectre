@@ -49,8 +49,8 @@ So I built **Git-Spectre** — a "Threat Intel"-style dossier generator for any 
 | **Fork Analysis Panel** | Original vs forked ratio with per-card health indicators |
 | **Repo Health Badges** | 🟢 Active / 🟡 Stale / 🔴 Archived on each repo card |
 | **Chronotype Badge** | 🦉 Night Owl / 🐦 Early Bird / ⚡ Midday Coder / 🌆 Evening Dev |
-| **Radar Dual-View** | Toggle language radar between KB (code volume) and # (repo count) |
-| **Shareable PNG Card** | Download a 600×315 dark profile card as a PNG image |
+| **Shareable PNG Card** | High-res dark profile card rendered directly via native Canvas 2D |
+| **Vector PDF Dossier** | Comprehensive 2-page developer dossier generated client-side via jsPDF |
 | **Shareable URL** | URL updates to `/?u={username}` — share or bookmark any profile |
 | **Batch Screener** | Rank up to 10 profiles concurrently by Dev Score™ in a leaderboard |
 | **Embed Widget** | `GET /embed/{username}` → self-contained HTML card for READMEs & iframes |
@@ -108,9 +108,9 @@ To generate a token: [GitHub → Settings → Developer Settings → Personal Ac
 |---|---|---|
 | **Backend** | FastAPI + Uvicorn | Async-native, auto-generates API docs at `/docs` |
 | **HTTP Client** | `httpx.AsyncClient` | Drop-in async replacement for `requests`; native `asyncio` support |
-| **Frontend** | Vanilla JS + TailwindCSS (CDN) | No build step, no bundler, ships as a single `index.html` |
+| **Frontend** | Vanilla ES Modules + TailwindCSS (CDN) | Modular architecture, strictly `< 500` lines/file, zero build step |
 | **Charts** | Chart.js 4.x | Radar, bar, stacked-bar charts — no heavy dependencies |
-| **Export** | html2canvas + jsPDF | Client-side PDF + PNG card generation |
+| **Export** | Native Canvas 2D + jsPDF | High-res client-side PNG card + 2-page vector PDF dossier |
 | **GitHub Data** | GitHub REST API v3 | Public, no SDK needed |
 | **Hosting** | Vercel (`@vercel/python`) | Serverless FastAPI — zero infrastructure |
 

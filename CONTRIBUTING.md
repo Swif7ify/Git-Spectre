@@ -77,11 +77,20 @@ The test suite covers:
 ```
 Git-Spectre/
 ├── main.py              # FastAPI backend — all API logic
-├── index.html           # Frontend SPA (generated, do not edit directly)
-├── scripts/
-│   ├── gen_html.py      # Generates index.html from source templates
-│   └── fix_js.py        # Post-processes JS in generated HTML
-├── tests/
+├── index.html           # Minimal SPA entry shell (<300 lines)
+├── static/              # Frontend static assets
+│   ├── css/
+│   │   └── theme.css    # Color tokens, animations, custom scrollbars
+│   ├── icon.svg         # Brand SVG favicon
+│   ├── text-icon.svg    # Brand SVG typography logo
+│   └── js/
+│       ├── app.js       # Main application entry point & lifecycle
+│       ├── api.js       # Client API abstraction
+│       ├── state.js     # Reactive client state store
+│       ├── utils.js     # String/number/DOM utilities
+│       ├── components/  # Modular UI feature components (<500 lines each)
+│       └── export/      # Native Canvas 2D card & jsPDF vector generators
+├── tests/               # Backend & route tests
 │   └── test_validators.py
 ├── requirements.txt     # Runtime dependencies
 ├── requirements-dev.txt # Dev / test dependencies
@@ -92,15 +101,15 @@ Git-Spectre/
 └── LICENSE
 ```
 
-> **Note:** `index.html` is the compiled output of `scripts/gen_html.py`.
-> If you need to modify the frontend, edit the source in `scripts/gen_html.py`
-> and regenerate: `python scripts/gen_html.py`.
+> **Frontend Architecture:** All client-side JavaScript is written as modern native ES modules loaded via `<script type="module">`.
+> Every source file strictly satisfies the `< 500 lines of code` standard for clean maintainability.
 
 ---
 
 ## Code Style
 
 - **Python:** Follow PEP 8. Type hints are required for all public functions.
+- **Frontend:** Modular ES modules without build step dependencies. Keep all modules under 500 lines. Validate JS syntax with `node -c <files>`.
 - **Line length:** 100 characters.
 - **Async:** All I/O must go through `asyncio` / `httpx.AsyncClient`. No `requests` or `time.sleep`.
 - **Error handling:** Raise `HTTPException` for expected errors, let unexpected exceptions

@@ -177,6 +177,23 @@ async function fetchGhostImage() {
   return loadImage(_cachedGhostDataUri);
 }
 
+let _cachedTextLogoUri = null;
+async function fetchTextLogoImage() {
+  if (!_cachedTextLogoUri) {
+    try {
+      const res = await fetch('/static/text-icon.svg');
+      if (res.ok) {
+        let svgText = await res.text();
+        if (!svgText.includes('xmlns=')) {
+          svgText = svgText.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+        }
+        _cachedTextLogoUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
+      }
+    } catch (_) {}
+  }
+  return _cachedTextLogoUri ? loadImage(_cachedTextLogoUri) : null;
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   const radius = Math.min(r, w / 2, h / 2);
   ctx.beginPath();
@@ -238,9 +255,10 @@ export async function exportShareCard(dossier) {
       try { await document.fonts.ready; } catch (_) {}
     }
 
-    const [avatarImg, ghostImg] = await Promise.all([
+    const [avatarImg, ghostImg, textLogoImg] = await Promise.all([
       fetchAvatarImage(login, profile.avatar_url),
       fetchGhostImage(),
+      fetchTextLogoImage(),
     ]);
 
     const W = 680, H = 380, SCALE = 2;
@@ -480,25 +498,33 @@ export async function exportShareCard(dossier) {
 
     if (ghostImg) {
       ctx.drawImage(ghostImg, footX, footMidY - 9, 18, 18);
-      footX += 28;
+      footX += 26;
     }
 
-    ctx.textBaseline = 'middle';
-    ctx.font = `900 12px ${mono}`;
-    ctx.fillStyle = '#ffffff';
-    const gitW = drawTrackedText(ctx, 'GIT', footX, footMidY, 1.8, 'left');
-    footX += gitW + 3;
+    if (textLogoImg) {
+      const textH = 16;
+      const textW = Math.round(textH * (248.35 / 46.30));
+      ctx.drawImage(textLogoImg, footX, footMidY - textH / 2, textW, textH);
+      footX += textW + 12;
+    } else {
+      ctx.textBaseline = 'middle';
+      ctx.font = `900 12px ${mono}`;
+      ctx.fillStyle = '#ffffff';
+      const gitW = drawTrackedText(ctx, 'GIT', footX, footMidY, 1.8, 'left');
+      footX += gitW + 3;
 
-    ctx.fillStyle = '#8b5cf6';
-    const dotW = drawTrackedText(ctx, '·', footX, footMidY, 0, 'left');
-    footX += dotW + 3;
+      ctx.fillStyle = '#8b5cf6';
+      const dotW = drawTrackedText(ctx, '·', footX, footMidY, 0, 'left');
+      footX += dotW + 3;
 
-    ctx.fillStyle = '#ffffff';
-    const specW = drawTrackedText(ctx, 'SPECTRE', footX, footMidY, 1.8, 'left');
-    footX += specW + 12;
+      ctx.fillStyle = '#ffffff';
+      const specW = drawTrackedText(ctx, 'SPECTRE', footX, footMidY, 1.8, 'left');
+      footX += specW + 12;
+    }
 
     ctx.font = `500 10px ${mono}`;
     ctx.fillStyle = '#71717a';
+    ctx.textBaseline = 'middle';
     drawTrackedText(ctx, '// DEVELOPER DEEP-PROFILER', footX, footMidY, 1.0, 'left');
 
     drawTrackedText(ctx, 'git-spectre.vercel.app', W - 30, footMidY, 0.8, 'right');

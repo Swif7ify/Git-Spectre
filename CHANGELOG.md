@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [3.0.0] — 2026-10-16
+## [3.0.0] — 2026-10-19
 
 ### Added — Step 1: Gamification Layer
 - **Developer Level System** — XP-based ranking from Intern → Junior → Mid → Senior → Staff → Principal → Legend, derived from Dev Score™. Animated XP ring + progress bar with pulsing rank label.
@@ -18,6 +18,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Rarity glow: Legendary (red), Epic (purple), Rare (blue).
 - Backend: `_compute_achievements()`, `_compute_dev_level()` in `main.py`.
 - Version bump in navbar and hero badge: **v3.0**.
+
+### Added — UI/UX Overhaul & Modular Frontend Architecture
+- **Strict File Limit Standard** — Decoupled monolithic `index.html` (formerly 2,200+ lines) into clean, standalone ES modules under `static/js/components/` and `static/js/export/`. Every source file strictly obeys `< 500 lines of code` (`index.html` reduced to ~256 lines).
+- **Interactive Telemetry Grid Canvas** — Dynamic mouse-tracking telemetry background with distance-decay grid points, pulse radar sweep, and noise overlay.
+- **Brand Vector Identity** — Added dedicated vector assets `static/icon.svg` (favicon) and `static/text-icon.svg` (logo with gradient fill), replacing previous emoji/text placeholders.
+- **Red / Crimson Palette Theme** — Modern cinematic theme with tailored tokens in `static/css/theme.css`.
+
+### Added — Client-Side Export Subsystem
+- **Native Canvas 2D Share Card** — Rebuilt share card generation using high-resolution Canvas 2D with vector icons, radial gradient background, avatar rendering, score ring, and developer archetype pill.
+- **Multi-Page Vector PDF Dossier** — Integrated 2-page vector PDF generation via jsPDF:
+  - Page 1: Developer header, composite score breakdown, commit quality, language distribution, top repos.
+  - Page 2: Contribution streak metrics, activity distribution, tech stack DNA, and community stats.
+
+### Improved — Modals & Batch Screener
+- **Dynamic Modal Templates** — Extracted modal DOM trees into `modalTemplates.js` and `scanOverlay.js`, injected on demand.
+- **Batch Screener Table Layout** — Widened modal container to responsive `max-w-4xl`, aligned score and grade horizontally with `whitespace-nowrap`, and styled grades with tier-colored badges (S+, S, A, B, C, D, E).
 
 ---
 

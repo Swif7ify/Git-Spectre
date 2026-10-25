@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="310 270 400 420" width="400" height="420">
+  <defs>
+    <!-- Git Spectre Brand Gradient -->
+    <linearGradient id="spectre-grad" x1="315" y1="500" x2="680" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7644ff" />
+      <stop offset="28%" stop-color="#8b78e6" />
+      <stop offset="55%" stop-color="#b5d56a" />
+      <stop offset="82%" stop-color="#c4f82a" />
+      <stop offset="100%" stop-color="#c4f82a" />
+    </linearGradient>
+
+    <!-- Knockout Mask (White = Visible, Black = Transparent Cutout) -->
+    <mask id="circuit-cutout">
+      <rect width="1000" height="1000" fill="white" />
+
+      <!-- Git Branch Lines (Adjusted for compact height) -->
+      <g stroke="black" stroke-width="25" stroke-linecap="square">
+        <!-- Diagonal Main Track -->
+        <line x1="382" y1="322" x2="578" y2="493" />
+        <!-- Vertical Branch Track (Slightly shorter to match tighter body) -->
+        <line x1="498" y1="423" x2="498" y2="568" />
+      </g>
+
+      <!-- Git Commit Nodes (Kept as true 1:1 circles) -->
+      <circle cx="498" cy="423" r="30" fill="black" />
+      <circle cx="578" cy="493" r="30" fill="black" />
+      <circle cx="498" cy="568" r="30" fill="black" />
+
+      <!-- Tilted Ghost Eye -->
+      <ellipse cx="609" cy="422" rx="15.5" ry="28" transform="rotate(-24 609 422)" fill="black" />
+    </mask>
+  </defs>
+
+  <!-- Compact, Lower-Height Ghost Silhouette -->
+  <g mask="url(#circuit-cutout)">
+    
+    <!-- Left Floating Cape / Wing Segment -->
+    <path fill="url(#spectre-grad)" d="
+      M 353 552
+      C 329 518, 323 466, 336 420
+      C 349 373, 385 333, 434 310
+      C 483 288, 545 284, 597 304
+      C 540 336, 440 381, 385 441
+      C 377 445, 372 466, 369 494
+      C 366 520, 361 541, 353 552
+      Z
+    " />
+
+    <!-- Main Ghost Body & Sweeping Tails -->
+    <path fill="url(#spectre-grad)" d="
+      M 405 326
+      C 458 291, 535 281, 598 306
+      C 661 331, 697 390, 693 458
+      C 689 526, 652 594, 588 636
+      C 542 665, 483 680, 428 678
+      C 425 678, 424 675, 426 672
+      C 439 655, 446 636, 440 625
+      C 437 619, 431 621, 422 625
+      C 394 637, 355 641, 324 630
+      C 320 628, 320 625, 323 622
+      C 363 588, 378 538, 381 484
+      C 382 463, 384 448, 385 443
+      C 386 439, 382 439, 379 445
+      C 371 458, 368 482, 365 508
+      C 362 530, 358 544, 353 552
+      C 324 506, 321 439, 352 384
+      C 365 360, 383 340, 405 326
+      Z
+    " />
+  </g>
+</svg>

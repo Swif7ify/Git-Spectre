@@ -29,6 +29,9 @@ from core.analytics import (
 )
 from core.config import (
     ALLOWED_ORIGINS,
+    APP_VERSION,
+    APP_VERSION_MAJOR,
+    APP_VERSION_SHORT,
     BASE_DIR,
     GITHUB_API,
     _get_server_token,
@@ -47,6 +50,9 @@ from core.service import _run_analysis
 # Re-export key functions for backwards compatibility with tests and tooling
 __all__ = [
     "app",
+    "APP_VERSION",
+    "APP_VERSION_SHORT",
+    "APP_VERSION_MAJOR",
     "_validate_username",
     "_validate_token",
     "_compute_archetype",
@@ -75,8 +81,8 @@ limiter = Limiter(key_func=_get_client_ip)
 
 app = FastAPI(
     title="Git-Spectre API",
-    description="Ultra-premium cinematic GitHub Deep-Profiler v3",
-    version="3.0.0",
+    description=f"Ultra-premium cinematic GitHub Deep-Profiler {APP_VERSION_MAJOR}",
+    version=APP_VERSION,
     docs_url=None,
     redoc_url=None,
     openapi_url=None,
@@ -122,9 +128,16 @@ if _static_dir.exists():
 # ------------------------------------------------------------
 
 @app.get("/", include_in_schema=False)
-async def serve_spa() -> FileResponse:
-    """Serve the single-page application entry point."""
-    return FileResponse(str(BASE_DIR / "index.html"))
+async def serve_spa() -> HTMLResponse:
+    """Serve the single-page application entry point with version dynamically injected."""
+    raw = (BASE_DIR / "index.html").read_text(encoding="utf-8")
+    content = (
+        raw
+        .replace("{{APP_VERSION_SHORT}}", APP_VERSION_SHORT)
+        .replace("{{APP_VERSION_MAJOR}}", APP_VERSION_MAJOR)
+        .replace("{{APP_VERSION}}", APP_VERSION)
+    )
+    return HTMLResponse(content)
 
 
 @app.get("/favicon.ico", include_in_schema=False)
@@ -329,7 +342,17 @@ async def get_readme(
 @app.get("/health", include_in_schema=False)
 async def health_check() -> Dict[str, str]:
     """Liveness probe for uptime monitors."""
-    return {"status": "ok", "version": "3.0"}
+    return {"status": "ok", "version": APP_VERSION}
+
+
+@app.get("/api/version")
+async def version_endpoint() -> Dict[str, str]:
+    """Return application version details."""
+    return {
+        "version": APP_VERSION,
+        "short": APP_VERSION_SHORT,
+        "major": APP_VERSION_MAJOR,
+    }
 
 
 @app.get("/api/badge/{username}", include_in_schema=False)

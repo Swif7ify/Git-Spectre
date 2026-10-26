@@ -71,3 +71,14 @@ export async function getReadme(username) {
     return { found: false, content: '' };
   }
 }
+
+export async function getVersion() {
+  try {
+    const resp = await fetch('/api/version');
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  }
+}
+

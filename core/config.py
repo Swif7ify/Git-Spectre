@@ -71,3 +71,9 @@ GITHUB_API = "https://api.github.com"
 TIMEOUT = httpx.Timeout(28.0, connect=10.0)
 MAX_RETRIES = 2
 BACKOFF = 0.5  # seconds, doubles each retry
+
+# Application version metadata (Single Source of Truth)
+APP_VERSION = os.getenv("APP_VERSION", "3.0.0")
+APP_VERSION_SHORT = "v" + ".".join(APP_VERSION.split(".")[:2])
+APP_VERSION_MAJOR = "v" + APP_VERSION.split(".")[0]
+

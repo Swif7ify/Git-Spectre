@@ -3,7 +3,7 @@
  * Handles the top bar, live API rate limiter countdown, and action modal triggers.
  */
 
-import { getRateLimit } from '../api.js';
+import { getRateLimit, getVersion } from '../api.js';
 import { getToken, getTheme, toggleTheme } from '../state.js';
 
 let _rateLimitTimer = null;
@@ -46,6 +46,22 @@ export function initNav({ onHome, onCompare, onBatch, onVault }) {
   // Initial rate limit fetch & recurring poll
   refreshRateLimit();
   setInterval(refreshRateLimit, 60000);
+
+  // Synchronize dynamic application version badges
+  syncVersion();
+}
+
+export async function syncVersion() {
+  const data = await getVersion();
+  if (!data) return;
+  const navBadge = document.getElementById('navVersionBadge');
+  if (navBadge && data.short) {
+    navBadge.textContent = data.short;
+  }
+  const heroBadge = document.getElementById('heroVersionBadge');
+  if (heroBadge && data.major) {
+    heroBadge.textContent = `INTELLIGENCE SYSTEM ${data.major} ONLINE`;
+  }
 }
 
 export function updateVaultStatus() {

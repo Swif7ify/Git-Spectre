@@ -71,7 +71,7 @@
 						<img src="/static/icon.svg" class="h-6 w-6 object-contain" alt="" aria-hidden="true" />
 					</span>
 					<img src="/static/text-icon.svg" class="h-[18px] w-auto object-contain" alt="Git Spectre" />
-					<span class="hidden rounded-full border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted sm:inline">v3.0</span>
+					<span id="navVersionBadge" class="hidden rounded-full border border-line px-1.5 py-0.5 font-mono text-[10px] text-muted sm:inline">{{APP_VERSION_SHORT}}</span>
 				</button>
 				<!-- Nav Actions -->
 				<div class="ml-auto flex items-center gap-1.5">
@@ -122,7 +122,7 @@
 				<div class="flex w-full max-w-4xl flex-col items-center text-center">
 					<!-- Intelligence badge -->
 					<div class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 shadow-sm">
-						<span class="font-mono text-[11px] font-medium tracking-[0.16em] text-muted">INTELLIGENCE SYSTEM v3 ONLINE</span>
+						<span id="heroVersionBadge" class="font-mono text-[11px] font-medium tracking-[0.16em] text-muted">INTELLIGENCE SYSTEM {{APP_VERSION_MAJOR}} ONLINE</span>
 					</div>
 					<!-- Hero Title -->
 					<h1 class="mt-8 font-semibold leading-[0.88] tracking-[-0.045em] text-ink" style="font-size: clamp(3.25rem, 9.5vw, 7.5rem)">

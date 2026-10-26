@@ -14,14 +14,14 @@ from typing import Any, Dict, List, Optional
 import httpx
 from fastapi import HTTPException
 
-from core.config import BACKOFF, GITHUB_API, MAX_RETRIES, logger
+from core.config import APP_VERSION, BACKOFF, GITHUB_API, MAX_RETRIES, logger
 
 
 def _build_headers(token: Optional[str]) -> Dict[str, str]:
     """Build standard GitHub REST headers with optional bearer authentication."""
     h = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "Git-Spectre/2.0",
+        "User-Agent": f"Git-Spectre/{APP_VERSION}",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     if token:
@@ -206,7 +206,7 @@ async def _fetch_contribution_calendar(
             f"https://github.com/users/{username}/contributions",
             headers={
                 "Accept": "text/html,application/xhtml+xml",
-                "User-Agent": "Mozilla/5.0 (compatible; Git-Spectre/2.2)",
+                "User-Agent": f"Mozilla/5.0 (compatible; Git-Spectre/{APP_VERSION})",
             },
             follow_redirects=True,
             timeout=httpx.Timeout(15.0),

@@ -54,13 +54,29 @@ from core.gamification import (
     _compute_social_graph,
     _compute_wrapped,
 )
+from core.leaderboard import get_profile_rank, record_profile_check
 
 
-async def _run_analysis(username: str, token: Optional[str]) -> Dict[str, Any]:
+async def _run_analysis(
+    username: str, token: Optional[str], client_ip: Optional[str] = None
+) -> Dict[str, Any]:
     """Full profile analysis. Checks TTL cache first."""
     cache_key = f"{username.lower()}:{bool(token)}"
     cached = _cache_get(cache_key)
     if cached:
+        if client_ip:
+            try:
+                record_profile_check(
+                    profile=cached.get("profile", {}),
+                    score=cached.get("score", {}),
+                    client_ip=client_ip,
+                    archetype=cached.get("archetype"),
+                    dev_level=cached.get("dev_level"),
+                    languages=cached.get("languages"),
+                    stars_earned=cached.get("stars", {}).get("total_earned", 0),
+                )
+            except Exception:
+                pass
         return {**cached, "cached": True}
 
     headers = _build_headers(token)
@@ -223,6 +239,21 @@ async def _run_analysis(username: str, token: Optional[str]) -> Dict[str, Any]:
         gists_stats,
     )
     result["dev_level"] = _compute_dev_level(result["score"]["total"])
+
+    # Record check in Leaderboard & attach rank metadata
+    try:
+        record_profile_check(
+            profile=profile,
+            score=result["score"],
+            client_ip=client_ip or "127.0.0.1",
+            archetype=result.get("archetype"),
+            dev_level=result.get("dev_level"),
+            languages=result.get("languages"),
+            stars_earned=result.get("stars", {}).get("total_earned", 0),
+        )
+        result["leaderboard"] = get_profile_rank(username)
+    except Exception as e:
+        logger.warning("Leaderboard recording skipped: %s", e)
 
     _cache_set(cache_key, result)
     return result

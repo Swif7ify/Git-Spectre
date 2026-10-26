@@ -92,4 +92,33 @@ export async function getRepoInfo() {
   }
 }
 
+export async function getLeaderboard({ period = 'daily', limit = 50, language = '', q = '' } = {}) {
+  try {
+    const params = new URLSearchParams();
+    if (period) params.append('period', period);
+    if (limit) params.append('limit', limit);
+    if (language) params.append('language', language);
+    if (q) params.append('q', q);
+
+    const resp = await fetch(`/api/leaderboard?${params.toString()}`);
+    if (!resp.ok) {
+      throw new Error(`Failed to load leaderboard (HTTP ${resp.status})`);
+    }
+    return await resp.json();
+  } catch (err) {
+    console.error('getLeaderboard error:', err);
+    return { period, total: 0, leaderboard: [] };
+  }
+}
+
+export async function getLeaderboardRank(username) {
+  try {
+    const resp = await fetch(`/api/leaderboard/rank/${encodeURIComponent(username)}`);
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  }
+}
+
 

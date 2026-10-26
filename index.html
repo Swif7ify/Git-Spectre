@@ -81,6 +81,11 @@
 				<div class="flex items-center gap-2 sm:gap-3">
 					<!-- Group 1: Desktop Navigation Tools -->
 					<div class="hidden sm:flex items-center gap-1">
+						<!-- Leaderboard Modal Button -->
+						<button id="navLeaderboardBtn" aria-label="Developer Leaderboard" title="Developer Leaderboard (Ctrl+L)" class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
+							<span class="flex items-center"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v3h10v-3c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
+							<span>Rankings</span>
+						</button>
 						<!-- Compare Modal Button -->
 						<button id="navCompareBtn" aria-label="Compare two developers" title="Compare two developers (Ctrl+D)" class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
 							<span class="flex items-center"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
@@ -154,6 +159,14 @@
 			<div id="navMobileDrawer" class="hidden sm:hidden border-t border-line/70 bg-canvas/95 backdrop-blur-2xl px-4 py-3 shadow-2xl transition-all duration-200">
 				<div class="flex flex-col gap-1">
 					<div class="px-2 pt-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">Navigation Tools</div>
+					<!-- Mobile Leaderboard Button -->
+					<button id="navMobileLeaderboardBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
+						<div class="flex items-center gap-2.5">
+							<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v3h10v-3c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
+							<span>Developer Leaderboard</span>
+						</div>
+						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted">^L</kbd>
+					</button>
 					<!-- Mobile Compare Button -->
 					<button id="navMobileCompareBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
 						<div class="flex items-center gap-2.5">

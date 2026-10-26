@@ -9,7 +9,7 @@ import { getToken, getTheme, toggleTheme } from '../state.js';
 let _rateLimitTimer = null;
 let _resetEpoch = 0;
 
-export function initNav({ onHome, onCompare, onBatch, onVault }) {
+export function initNav({ onHome, onLeaderboard, onCompare, onBatch, onVault }) {
   // Brand Home click
   const logoBtn = document.getElementById('navLogoBtn');
   if (logoBtn) {
@@ -20,6 +20,11 @@ export function initNav({ onHome, onCompare, onBatch, onVault }) {
   }
 
   // Desktop action modal buttons
+  const leaderboardBtn = document.getElementById('navLeaderboardBtn');
+  if (leaderboardBtn) {
+    leaderboardBtn.addEventListener('click', () => onLeaderboard && onLeaderboard());
+  }
+
   const compareBtn = document.getElementById('navCompareBtn');
   if (compareBtn) {
     compareBtn.addEventListener('click', () => onCompare());
@@ -54,6 +59,14 @@ export function initNav({ onHome, onCompare, onBatch, onVault }) {
   }
 
   // Mobile action modal buttons
+  const mobileLeaderboardBtn = document.getElementById('navMobileLeaderboardBtn');
+  if (mobileLeaderboardBtn) {
+    mobileLeaderboardBtn.addEventListener('click', () => {
+      closeMobileDrawer();
+      if (onLeaderboard) onLeaderboard();
+    });
+  }
+
   const mobileCompareBtn = document.getElementById('navMobileCompareBtn');
   if (mobileCompareBtn) {
     mobileCompareBtn.addEventListener('click', () => {

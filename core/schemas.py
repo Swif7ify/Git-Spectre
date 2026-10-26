@@ -6,6 +6,7 @@ Pydantic models, request validators, and validation regexes for input sanitation
 
 from __future__ import annotations
 
+import html as _html
 import re
 from typing import List, Optional
 
@@ -80,3 +81,35 @@ class BatchRequest(_WithToken):
     @classmethod
     def validate_usernames(cls, v: List[str]) -> List[str]:
         return [_validate_username(u) for u in v]
+
+
+def _make_badge_svg(left: str, right: str, color: str) -> str:
+    """Minimal shields.io-compatible flat SVG badge."""
+    left_e = _html.escape(left, quote=True)
+    right_e = _html.escape(right, quote=True)
+    color_e = _html.escape(color, quote=True)
+    lw = len(left) * 6 + 10
+    rw = len(right) * 6 + 10
+    total = lw + rw
+    lx = lw // 2
+    rx = lw + rw // 2
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="{total}" height="20" role="img" aria-label="{left_e}: {right_e}">
+  <title>{left_e}: {right_e}</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="{total}" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="{lw}" height="20" fill="#555"/>
+    <rect x="{lw}" width="{rw}" height="20" fill="{color_e}"/>
+    <rect width="{total}" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="110" text-rendering="geometricPrecision">
+    <text x="{lx * 10}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="{(lw - 10) * 10}" lengthAdjust="spacing">{left_e}</text>
+    <text x="{lx * 10}" y="140" transform="scale(.1)" textLength="{(lw - 10) * 10}" lengthAdjust="spacing">{left_e}</text>
+    <text x="{rx * 10}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="{(rw - 10) * 10}" lengthAdjust="spacing">{right_e}</text>
+    <text x="{rx * 10}" y="140" transform="scale(.1)" textLength="{(rw - 10) * 10}" lengthAdjust="spacing">{right_e}</text>
+  </g>
+</svg>"""

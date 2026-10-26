@@ -45,10 +45,12 @@ from core.schemas import (
     AnalyzeRequest,
     BatchRequest,
     CompareRequest,
+    _make_badge_svg,
     _validate_token,
     _validate_username,
 )
 from core.service import _run_analysis
+from core.leaderboard import get_leaderboard, get_profile_rank
 
 # Re-export key functions for backwards compatibility with tests and tooling
 __all__ = [
@@ -66,6 +68,8 @@ __all__ = [
     "_aggregate_languages",
     "_run_analysis",
     "_get_server_token",
+    "get_leaderboard",
+    "get_profile_rank",
 ]
 
 
@@ -159,7 +163,8 @@ async def serve_favicon() -> FileResponse:
 async def analyze(request: Request, payload: AnalyzeRequest) -> Dict[str, Any]:
     """Analyze a single developer profile."""
     token = payload.github_token or _get_server_token()
-    return await _run_analysis(payload.username, token)
+    client_ip = _get_client_ip(request)
+    return await _run_analysis(payload.username, token, client_ip)
 
 
 @limiter.limit("8/minute")
@@ -396,6 +401,33 @@ async def repo_info_endpoint() -> Dict[str, Any]:
     return fallback
 
 
+@limiter.limit("30/minute")
+@app.get("/api/leaderboard")
+async def leaderboard_endpoint(
+    request: Request,
+    period: str = "daily",
+    limit: int = 50,
+    language: Optional[str] = None,
+    q: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Retrieve ranked developers by check popularity across daily, monthly, yearly, and all-time."""
+    valid_periods = {"daily", "monthly", "yearly", "all"}
+    clean_period = period.strip().lower()
+    if clean_period not in valid_periods:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid period '{period}'. Valid options: {', '.join(sorted(valid_periods))}",
+        )
+    return get_leaderboard(period=clean_period, limit=limit, language=language, query=q)
+
+
+@limiter.limit("30/minute")
+@app.get("/api/leaderboard/rank/{username}")
+async def profile_rank_endpoint(request: Request, username: str) -> Dict[str, Any]:
+    """Retrieve rank statistics and check count across all timeframes for a developer."""
+    clean_username = _validate_username(username)
+    return get_profile_rank(clean_username)
+
 
 @app.get("/api/badge/{username}", include_in_schema=False)
 async def badge_svg(
@@ -433,38 +465,6 @@ async def badge_svg(
         media_type="image/svg+xml",
         headers={"Cache-Control": "public, max-age=600"},
     )
-
-
-def _make_badge_svg(left: str, right: str, color: str) -> str:
-    """Minimal shields.io-compatible flat SVG badge."""
-    left_e = _html.escape(left, quote=True)
-    right_e = _html.escape(right, quote=True)
-    color_e = _html.escape(color, quote=True)
-    lw = len(left) * 6 + 10
-    rw = len(right) * 6 + 10
-    total = lw + rw
-    lx = lw // 2
-    rx = lw + rw // 2
-    return f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="{total}" height="20" role="img" aria-label="{left_e}: {right_e}">
-  <title>{left_e}: {right_e}</title>
-  <linearGradient id="s" x2="0" y2="100%">
-    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
-    <stop offset="1" stop-opacity=".1"/>
-  </linearGradient>
-  <clipPath id="r"><rect width="{total}" height="20" rx="3" fill="#fff"/></clipPath>
-  <g clip-path="url(#r)">
-    <rect width="{lw}" height="20" fill="#555"/>
-    <rect x="{lw}" width="{rw}" height="20" fill="{color_e}"/>
-    <rect width="{total}" height="20" fill="url(#s)"/>
-  </g>
-  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="110" text-rendering="geometricPrecision">
-    <text x="{lx * 10}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="{(lw - 10) * 10}" lengthAdjust="spacing">{left_e}</text>
-    <text x="{lx * 10}" y="140" transform="scale(.1)" textLength="{(lw - 10) * 10}" lengthAdjust="spacing">{left_e}</text>
-    <text x="{rx * 10}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="{(rw - 10) * 10}" lengthAdjust="spacing">{right_e}</text>
-    <text x="{rx * 10}" y="140" transform="scale(.1)" textLength="{(rw - 10) * 10}" lengthAdjust="spacing">{right_e}</text>
-  </g>
-</svg>"""
 
 
 if __name__ == "__main__":

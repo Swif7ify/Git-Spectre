@@ -59,6 +59,34 @@ export function renderIdentity(dossier) {
       </span>`
     : '';
 
+  // Leaderboard Rank Badge
+  const lb = dossier.leaderboard;
+  let leaderboardBadge = '';
+  if (lb && lb.eligible) {
+    if (lb.daily && lb.daily.rank) {
+      leaderboardBadge = `
+        <button type="button" data-open-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.daily.rank} Today (${lb.daily.checks} check${lb.daily.checks === 1 ? '' : 's'}). Click to inspect leaderboard.">
+          <span class="text-xs">🔥</span>
+          <span>Ranked #${lb.daily.rank} Today (${full(lb.daily.checks)} check${lb.daily.checks === 1 ? '' : 's'})</span>
+        </button>
+      `;
+    } else if (lb.monthly && lb.monthly.rank) {
+      leaderboardBadge = `
+        <button type="button" data-open-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.monthly.rank} This Month. Click to inspect leaderboard.">
+          <span class="text-xs">🏆</span>
+          <span>Ranked #${lb.monthly.rank} This Month</span>
+        </button>
+      `;
+    } else if (lb.all_time && lb.all_time.rank) {
+      leaderboardBadge = `
+        <button type="button" data-open-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-line bg-raised px-3 py-1 font-mono text-[11px] font-semibold text-ink transition-all hover:border-accent hover:scale-105 active:scale-95" title="Ranked #${lb.all_time.rank} All-Time. Click to inspect leaderboard.">
+          <span class="text-xs">⭐</span>
+          <span>Ranked #${lb.all_time.rank} All-Time</span>
+        </button>
+      `;
+    }
+  }
+
   // Organizations
   const orgsHtml = orgs.length
     ? `<div class="mt-5 flex flex-wrap items-center gap-2">
@@ -128,6 +156,7 @@ export function renderIdentity(dossier) {
               ${esc(archetype.label || 'Code Craftsman')}
             </span>
             ${personaText}
+            ${leaderboardBadge}
           </div>
           ${archetype.description ? `<p class="mt-2.5 max-w-2xl text-xs text-muted leading-relaxed">${esc(archetype.description)}</p>` : ''}
 

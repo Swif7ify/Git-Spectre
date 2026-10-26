@@ -19,6 +19,7 @@ import { renderCodeQuality } from './components/codeQuality.js';
 import { renderRepos } from './components/repos.js';
 import { renderCompareView } from './components/compare.js';
 import { initModals, openModal, closeModal, openWrappedModal } from './components/modals.js';
+import { initLeaderboard, openLeaderboardModal } from './components/leaderboard.js';
 import { exportPdf, exportShareCard, copyBadgeSnippet } from './export.js';
 import { initBackground } from './components/background.js';
 
@@ -129,6 +130,9 @@ function initShortcuts() {
       } else if (key === 'b') {
         e.preventDefault();
         openModal('batchModal');
+      } else if (key === 'l') {
+        e.preventDefault();
+        openLeaderboardModal();
       } else if (key === 't') {
         e.preventDefault();
         toggleTheme();
@@ -151,6 +155,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (searchInput) searchInput.value = '';
       setView('hero');
     },
+    onLeaderboard: () => openLeaderboardModal(),
     onCompare: () => openModal('compareModal'),
     onBatch: () => openModal('batchModal'),
     onVault: () => openModal('vaultModal'),
@@ -184,6 +189,11 @@ window.addEventListener('DOMContentLoaded', () => {
       if (appState.activeDossier) openWrappedModal(appState.activeDossier);
       else showToast('Scan a profile first', 'alert-triangle');
     },
+  });
+
+  // Initialize Leaderboard
+  initLeaderboard({
+    onOpenDossier: (login) => runScan(login),
   });
 
   // Initialize Global Shortcuts

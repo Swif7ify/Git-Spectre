@@ -32,3 +32,11 @@ fix_js.py
 # pytest cache
 .pytest_cache/
 tests/__pycache__/
+
+# SQLite database files
+*.db
+*.db-wal
+*.db-shm
+data/*.db
+data/*.db-wal
+data/*.db-shm

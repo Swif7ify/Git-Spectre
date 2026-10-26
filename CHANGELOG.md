@@ -8,6 +8,25 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **Global Developer Leaderboard & Popularity Ranking System**:
+  - Implemented a community-driven developer leaderboard ranking analyzed GitHub profiles based on verified check count (trending community interest), with secondary tie-breakers on Developer Score™ and total stars earned.
+  - Multi-window timeframe filtering supporting **Today (`daily`)**, **This Month (`monthly`)**, **This Year (`yearly`)**, and **All-Time (`all`)**.
+  - **Embedded SQLite Storage (`core/leaderboard.py`)**: Dual-table architecture (`leaderboard_profiles` and `profile_checks`) with Write-Ahead Logging (`WAL`) mode, sub-millisecond query performance, zero cloud database dependencies, and transparent `/tmp/spectre_leaderboard.db` fallback for serverless deployments (Vercel, AWS Lambda).
+  - **Hardened Anti-Spam & Anti-Gaming Defense**:
+    - Compound unique index `idx_unique_daily_check (ip_hash, login, date_utc)` enforcing database-level idempotency: automated loops and repeat checks from the same client IP on the same UTC day return full profile analyses but increment zero check counts.
+    - Salted SHA-256 IP hashing (`_hash_client_ip`) with daily salt rotation and date mixing for GDPR/privacy compliance with zero persistence of raw IP addresses.
+    - Profile eligibility gatekeeper (`is_profile_eligible`) filtering bot accounts (`[bot]`, `type == 'Bot'`), organizations (`type == 'Organization'`), and zero-activity hollow accounts.
+  - **New REST API Endpoints**:
+    - `GET /api/leaderboard`: Query ranked profiles by `period`, `limit`, `language`, and `q` search query with rate limiting.
+    - `GET /api/leaderboard/rank/{username}`: Fetch a developer's real-time rank and check metrics across all timeframes.
+  - **Interactive Leaderboard UI (`static/js/components/leaderboard.js`)**:
+    - Glassmorphic modal with timeframe tabs (`Today`, `This Month`, `This Year`, `All-Time`).
+    - Top 3 developer podium with custom Gold 🥇 (`#1`), Silver 🥈 (`#2`), and Bronze 🥉 (`#3`) glowing cards displaying dev grade, score, dominant language, and live check badges.
+    - Filterable developer roster with live search, language selector chips, and instant click-to-scan navigation into full profile dossiers.
+    - Interactive ranking badges in the profile dossier identity card (e.g. `🔥 Ranked #1 Today (28 checks)`) that open the leaderboard modal.
+    - Global keyboard shortcut `Ctrl+L` for instant leaderboard opening.
+  - **Dedicated Database Documentation (`docs/SCHEMA.md`)**:
+    - Comprehensive schema specification, ERD diagram, index definitions, anti-spam security architecture, query patterns, and serverless migration policies.
 - **Premium Modern Custom Scrollbars**:
   - Designed sleek, modern custom scrollbars with smooth scroll behavior and `scrollbar-gutter: stable` to eliminate page shifting during view transitions.
   - Implemented thin rounded scrollbars (7px global, 4px `.scroll-thin`) with transparent tracks, padded thumb clips, and dynamic hover/active accent states across dark and light themes.

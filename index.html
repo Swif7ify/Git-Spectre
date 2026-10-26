@@ -3,11 +3,22 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Git-Spectre | Developer Deep-Profiler & GitHub Analytics Engine</title>
-		<meta name="description" content="Ultra-premium cinematic GitHub profile analyzer. Uncover developer archetypes, language DNA, commit quality, PR activity, contribution heatmaps, and repository intelligence." />
+		<title>
+			Git-Spectre | Developer Deep-Profiler & GitHub Analytics Engine
+		</title>
+		<meta
+			name="description"
+			content="Ultra-premium cinematic GitHub profile analyzer. Uncover developer archetypes, language DNA, commit quality, PR activity, contribution heatmaps, and repository intelligence."
+		/>
 		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Git-Spectre | Developer Deep-Profiler" />
-		<meta property="og:description" content="Uncover developer archetypes, language DNA, and repository intelligence from any GitHub profile." />
+		<meta
+			property="og:title"
+			content="Git-Spectre | Developer Deep-Profiler"
+		/>
+		<meta
+			property="og:description"
+			content="Uncover developer archetypes, language DNA, and repository intelligence from any GitHub profile."
+		/>
 		<meta property="og:url" content="https://git-spectre.vercel.app/" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<!-- Favicon -->
@@ -16,7 +27,10 @@
 		<!-- Google Fonts: Inter & JetBrains Mono -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<!-- TailwindCSS CDN + Config -->
 		<script src="https://cdn.tailwindcss.com"></script>
 		<script>
@@ -45,7 +59,11 @@
 						},
 						fontFamily: {
 							sans: ["Inter", "system-ui", "sans-serif"],
-							mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+							mono: [
+								'"JetBrains Mono"',
+								"ui-monospace",
+								"monospace",
+							],
 						},
 					},
 				},
@@ -58,7 +76,9 @@
 		<!-- Theme stylesheet -->
 		<link rel="stylesheet" href="/static/css/theme.css" />
 	</head>
-	<body class="min-h-screen w-full bg-canvas font-sans text-ink antialiased selection:bg-lime selection:text-onlime">
+	<body
+		class="min-h-screen w-full bg-canvas font-sans text-ink antialiased selection:bg-lime selection:text-onlime"
+	>
 		<!-- Telemetry Grid Background Canvas & Matte Noise Overlay -->
 		<canvas id="spectre-telemetry" aria-hidden="true"></canvas>
 		<div class="noise-overlay" aria-hidden="true"></div>
@@ -66,15 +86,40 @@
 		<!-- =========================================================
        1. NAVIGATION BAR
        ========================================================= -->
-		<nav aria-label="Global" class="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-xl">
-			<div class="mx-auto flex h-14 sm:h-16 max-w-[1320px] items-center justify-between gap-3 px-3.5 sm:px-6">
+		<nav
+			aria-label="Global"
+			class="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-xl"
+		>
+			<div
+				class="mx-auto flex h-14 sm:h-16 max-w-[1320px] items-center justify-between gap-3 px-3.5 sm:px-6"
+			>
 				<!-- Logo Home Button -->
-				<button id="navLogoBtn" class="group flex shrink-0 items-center gap-2 sm:gap-2.5 rounded-lg transition-transform active:scale-95 focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Git Spectre home" title="Back to Home">
-					<span class="relative grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-md transition-transform duration-200 group-hover:scale-105">
-						<img src="/static/icon.svg" class="h-5 w-5 sm:h-6 sm:w-6 object-contain" alt="" aria-hidden="true" />
+				<button
+					id="navLogoBtn"
+					class="group flex shrink-0 items-center gap-2 sm:gap-2.5 rounded-lg transition-transform active:scale-95 focus:outline-none focus:ring-2 focus:ring-accent"
+					aria-label="Git Spectre home"
+					title="Back to Home"
+				>
+					<span
+						class="relative grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-md transition-transform duration-200 group-hover:scale-105"
+					>
+						<img
+							src="/static/icon.svg"
+							class="h-5 w-5 sm:h-6 sm:w-6 object-contain"
+							alt=""
+							aria-hidden="true"
+						/>
 					</span>
-					<img src="/static/text-icon.svg" class="h-3.5 sm:h-[18px] w-auto max-w-[85px] xs:max-w-none object-contain transition-opacity group-hover:opacity-90" alt="Git Spectre" />
-					<span id="navVersionBadge" class="hidden rounded-full border border-line/60 bg-surface/50 px-2 py-0.5 font-mono text-[10px] text-muted sm:inline">{{APP_VERSION_SHORT}}</span>
+					<img
+						src="/static/text-icon.svg"
+						class="h-3.5 sm:h-[18px] w-auto max-w-[85px] xs:max-w-none object-contain transition-opacity group-hover:opacity-90"
+						alt="Git Spectre"
+					/>
+					<span
+						id="navVersionBadge"
+						class="hidden rounded-full border border-line/60 bg-surface/50 px-2 py-0.5 font-mono text-[10px] text-muted sm:inline"
+						>{{APP_VERSION_SHORT}}</span
+					>
 				</button>
 
 				<!-- Nav Actions -->
@@ -82,145 +127,481 @@
 					<!-- Group 1: Desktop Navigation Tools -->
 					<div class="hidden sm:flex items-center gap-1">
 						<!-- Leaderboard Modal Button -->
-						<button id="navLeaderboardBtn" aria-label="Developer Leaderboard" title="Developer Leaderboard (Ctrl+L)" class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
-							<span class="flex items-center"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v3h10v-3c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
+						<button
+							id="navLeaderboardBtn"
+							aria-label="Developer Leaderboard"
+							title="Developer Leaderboard (Ctrl+L)"
+							class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+						>
+							<span class="flex items-center"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-3.5 w-3.5 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v3h10v-3c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"
+									/></svg
+							></span>
 							<span>Rankings</span>
 						</button>
 						<!-- Compare Modal Button -->
-						<button id="navCompareBtn" aria-label="Compare two developers" title="Compare two developers (Ctrl+D)" class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
-							<span class="flex items-center"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
+						<button
+							id="navCompareBtn"
+							aria-label="Compare two developers"
+							title="Compare two developers (Ctrl+D)"
+							class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+						>
+							<span class="flex items-center"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-3.5 w-3.5 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"
+									/></svg
+							></span>
 							<span>Compare</span>
 						</button>
 						<!-- Batch Screener Button -->
-						<button id="navBatchBtn" aria-label="Batch screener" title="Batch screener (Ctrl+B)" class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
-							<span class="flex items-center"><svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.1ZM21 16l-9 5.2-9-5.2M21 8l-9-5.2-9 5.2M12 2.8v18.4"/></svg></span>
+						<button
+							id="navBatchBtn"
+							aria-label="Batch screener"
+							title="Batch screener (Ctrl+B)"
+							class="inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+						>
+							<span class="flex items-center"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-3.5 w-3.5 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.1ZM21 16l-9 5.2-9-5.2M21 8l-9-5.2-9 5.2M12 2.8v18.4"
+									/></svg
+							></span>
 							<span>Batch</span>
 						</button>
 					</div>
 
 					<!-- Desktop Divider between Tools and Telemetry -->
-					<div class="hidden sm:block h-4 w-px bg-line/60" aria-hidden="true"></div>
+					<div
+						class="hidden sm:block h-4 w-px bg-line/60"
+						aria-hidden="true"
+					></div>
 
 					<!-- Group 2: Telemetry & Community -->
 					<div class="flex items-center gap-2">
 						<!-- Live API Rate Limit Gauge (Desktop) -->
-						<div id="navRlGauge" class="hidden items-center gap-2.5 rounded-lg border border-line/60 bg-surface/50 px-2.5 py-1 sm:flex" title="GitHub API quota remaining">
-							<span class="font-mono text-[10px] font-semibold tracking-wider text-muted">API</span>
-							<div class="h-1.5 w-16 overflow-hidden rounded-full bg-raised">
-								<div id="navRlBar" class="h-full rounded-full bg-ok transition-all duration-300" style="width: 100%"></div>
+						<div
+							id="navRlGauge"
+							class="hidden items-center gap-2.5 rounded-lg border border-line/60 bg-surface/50 px-2.5 py-1 sm:flex"
+							title="GitHub API quota remaining"
+						>
+							<span
+								class="font-mono text-[10px] font-semibold tracking-wider text-muted"
+								>API</span
+							>
+							<div
+								class="h-1.5 w-16 overflow-hidden rounded-full bg-raised"
+							>
+								<div
+									id="navRlBar"
+									class="h-full rounded-full bg-ok transition-all duration-300"
+									style="width: 100%"
+								></div>
 							</div>
-							<span id="navRlText" class="font-mono text-[11px] tabular-nums text-ink">—/—</span>
-							<span id="navRlTimer" class="hidden border-l border-line/60 pl-2 font-mono text-[11px] tabular-nums text-danger"></span>
+							<span
+								id="navRlText"
+								class="font-mono text-[11px] tabular-nums text-ink"
+								>—/—</span
+							>
+							<span
+								id="navRlTimer"
+								class="hidden border-l border-line/60 pl-2 font-mono text-[11px] tabular-nums text-danger"
+							></span>
 						</div>
 						<!-- GitHub Repo & Star Count Button (Visible on both Mobile and Desktop) -->
-						<a id="navGithubBtn" href="{{GITHUB_REPO_URL}}" target="_blank" rel="noopener noreferrer" aria-label="GitHub Repository & Stars" title="Star Git-Spectre on GitHub" class="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line/60 bg-surface/50 px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
-							<svg viewBox="0 0 24 24" class="h-3.5 w-3.5 shrink-0 fill-current" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
+						<a
+							id="navGithubBtn"
+							href="{{GITHUB_REPO_URL}}"
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="GitHub Repository & Stars"
+							title="Star Git-Spectre on GitHub"
+							class="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line/60 bg-surface/50 px-2.5 text-xs font-medium text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								class="h-3.5 w-3.5 shrink-0 fill-current"
+								aria-hidden="true"
+							>
+								<path
+									d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"
+								/>
+							</svg>
 							<span class="hidden md:inline">GitHub</span>
-							<span id="navStarCount" class="inline-flex items-center gap-1 rounded bg-raised/80 px-1.5 py-0.5 font-mono text-[10px] tabular-nums text-muted">
-								<svg viewBox="0 0 24 24" class="h-2.5 w-2.5 fill-amber-400 text-amber-400 shrink-0" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+							<span
+								id="navStarCount"
+								class="inline-flex items-center gap-1 rounded bg-raised/80 px-1.5 py-0.5 font-mono text-[10px] tabular-nums text-muted"
+							>
+								<svg
+									viewBox="0 0 24 24"
+									class="h-2.5 w-2.5 fill-amber-400 text-amber-400 shrink-0"
+									stroke="currentColor"
+									stroke-width="1"
+								>
+									<polygon
+										points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+									/>
+								</svg>
 								<span id="navStarCountText">Star</span>
 							</span>
 						</a>
 					</div>
 
 					<!-- Desktop Divider between Telemetry and Settings -->
-					<div class="hidden sm:block h-4 w-px bg-line/60" aria-hidden="true"></div>
+					<div
+						class="hidden sm:block h-4 w-px bg-line/60"
+						aria-hidden="true"
+					></div>
 
 					<!-- Group 3: Desktop Settings & Utilities -->
 					<div class="hidden sm:flex items-center gap-1">
 						<!-- Theme Toggle Button -->
-						<button id="navThemeBtn" aria-label="Toggle theme" title="Toggle theme (Ctrl+T)" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
-							<span id="navIconMoon" class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span>
-							<span id="navIconSun" class="hidden items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></span>
+						<button
+							id="navThemeBtn"
+							aria-label="Toggle theme"
+							title="Toggle theme (Ctrl+T)"
+							class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+						>
+							<span
+								id="navIconMoon"
+								class="flex items-center text-muted"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+									/></svg
+							></span>
+							<span
+								id="navIconSun"
+								class="hidden items-center text-muted"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<circle cx="12" cy="12" r="4" />
+									<path
+										d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+									/></svg
+							></span>
 						</button>
 						<!-- API Vault Button -->
-						<button id="navVaultBtn" aria-label="API Vault" title="Configure GitHub Personal Access Token" class="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line/60 bg-surface/50 px-2.5 text-xs font-medium text-ink transition-colors duration-150 hover:border-accent/60 hover:bg-raised focus:outline-none focus:ring-2 focus:ring-accent">
+						<button
+							id="navVaultBtn"
+							aria-label="API Vault"
+							title="Configure GitHub Personal Access Token"
+							class="inline-flex h-8 items-center gap-1.5 rounded-lg border border-line/60 bg-surface/50 px-2.5 text-xs font-medium text-ink transition-colors duration-150 hover:border-accent/60 hover:bg-raised focus:outline-none focus:ring-2 focus:ring-accent"
+						>
 							<span class="relative flex items-center">
-								<svg viewBox="0 0 24 24" class="h-3.5 w-3.5 text-muted" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg>
-								<span id="navVaultDot" class="absolute -right-1 -top-1 h-2 w-2 rounded-full ring-2 ring-surface bg-faint" aria-hidden="true"></span>
+								<svg
+									viewBox="0 0 24 24"
+									class="h-3.5 w-3.5 text-muted"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<circle cx="7.5" cy="15.5" r="5.5" />
+									<path
+										d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"
+									/>
+								</svg>
+								<span
+									id="navVaultDot"
+									class="absolute -right-1 -top-1 h-2 w-2 rounded-full ring-2 ring-surface bg-faint"
+									aria-hidden="true"
+								></span>
 							</span>
 							<span>Vault</span>
 						</button>
 					</div>
 
 					<!-- Mobile Hamburger Trigger Button (Visible on mobile only) -->
-					<button id="navMobileMenuBtn" type="button" aria-expanded="false" aria-controls="navMobileDrawer" aria-label="Toggle navigation menu" class="inline-flex sm:hidden h-8 w-8 items-center justify-center rounded-lg border border-line/60 bg-surface/50 text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent">
-						<span id="navMobileMenuIconBurger" class="flex items-center">
-							<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+					<button
+						id="navMobileMenuBtn"
+						type="button"
+						aria-expanded="false"
+						aria-controls="navMobileDrawer"
+						aria-label="Toggle navigation menu"
+						class="inline-flex sm:hidden h-8 w-8 items-center justify-center rounded-lg border border-line/60 bg-surface/50 text-muted transition-colors duration-150 hover:bg-raised hover:text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+					>
+						<span
+							id="navMobileMenuIconBurger"
+							class="flex items-center"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<line x1="4" x2="20" y1="12" y2="12" />
+								<line x1="4" x2="20" y1="6" y2="6" />
+								<line x1="4" x2="20" y1="18" y2="18" />
+							</svg>
 						</span>
-						<span id="navMobileMenuIconClose" class="hidden items-center">
-							<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+						<span
+							id="navMobileMenuIconClose"
+							class="hidden items-center"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								class="h-4 w-4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path d="M18 6 6 18M6 6l12 12" />
+							</svg>
 						</span>
 					</button>
 				</div>
 			</div>
 
 			<!-- Mobile Dropdown Drawer (Below navbar on mobile view) -->
-			<div id="navMobileDrawer" class="hidden sm:hidden border-t border-line/70 bg-canvas/95 backdrop-blur-2xl px-4 py-3 shadow-2xl transition-all duration-200">
+			<div
+				id="navMobileDrawer"
+				class="hidden sm:hidden border-t border-line/70 bg-canvas/95 backdrop-blur-2xl px-4 py-3 shadow-2xl transition-all duration-200"
+			>
 				<div class="flex flex-col gap-1">
-					<div class="px-2 pt-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">Navigation Tools</div>
+					<div
+						class="px-2 pt-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted"
+					>
+						Navigation Tools
+					</div>
 					<!-- Mobile Leaderboard Button -->
-					<button id="navMobileLeaderboardBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
+					<button
+						id="navMobileLeaderboardBtn"
+						type="button"
+						class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80"
+					>
 						<div class="flex items-center gap-2.5">
-							<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v3h10v-3c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
+							<span class="flex items-center text-muted"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v3h10v-3c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34M18 2H6v7a6 6 0 0 0 12 0V2Z"
+									/></svg
+							></span>
 							<span>Developer Leaderboard</span>
 						</div>
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted">^L</kbd>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted"
+							>^L</kbd
+						>
 					</button>
 					<!-- Mobile Compare Button -->
-					<button id="navMobileCompareBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
+					<button
+						id="navMobileCompareBtn"
+						type="button"
+						class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80"
+					>
 						<div class="flex items-center gap-2.5">
-							<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
+							<span class="flex items-center text-muted"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1ZM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"
+									/></svg
+							></span>
 							<span>Compare Developers</span>
 						</div>
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted">^D</kbd>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted"
+							>^D</kbd
+						>
 					</button>
 					<!-- Mobile Batch Screener Button -->
-					<button id="navMobileBatchBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
+					<button
+						id="navMobileBatchBtn"
+						type="button"
+						class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80"
+					>
 						<div class="flex items-center gap-2.5">
-							<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.1ZM21 16l-9 5.2-9-5.2M21 8l-9-5.2-9 5.2M12 2.8v18.4"/></svg></span>
+							<span class="flex items-center text-muted"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.1ZM21 16l-9 5.2-9-5.2M21 8l-9-5.2-9 5.2M12 2.8v18.4"
+									/></svg
+							></span>
 							<span>Batch Screener</span>
 						</div>
-						<kbd class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted">^B</kbd>
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted"
+							>^B</kbd
+						>
 					</button>
 
 					<div class="my-1.5 border-t border-line/50"></div>
 
-					<div class="px-2 pt-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">Preferences & Security</div>
+					<div
+						class="px-2 pt-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted"
+					>
+						Preferences & Security
+					</div>
 					<!-- Mobile Vault Button -->
-					<button id="navMobileVaultBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
+					<button
+						id="navMobileVaultBtn"
+						type="button"
+						class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80"
+					>
 						<div class="flex items-center gap-2.5">
-							<span class="flex items-center text-muted"><svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"/></svg></span>
+							<span class="flex items-center text-muted"
+								><svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<circle cx="7.5" cy="15.5" r="5.5" />
+									<path
+										d="m21 2-9.6 9.6M15.5 7.5l3 3L22 7l-3-3"
+									/></svg
+							></span>
 							<span>API Vault Token</span>
 						</div>
-						<span class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] text-muted">
-							<span id="navMobileVaultDot" class="h-1.5 w-1.5 rounded-full bg-faint"></span>
+						<span
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2 py-0.5 font-mono text-[10px] text-muted"
+						>
+							<span
+								id="navMobileVaultDot"
+								class="h-1.5 w-1.5 rounded-full bg-faint"
+							></span>
 							<span id="navMobileVaultStatus">No Token</span>
 						</span>
 					</button>
 					<!-- Mobile Theme Toggle Button -->
-					<button id="navMobileThemeBtn" type="button" class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80">
+					<button
+						id="navMobileThemeBtn"
+						type="button"
+						class="flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-medium text-ink transition-colors duration-150 hover:bg-raised active:bg-raised/80"
+					>
 						<div class="flex items-center gap-2.5">
-							<span id="navMobileThemeIcon" class="flex items-center text-muted">
-								<svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+							<span
+								id="navMobileThemeIcon"
+								class="flex items-center text-muted"
+							>
+								<svg
+									viewBox="0 0 24 24"
+									class="h-4 w-4 shrink-0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+									/>
+								</svg>
 							</span>
 							<span>Appearance Theme</span>
 						</div>
-						<span id="navMobileThemeText" class="font-mono text-[11px] text-muted capitalize">Dark</span>
+						<span
+							id="navMobileThemeText"
+							class="font-mono text-[11px] text-muted capitalize"
+							>Dark</span
+						>
 					</button>
 
 					<div class="my-1.5 border-t border-line/50"></div>
 
 					<!-- Mobile Live API Quota Telemetry Capsule -->
-					<div class="rounded-lg border border-line/60 bg-surface/50 p-2.5">
+					<div
+						class="rounded-lg border border-line/60 bg-surface/50 p-2.5"
+					>
 						<div class="flex items-center justify-between mb-1.5">
-							<span class="font-mono text-[10px] font-semibold tracking-wider text-muted">GITHUB API QUOTA</span>
-							<span id="navMobileRlText" class="font-mono text-xs tabular-nums text-ink font-medium">—/—</span>
+							<span
+								class="font-mono text-[10px] font-semibold tracking-wider text-muted"
+								>GITHUB API QUOTA</span
+							>
+							<span
+								id="navMobileRlText"
+								class="font-mono text-xs tabular-nums text-ink font-medium"
+								>—/—</span
+							>
 						</div>
-						<div class="h-1.5 w-full overflow-hidden rounded-full bg-raised">
-							<div id="navMobileRlBar" class="h-full rounded-full bg-ok transition-all duration-300" style="width: 100%"></div>
+						<div
+							class="h-1.5 w-full overflow-hidden rounded-full bg-raised"
+						>
+							<div
+								id="navMobileRlBar"
+								class="h-full rounded-full bg-ok transition-all duration-300"
+								style="width: 100%"
+							></div>
 						</div>
-						<div id="navMobileRlTimer" class="hidden mt-1 font-mono text-[10px] tabular-nums text-danger text-right"></div>
+						<div
+							id="navMobileRlTimer"
+							class="hidden mt-1 font-mono text-[10px] tabular-nums text-danger text-right"
+						></div>
 					</div>
 				</div>
 			</div>
@@ -230,95 +611,221 @@
        ========================================================= -->
 		<main class="w-full">
 			<!-- HERO SECTION -->
-			<section id="heroSection" class="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 pb-28 pt-16">
-				<div class="flex w-full max-w-4xl flex-col items-center text-center">
+			<section
+				id="heroSection"
+				class="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 pb-28 pt-16"
+			>
+				<div
+					class="flex w-full max-w-4xl flex-col items-center text-center"
+				>
 					<!-- Intelligence badge -->
-					<div class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 shadow-sm">
-						<span id="heroVersionBadge" class="font-mono text-[11px] font-medium tracking-[0.16em] text-muted">INTELLIGENCE SYSTEM {{APP_VERSION_MAJOR}} ONLINE</span>
+					<div
+						class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 shadow-sm"
+					>
+						<span
+							id="heroVersionBadge"
+							class="font-mono text-[11px] font-medium tracking-[0.16em] text-muted"
+							>INTELLIGENCE SYSTEM {{APP_VERSION_MAJOR}}
+							ONLINE</span
+						>
 					</div>
 					<!-- Hero Title -->
-					<h1 class="mt-8 font-semibold leading-[0.88] tracking-[-0.045em] text-ink" style="font-size: clamp(3.25rem, 9.5vw, 7.5rem)">
+					<h1
+						class="mt-8 font-semibold leading-[0.88] tracking-[-0.045em] text-ink"
+						style="font-size: clamp(3.25rem, 9.5vw, 7.5rem)"
+					>
 						PROFILE<br />
-						<span class="bg-[linear-gradient(95deg,rgb(var(--accent))_10%,rgb(var(--limeink))_95%)] bg-clip-text text-transparent">SPECTRE</span>
+						<span
+							class="bg-[linear-gradient(95deg,rgb(var(--accent))_10%,rgb(var(--limeink))_95%)] bg-clip-text text-transparent"
+							>SPECTRE</span
+						>
 					</h1>
 					<p class="mt-6 text-lg text-muted sm:text-xl font-normal">
 						Developer deep-profiler & GitHub analytics engine
 					</p>
 					<!-- Capabilities list -->
-					<ul class="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-xs text-muted" aria-label="Capabilities">
+					<ul
+						class="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-xs text-muted"
+						aria-label="Capabilities"
+					>
 						<li class="flex items-center gap-3">Heatmaps</li>
-						<li class="flex items-center gap-3"><span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true"></span>Commit Quality</li>
-						<li class="flex items-center gap-3"><span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true"></span>PR Activity</li>
-						<li class="flex items-center gap-3"><span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true"></span>Compare</li>
-						<li class="flex items-center gap-3"><span class="h-1 w-1 rounded-full bg-faint" aria-hidden="true"></span>Export</li>
+						<li class="flex items-center gap-3">
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Commit Quality
+						</li>
+						<li class="flex items-center gap-3">
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>PR Activity
+						</li>
+						<li class="flex items-center gap-3">
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Compare
+						</li>
+						<li class="flex items-center gap-3">
+							<span
+								class="h-1 w-1 rounded-full bg-faint"
+								aria-hidden="true"
+							></span
+							>Export
+						</li>
 					</ul>
 					<!-- Search input form wrapper -->
-					<div id="searchWrapper" class="relative mt-9 w-full max-w-2xl text-left">
-						<form id="searchForm" class="flex h-16 items-center gap-3 rounded-2xl border border-line bg-surface pl-5 pr-2 shadow-2xl transition-colors duration-150 focus-within:border-accent">
-							<svg viewBox="0 0 24 24" class="h-5 w-5 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
-							<input id="searchInput" type="text" placeholder="Enter GitHub handle or URL (e.g. torvalds)" autocomplete="off" spellcheck="false" class="h-full min-w-0 flex-1 bg-transparent font-mono text-[15px] text-ink placeholder:text-muted/70 focus:outline-none" />
-							<kbd class="hidden sm:inline-flex rounded border border-line bg-raised px-2 py-1 font-mono text-[10px] text-muted">^K</kbd>
-							<button type="submit" id="searchSubmitBtn" class="h-12 shrink-0 rounded-xl bg-lime px-6 font-mono text-[13px] font-bold tracking-[0.16em] text-onlime shadow-lg shadow-lime/20 transition-all duration-150 hover:brightness-105 active:scale-[0.98]">
+					<div
+						id="searchWrapper"
+						class="relative mt-9 w-full max-w-2xl text-left"
+					>
+						<form
+							id="searchForm"
+							class="flex h-16 items-center gap-3 rounded-2xl border border-line bg-surface pl-5 pr-2 shadow-2xl transition-colors duration-150 focus-within:border-accent"
+						>
+							<svg
+								viewBox="0 0 24 24"
+								class="h-5 w-5 text-muted shrink-0"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<circle cx="11" cy="11" r="8" />
+								<line x1="21" x2="16.65" y1="21" y2="16.65" />
+							</svg>
+							<input
+								id="searchInput"
+								type="text"
+								placeholder="Enter GitHub handle or URL (e.g. torvalds)"
+								autocomplete="off"
+								spellcheck="false"
+								class="h-full min-w-0 flex-1 bg-transparent font-mono text-[15px] text-ink placeholder:text-muted/70 focus:outline-none"
+							/>
+							<kbd
+								class="hidden sm:inline-flex rounded border border-line bg-raised px-2 py-1 font-mono text-[10px] text-muted"
+								>^K</kbd
+							>
+							<button
+								type="submit"
+								id="searchSubmitBtn"
+								class="h-12 shrink-0 rounded-xl bg-lime px-6 font-mono text-[13px] font-bold tracking-[0.16em] text-onlime shadow-lg shadow-lime/20 transition-all duration-150 hover:brightness-105 active:scale-[0.98]"
+							>
 								SCAN
 							</button>
 						</form>
-						<p id="searchError" class="hidden mt-2 pl-2 text-xs text-danger font-mono"></p>
+						<p
+							id="searchError"
+							class="hidden mt-2 pl-2 text-xs text-danger font-mono"
+						></p>
 						<!-- History Dropdown -->
-						<div id="searchDropdown" class="hidden absolute inset-x-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl">
-							<div class="flex items-center justify-between border-b border-line px-4 py-2.5">
-								<span class="font-mono text-xs font-medium text-muted">Recent Scans</span>
-								<button type="button" id="historyClearBtn" class="text-xs text-muted hover:text-danger font-mono">Clear</button>
+						<div
+							id="searchDropdown"
+							class="hidden absolute inset-x-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl"
+						>
+							<div
+								class="flex items-center justify-between border-b border-line px-4 py-2.5"
+							>
+								<span
+									class="font-mono text-xs font-medium text-muted"
+									>Recent Scans</span
+								>
+								<button
+									type="button"
+									id="historyClearBtn"
+									class="text-xs text-muted hover:text-danger font-mono"
+								>
+									Clear
+								</button>
 							</div>
-							<ul id="historyList" class="scroll-thin max-h-64 overflow-y-auto py-1"></ul>
+							<ul
+								id="historyList"
+								class="scroll-thin max-h-64 overflow-y-auto py-1"
+							></ul>
 						</div>
 					</div>
 					<!-- Quick picks -->
-					<div class="mt-5 flex flex-wrap items-center justify-center gap-2">
+					<div
+						class="mt-5 flex flex-wrap items-center justify-center gap-2"
+					>
 						<span class="mr-1 text-xs text-muted">Try</span>
-						<button type="button" data-quickpick="torvalds" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60">torvalds</button>
-						<button type="button" data-quickpick="gvanrossum" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60">gvanrossum</button>
-						<button type="button" data-quickpick="antirez" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60">antirez</button>
-						<button type="button" data-quickpick="karpathy" class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60">karpathy</button>
+						<button
+							type="button"
+							data-quickpick="torvalds"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							torvalds
+						</button>
+						<button
+							type="button"
+							data-quickpick="gvanrossum"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							gvanrossum
+						</button>
+						<button
+							type="button"
+							data-quickpick="antirez"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							antirez
+						</button>
+						<button
+							type="button"
+							data-quickpick="karpathy"
+							class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-1 px-3 font-mono text-xs text-ink transition-colors hover:border-accent/60"
+						>
+							karpathy
+						</button>
 					</div>
 				</div>
 				<!-- Bottom Keyboard Shortcuts Strip -->
-				<ul class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex font-mono text-xs text-muted" aria-label="Shortcuts">
-					<li class="flex items-center gap-1.5"><kbd class="rounded border border-line bg-surface px-1.5 py-0.5">Ctrl+K</kbd>Search</li>
-					<li class="flex items-center gap-1.5"><kbd class="rounded border border-line bg-surface px-1.5 py-0.5">Ctrl+E</kbd>PDF</li>
-					<li class="flex items-center gap-1.5"><kbd class="rounded border border-line bg-surface px-1.5 py-0.5">Ctrl+D</kbd>Compare</li>
-					<li class="flex items-center gap-1.5"><kbd class="rounded border border-line bg-surface px-1.5 py-0.5">Ctrl+B</kbd>Batch</li>
-					<li class="flex items-center gap-1.5"><kbd class="rounded border border-line bg-surface px-1.5 py-0.5">Ctrl+T</kbd>Theme</li>
+				<ul
+					class="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-5 md:flex font-mono text-xs text-muted"
+					aria-label="Shortcuts"
+				>
+					<li class="flex items-center gap-1.5">
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+K</kbd
+						>Search
+					</li>
+					<li class="flex items-center gap-1.5">
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+E</kbd
+						>PDF
+					</li>
+					<li class="flex items-center gap-1.5">
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+D</kbd
+						>Compare
+					</li>
+					<li class="flex items-center gap-1.5">
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+B</kbd
+						>Batch
+					</li>
+					<li class="flex items-center gap-1.5">
+						<kbd
+							class="rounded border border-line bg-surface px-1.5 py-0.5"
+							>Ctrl+T</kbd
+						>Theme
+					</li>
 				</ul>
 			</section>
 			<!-- DOSSIER VIEW -->
-			<main id="dossierSection" class="relative z-10 hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6">
-				<!-- Live Scanning Telemetry Banner (non-blocking, parallel scan) -->
-				<div id="dossierScanBanner" class="hidden rounded-2xl border border-lime/30 bg-surface/90 p-4 shadow-lg backdrop-blur-xl">
-					<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-						<div class="flex items-center gap-3.5">
-							<div class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-lime/30 bg-lime/10">
-								<svg id="dossierScanIconSpin" class="h-5 w-5 animate-spin text-lime" viewBox="0 0 24 24" fill="none">
-									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-								</svg>
-								<svg id="dossierScanIconDone" class="hidden h-5 w-5 text-lime" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-							</div>
-							<div class="min-w-0 font-mono">
-								<div class="flex items-center gap-2">
-									<span id="dossierScanTitle" class="text-xs font-bold text-ink truncate">Deep Scanning Profile...</span>
-									<span id="dossierScanBadge" class="rounded bg-lime/10 px-1.5 py-0.5 text-[10px] font-semibold text-limeink uppercase">Active Telemetry</span>
-								</div>
-								<p id="dossierScanStatus" class="text-[11px] text-muted truncate">Streaming repositories, events & computing Developer Score™...</p>
-							</div>
-						</div>
-						<div class="flex items-center gap-3 sm:self-center">
-							<div class="h-1.5 w-full sm:w-44 overflow-hidden rounded-full bg-raised">
-								<div id="dossierScanProgress" class="h-full bg-lime transition-all duration-300" style="width: 25%;"></div>
-							</div>
-							<span id="dossierScanPercent" class="font-mono text-xs tabular-nums text-limeink font-medium">25%</span>
-						</div>
-					</div>
-				</div>
+			<main
+				id="dossierSection"
+				class="relative z-10 hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6"
+			>
 				<!-- 1. Identity Card -->
 				<div id="identityCardContainer"></div>
 				<!-- 2. Quick Explorer Panels -->
@@ -326,69 +833,166 @@
 				<!-- 3. Progression Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider">Progression</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true"></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Progression
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="gamificationContainer"></div>
 				</section>
 				<!-- 4. Activity Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider">Activity & Contributions</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true"></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Activity & Contributions
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="activityContainer"></div>
 				</section>
 				<!-- 5. Stack & Community Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider">Stack & Community</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true"></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Stack & Community
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="radarDnaContainer"></div>
 				</section>
 				<!-- 6. Code Quality Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider">Code Quality Intelligence</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true"></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Code Quality Intelligence
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="codeQualityContainer"></div>
 				</section>
 				<!-- 7. Top Repositories Group -->
 				<section class="space-y-4">
 					<div class="flex items-center gap-4 pt-4">
-						<h2 class="text-sm font-semibold text-ink uppercase font-mono tracking-wider">Top Repositories</h2>
-						<span class="h-px flex-1 bg-line" aria-hidden="true"></span>
+						<h2
+							class="text-sm font-semibold text-ink uppercase font-mono tracking-wider"
+						>
+							Top Repositories
+						</h2>
+						<span
+							class="h-px flex-1 bg-line"
+							aria-hidden="true"
+						></span>
 					</div>
 					<div id="reposContainer"></div>
 				</section>
 			</main>
 			<!-- COMPARE VIEW -->
-			<main id="compareSection" class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6">
+			<main
+				id="compareSection"
+				class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6"
+			>
 				<div id="compareViewContainer"></div>
 			</main>
 			<!-- RANKINGS / LEADERBOARD VIEW -->
-			<main id="leaderboardSection" class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6">
+			<main
+				id="leaderboardSection"
+				class="relative z-10 hidden mx-auto max-w-[1320px] px-4 pb-28 pt-8 sm:px-6"
+			>
 				<div id="leaderboardViewContainer"></div>
 			</main>
 		</main>
 		<!-- =========================================================
        3. FLOATING ACTION DOCK
        ========================================================= -->
-		<aside id="actionDock" aria-label="Dossier actions" class="hidden fixed bottom-4 right-4 z-30 flex items-center gap-1.5 rounded-2xl border border-line bg-surface p-1.5 shadow-2xl sm:bottom-6 sm:right-6">
-			<button type="button" id="dockBtnPdf" class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors">
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/></svg>
+		<aside
+			id="actionDock"
+			aria-label="Dossier actions"
+			class="hidden fixed bottom-4 right-4 z-30 flex items-center gap-1.5 rounded-2xl border border-line bg-surface p-1.5 shadow-2xl sm:bottom-6 sm:right-6"
+		>
+			<button
+				type="button"
+				id="dockBtnPdf"
+				class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-muted shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+					/>
+					<path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8" />
+				</svg>
 				<span class="hidden sm:inline">Export PDF</span>
-				<kbd class="hidden md:inline-flex rounded border border-line bg-surface px-1 py-0.5 text-[9px] text-muted">^E</kbd>
+				<kbd
+					class="hidden md:inline-flex rounded border border-line bg-surface px-1 py-0.5 text-[9px] text-muted"
+					>^E</kbd
+				>
 			</button>
-			<button type="button" id="dockBtnCard" class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors">
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-muted shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+			<button
+				type="button"
+				id="dockBtnCard"
+				class="inline-flex h-9 items-center gap-2 rounded-xl px-3 text-xs font-medium text-ink hover:bg-raised transition-colors"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-muted shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+					<circle cx="9" cy="9" r="2" />
+					<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+				</svg>
 				<span class="hidden sm:inline">Share Card</span>
 			</button>
 			<!-- Future: Badge button -->
-			<button type="button" id="dockBtnWrapped" class="inline-flex h-9 items-center gap-2 rounded-xl bg-lime px-3.5 text-xs font-bold text-onlime shadow-sm hover:brightness-105 active:scale-95 transition-all">
-				<svg viewBox="0 0 24 24" class="h-4 w-4 text-onlime shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+			<button
+				type="button"
+				id="dockBtnWrapped"
+				class="inline-flex h-9 items-center gap-2 rounded-xl bg-lime px-3.5 text-xs font-bold text-onlime shadow-sm hover:brightness-105 active:scale-95 transition-all"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					class="h-4 w-4 text-onlime shrink-0"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+					/>
+				</svg>
 				<span>Wrapped</span>
 			</button>
 		</aside>

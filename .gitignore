@@ -25,7 +25,7 @@ env/
 .DS_Store
 Thumb.db
 
-# Developer scripts (moved to scripts/ — ignore if regenerated in root)
+# Legacy developer scripts (prevent accidental regeneration)
 gen_html.py
 fix_js.py
 

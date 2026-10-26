@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased]
+
+### Removed
+- **Legacy Developer Tooling Scripts (`scripts/gen_html.py`, `scripts/fix_js.py`)**:
+  - Removed `scripts/gen_html.py`: Legacy v2 HTML generator that outputted a monolithic single-file bundle. Following the Git-Spectre v3.0 architecture overhaul that decoupled the frontend into modular ES modules (`static/js/components/`, `static/js/export/`, and `static/css/theme.css`), this script was obsolete and hazardous (running it would overwrite the modern 256-line `index.html` with monolithic v2 code).
+  - Removed `scripts/fix_js.py`: One-time hotfix script patching an HSL string bug in the monolithic `index.html` that is no longer present in the codebase.
+  - Removed the `scripts/` directory and cleaned up references in `.vercelignore`.
+
+---
+
 ## [3.0.0] — 2026-10-19
 
 ### Added — Step 1: Gamification Layer

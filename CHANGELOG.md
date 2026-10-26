@@ -17,7 +17,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
     - *Telemetry & Community Group*: Streamlined live API rate limit capsule and GitHub repository star counter badge.
     - *Controls & Settings Group*: Clean theme toggle and GitHub Personal Access Token Vault button.
   - Eliminated visual clutter and "border soup" by standardizing control heights (`h-8`), subtle translucent backgrounds (`bg-surface/50`), and balanced horizontal padding.
-  - Optimized mobile responsiveness down to 320px viewport widths with compact app bar height (`h-14 sm:h-16`), dynamic logo sizing, square icon touch buttons (`h-8 w-8`), and smooth `xs: (420px)` layout expansion without any horizontal overflow.
+  - Implemented a sleek mobile hamburger dropdown drawer (`#navMobileDrawer`) and trigger (`#navMobileMenuBtn`) on mobile screens (< 640px) while keeping the GitHub star button prominently visible outside in the top bar.
+  - Added full labeled navigation items in the mobile drawer for `Compare Developers`, `Batch Screener`, `API Vault Token` (with live PAT status badge), `Appearance Theme`, and a mobile-accessible live GitHub API Quota telemetry progress bar.
+  - Configured click-outside and Escape key auto-dismissal for the mobile navigation drawer.
 - **Clean Home Navigation & URL State Management**:
   - Configured home/logo navigation (`navLogoBtn` and `setView('hero')`) to automatically strip `/?u=username` query parameters from the browser address bar via `history.pushState(null, '', window.location.pathname)`.
   - Added reset of the search input field upon returning to the hero view.

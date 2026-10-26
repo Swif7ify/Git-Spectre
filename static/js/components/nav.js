@@ -3,7 +3,7 @@
  * Handles the top bar, live API rate limiter countdown, and action modal triggers.
  */
 
-import { getRateLimit, getVersion } from '../api.js';
+import { getRateLimit, getVersion, getRepoInfo } from '../api.js';
 import { getToken, getTheme, toggleTheme } from '../state.js';
 
 let _rateLimitTimer = null;
@@ -47,8 +47,9 @@ export function initNav({ onHome, onCompare, onBatch, onVault }) {
   refreshRateLimit();
   setInterval(refreshRateLimit, 60000);
 
-  // Synchronize dynamic application version badges
+  // Synchronize dynamic application version badges and repo stars
   syncVersion();
+  syncRepoInfo();
 }
 
 export async function syncVersion() {
@@ -61,6 +62,23 @@ export async function syncVersion() {
   const heroBadge = document.getElementById('heroVersionBadge');
   if (heroBadge && data.major) {
     heroBadge.textContent = `INTELLIGENCE SYSTEM ${data.major} ONLINE`;
+  }
+}
+
+export async function syncRepoInfo() {
+  const data = await getRepoInfo();
+  if (!data) return;
+
+  const githubBtn = document.getElementById('navGithubBtn');
+  if (githubBtn && data.url) {
+    githubBtn.href = data.url;
+  }
+
+  const starCountText = document.getElementById('navStarCountText');
+  if (starCountText && typeof data.stars === 'number') {
+    starCountText.textContent = data.stars >= 1000
+      ? (data.stars / 1000).toFixed(1).replace(/\.0$/, '') + 'k'
+      : data.stars.toLocaleString();
   }
 }
 

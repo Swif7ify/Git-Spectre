@@ -21,6 +21,7 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
+from core.cache import _cache_get, _cache_set
 from core.analytics import (
     _aggregate_languages,
     _compute_archetype,
@@ -34,6 +35,8 @@ from core.config import (
     APP_VERSION_SHORT,
     BASE_DIR,
     GITHUB_API,
+    GITHUB_REPO,
+    GITHUB_REPO_URL,
     _get_server_token,
     logger,
 )
@@ -53,6 +56,8 @@ __all__ = [
     "APP_VERSION",
     "APP_VERSION_SHORT",
     "APP_VERSION_MAJOR",
+    "GITHUB_REPO",
+    "GITHUB_REPO_URL",
     "_validate_username",
     "_validate_token",
     "_compute_archetype",
@@ -136,6 +141,8 @@ async def serve_spa() -> HTMLResponse:
         .replace("{{APP_VERSION_SHORT}}", APP_VERSION_SHORT)
         .replace("{{APP_VERSION_MAJOR}}", APP_VERSION_MAJOR)
         .replace("{{APP_VERSION}}", APP_VERSION)
+        .replace("{{GITHUB_REPO_URL}}", GITHUB_REPO_URL)
+        .replace("{{GITHUB_REPO}}", GITHUB_REPO)
     )
     return HTMLResponse(content)
 
@@ -353,6 +360,41 @@ async def version_endpoint() -> Dict[str, str]:
         "short": APP_VERSION_SHORT,
         "major": APP_VERSION_MAJOR,
     }
+
+
+@app.get("/api/repo-info")
+async def repo_info_endpoint() -> Dict[str, Any]:
+    """Return Git-Spectre repository details and star count with TTL caching."""
+    cache_key = f"repo_info:{GITHUB_REPO}"
+    cached = _cache_get(cache_key)
+    if cached:
+        return cached
+
+    headers = _build_headers(_get_server_token())
+    fallback = {
+        "repo": GITHUB_REPO,
+        "url": GITHUB_REPO_URL,
+        "stars": 0,
+        "forks": 0,
+    }
+    async with httpx.AsyncClient(timeout=httpx.Timeout(8.0)) as client:
+        try:
+            resp = await client.get(f"{GITHUB_API}/repos/{GITHUB_REPO}", headers=headers)
+            if resp.status_code == 200:
+                data = resp.json()
+                info = {
+                    "repo": GITHUB_REPO,
+                    "url": data.get("html_url") or GITHUB_REPO_URL,
+                    "stars": data.get("stargazers_count", 0),
+                    "forks": data.get("forks_count", 0),
+                }
+                _cache_set(cache_key, info)
+                return info
+        except Exception as exc:
+            logger.warning("Failed to fetch repo info for %s: %s", GITHUB_REPO, exc)
+
+    return fallback
+
 
 
 @app.get("/api/badge/{username}", include_in_schema=False)

@@ -82,3 +82,14 @@ export async function getVersion() {
   }
 }
 
+export async function getRepoInfo() {
+  try {
+    const resp = await fetch('/api/repo-info');
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  }
+}
+
+

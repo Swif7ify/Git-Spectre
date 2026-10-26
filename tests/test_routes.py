@@ -71,6 +71,18 @@ class TestVersionEndpoint:
         assert "major" in data
 
 
+class TestRepoInfoEndpoint:
+    def test_repo_info(self):
+        resp = client.get("/api/repo-info")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "repo" in data
+        assert "url" in data
+        assert "stars" in data
+        assert "forks" in data
+
+
+
 class TestBatchValidation:
     def test_batch_empty_payload(self):
         resp = client.post("/api/batch", json={"usernames": []})

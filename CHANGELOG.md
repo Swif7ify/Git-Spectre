@@ -7,6 +7,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **GitHub Repository Link & Live Star Counter**:
+  - Added repository star button in the navigation bar with GitHub octocat icon and live stargazers count badge.
+  - Implemented `GET /api/repo-info` endpoint with server-side caching (`_cache_set`/`_cache_get`) to query and return GitHub repository metadata, stars, and forks while respecting API rate limits.
+  - Added `syncRepoInfo()` in `static/js/components/nav.js` and `getRepoInfo()` in `static/js/api.js` to dynamically synchronize the repository link and live star count.
+
 ### Changed
 - **Modular Backend Architecture (`core/` package)**:
   - Decomposed the monolithic 1,568-line `main.py` into dedicated, single-responsibility modules under `core/`:

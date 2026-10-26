@@ -77,3 +77,7 @@ APP_VERSION = os.getenv("APP_VERSION", "3.0.0")
 APP_VERSION_SHORT = "v" + ".".join(APP_VERSION.split(".")[:2])
 APP_VERSION_MAJOR = "v" + APP_VERSION.split(".")[0]
 
+# Official repository metadata
+GITHUB_REPO = os.getenv("GITHUB_REPO", "chiragjaiswar0814/Git-Spectre")
+GITHUB_REPO_URL = f"https://github.com/{GITHUB_REPO}"
+

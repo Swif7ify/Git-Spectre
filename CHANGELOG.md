@@ -7,6 +7,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- **Modular Backend Architecture (`core/` package)**:
+  - Decomposed the monolithic 1,568-line `main.py` into dedicated, single-responsibility modules under `core/`:
+    - `core/config.py`: Environment configuration, tokens, constants, and logging setup.
+    - `core/cache.py`: In-memory TTL response caching logic.
+    - `core/schemas.py`: Pydantic request models, PAT regexes, and username sanitization.
+    - `core/fetchers.py`: Asynchronous GitHub REST scrapers and exponential back-off network client.
+    - `core/analytics.py`: Developer Score™ composite calculation, archetype classification, heatmap, streak analysis, and repo intelligence.
+    - `core/gamification.py`: XP leveling, unlockable achievement badges, GitHub Wrapped, and social graph computation.
+    - `core/service.py`: Pipeline orchestrator running end-to-end user profile analysis.
+  - Reduced `main.py` from 1,568 lines to 408 lines focused solely on FastAPI application configuration, security middleware, rate limiting, and route dispatching.
+  - Every backend source file now strictly obeys the project's `< 500 lines of code` standard while maintaining 100% backwards compatibility with existing test suites and deployment setups.
+
 ### Removed
 - **Legacy Developer Tooling Scripts (`scripts/gen_html.py`, `scripts/fix_js.py`)**:
   - Removed `scripts/gen_html.py`: Legacy v2 HTML generator that outputted a monolithic single-file bundle. Following the Git-Spectre v3.0 architecture overhaul that decoupled the frontend into modular ES modules (`static/js/components/`, `static/js/export/`, and `static/css/theme.css`), this script was obsolete and hazardous (running it would overwrite the modern 256-line `index.html` with monolithic v2 code).

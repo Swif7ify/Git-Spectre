@@ -52,7 +52,7 @@ def _make_dummy_dossier(login="octocat", score=750, stars=120, lang="Python"):
             "html_url": f"https://github.com/{login}",
         },
         "score": {"total": score, "tier": "A"},
-        "archetype": {"title": "Code Architect", "badge": "⚡"},
+        "archetype": {"title": "Code Architect", "badge": ""},
         "dev_level": {"level": 12},
         "languages": {"dominant": lang, lang: 50000},
         "stars_earned": stars,

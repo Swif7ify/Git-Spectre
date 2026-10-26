@@ -144,7 +144,7 @@ def record_profile_check(
     score_tier = str(score.get("tier", "B")) if isinstance(score, dict) else "B"
     
     arch_title = archetype.get("title", "Developer") if isinstance(archetype, dict) else "Developer"
-    arch_badge = archetype.get("badge", "⚡") if isinstance(archetype, dict) else "⚡"
+    arch_badge = archetype.get("badge", "") if isinstance(archetype, dict) else ""
     level_num = int(dev_level.get("level", 1)) if isinstance(dev_level, dict) else 1
 
     primary_lang = ""

@@ -65,22 +65,22 @@ export function renderIdentity(dossier) {
   if (lb && lb.eligible) {
     if (lb.daily && lb.daily.rank) {
       leaderboardBadge = `
-        <button type="button" data-open-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.daily.rank} Today (${lb.daily.checks} check${lb.daily.checks === 1 ? '' : 's'}). Click to inspect leaderboard.">
-          <span class="text-xs">🔥</span>
+        <button type="button" data-nav-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.daily.rank} Today (${lb.daily.checks} check${lb.daily.checks === 1 ? '' : 's'}). Click to view rankings.">
+          ${icon('flame', 'w-3 h-3 text-limeink shrink-0')}
           <span>Ranked #${lb.daily.rank} Today (${full(lb.daily.checks)} check${lb.daily.checks === 1 ? '' : 's'})</span>
         </button>
       `;
     } else if (lb.monthly && lb.monthly.rank) {
       leaderboardBadge = `
-        <button type="button" data-open-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.monthly.rank} This Month. Click to inspect leaderboard.">
-          <span class="text-xs">🏆</span>
+        <button type="button" data-nav-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.monthly.rank} This Month. Click to view rankings.">
+          ${icon('award', 'w-3 h-3 text-limeink shrink-0')}
           <span>Ranked #${lb.monthly.rank} This Month</span>
         </button>
       `;
     } else if (lb.all_time && lb.all_time.rank) {
       leaderboardBadge = `
-        <button type="button" data-open-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-line bg-raised px-3 py-1 font-mono text-[11px] font-semibold text-ink transition-all hover:border-accent hover:scale-105 active:scale-95" title="Ranked #${lb.all_time.rank} All-Time. Click to inspect leaderboard.">
-          <span class="text-xs">⭐</span>
+        <button type="button" data-nav-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-line bg-raised px-3 py-1 font-mono text-[11px] font-semibold text-ink transition-all hover:border-accent hover:scale-105 active:scale-95" title="Ranked #${lb.all_time.rank} All-Time. Click to view rankings.">
+          ${icon('star', 'w-3 h-3 text-ink shrink-0')}
           <span>Ranked #${lb.all_time.rank} All-Time</span>
         </button>
       `;

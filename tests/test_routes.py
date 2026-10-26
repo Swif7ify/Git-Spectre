@@ -27,6 +27,7 @@ class TestRootRoute:
         assert 'id="spectre-telemetry"' in html
         assert 'id="searchForm"' in html
         assert 'id="dossierSection"' in html
+        assert 'id="leaderboardSection"' in html
         assert '/static/js/app.js' in html
         assert APP_VERSION_SHORT in html
 

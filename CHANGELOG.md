@@ -19,12 +19,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - **New REST API Endpoints**:
     - `GET /api/leaderboard`: Query ranked profiles by `period`, `limit`, `language`, and `q` search query with rate limiting.
     - `GET /api/leaderboard/rank/{username}`: Fetch a developer's real-time rank and check metrics across all timeframes.
-  - **Interactive Leaderboard UI (`static/js/components/leaderboard.js`)**:
-    - Glassmorphic modal with timeframe tabs (`Today`, `This Month`, `This Year`, `All-Time`).
-    - Top 3 developer podium with custom Gold 🥇 (`#1`), Silver 🥈 (`#2`), and Bronze 🥉 (`#3`) glowing cards displaying dev grade, score, dominant language, and live check badges.
-    - Filterable developer roster with live search, language selector chips, and instant click-to-scan navigation into full profile dossiers.
-    - Interactive ranking badges in the profile dossier identity card (e.g. `🔥 Ranked #1 Today (28 checks)`) that open the leaderboard modal.
-    - Global keyboard shortcut `Ctrl+L` for instant leaderboard opening.
+  - **Dedicated Full-Page Rankings View (`static/js/components/leaderboard.js`)**:
+    - Full-page responsive SPA view (`#leaderboardSection` / `/?view=leaderboard`) replacing modal overlay for an expansive, focused developer browsing experience.
+    - Clean executive-grade UI/UX with professional typography, zero emoji usage, and refined SVG vector iconography.
+    - Interactive segmented timeframe switcher (`Today`, `This Month`, `This Year`, `All-Time`).
+    - Top 3 developer podium with sleek metallic badge accents (`#01`, `#02`, `#03`), dev grade chips, score metrics, dominant language tag, and verified check count indicators.
+    - Full ranked developer table with live search, language selector chips, and instant click-to-scan navigation into complete profile dossiers.
+    - Real-time rank pill in the developer dossier identity card that navigates directly to the Rankings page.
+    - Global keyboard shortcut `Ctrl+L` for instant navigation to Developer Rankings.
   - **Dedicated Database Documentation (`docs/SCHEMA.md`)**:
     - Comprehensive schema specification, ERD diagram, index definitions, anti-spam security architecture, query patterns, and serverless migration policies.
 - **Premium Modern Custom Scrollbars**:

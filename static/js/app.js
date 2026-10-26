@@ -19,7 +19,7 @@ import { renderCodeQuality } from './components/codeQuality.js';
 import { renderRepos } from './components/repos.js';
 import { renderCompareView } from './components/compare.js';
 import { initModals, openModal, closeModal, openWrappedModal } from './components/modals.js';
-import { initLeaderboard, openLeaderboardModal } from './components/leaderboard.js';
+import { renderLeaderboardView } from './components/leaderboard.js';
 import { exportPdf, exportShareCard, copyBadgeSnippet } from './export.js';
 import { initBackground } from './components/background.js';
 
@@ -29,22 +29,35 @@ function setView(view) {
   const heroSection = document.getElementById('heroSection');
   const dossierSection = document.getElementById('dossierSection');
   const compareSection = document.getElementById('compareSection');
+  const leaderboardSection = document.getElementById('leaderboardSection');
   const actionDock = document.getElementById('actionDock');
 
   if (heroSection) heroSection.classList.toggle('hidden', view !== 'hero');
   if (dossierSection) dossierSection.classList.toggle('hidden', view !== 'dossier');
   if (compareSection) compareSection.classList.toggle('hidden', view !== 'compare');
+  if (leaderboardSection) leaderboardSection.classList.toggle('hidden', view !== 'leaderboard');
   if (actionDock) actionDock.classList.toggle('hidden', view !== 'dossier');
 
   // Smooth scroll to top on view changes
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Clean URL query parameters when returning to hero view
+  // URL state management
   if (view === 'hero') {
     if (window.location.search) {
       history.pushState(null, '', window.location.pathname);
     }
+  } else if (view === 'leaderboard') {
+    history.pushState(null, '', '/?view=leaderboard');
   }
+}
+
+// Dedicated Leaderboard Page Controller
+export function showLeaderboardPage() {
+  renderLeaderboardView({
+    onOpenDossier: (login) => runScan(login),
+    onBackHome: () => setView('hero'),
+  });
+  setView('leaderboard');
 }
 
 // Main Scan Action
@@ -132,7 +145,7 @@ function initShortcuts() {
         openModal('batchModal');
       } else if (key === 'l') {
         e.preventDefault();
-        openLeaderboardModal();
+        showLeaderboardPage();
       } else if (key === 't') {
         e.preventDefault();
         toggleTheme();
@@ -155,10 +168,19 @@ window.addEventListener('DOMContentLoaded', () => {
       if (searchInput) searchInput.value = '';
       setView('hero');
     },
-    onLeaderboard: () => openLeaderboardModal(),
+    onLeaderboard: () => showLeaderboardPage(),
     onCompare: () => openModal('compareModal'),
     onBatch: () => openModal('batchModal'),
     onVault: () => openModal('vaultModal'),
+  });
+
+  // Global delegation for data-nav-leaderboard and data-open-leaderboard elements
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-nav-leaderboard], [data-open-leaderboard]');
+    if (trigger) {
+      e.preventDefault();
+      showLeaderboardPage();
+    }
   });
 
   // Initialize Hero
@@ -191,11 +213,6 @@ window.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  // Initialize Leaderboard
-  initLeaderboard({
-    onOpenDossier: (login) => runScan(login),
-  });
-
   // Initialize Global Shortcuts
   initShortcuts();
 
@@ -203,17 +220,23 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('popstate', () => {
     const params = new URLSearchParams(window.location.search);
     const u = params.get('u');
-    if (u) {
+    const view = params.get('view');
+    if (view === 'leaderboard') {
+      showLeaderboardPage();
+    } else if (u) {
       runScan(u);
     } else {
       setView('hero');
     }
   });
 
-  // Initial URL query parameter check: ?u=username
+  // Initial URL query parameter check: ?u=username or ?view=leaderboard
   const params = new URLSearchParams(window.location.search);
   const u = params.get('u');
-  if (u) {
+  const view = params.get('view');
+  if (view === 'leaderboard') {
+    showLeaderboardPage();
+  } else if (u) {
     runScan(u);
   }
 });

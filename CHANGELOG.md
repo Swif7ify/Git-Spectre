@@ -8,6 +8,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **Premium Modern Custom Scrollbars**:
+  - Designed sleek, modern custom scrollbars with smooth scroll behavior and `scrollbar-gutter: stable` to eliminate page shifting during view transitions.
+  - Implemented thin rounded scrollbars (7px global, 4px `.scroll-thin`) with transparent tracks, padded thumb clips, and dynamic hover/active accent states across dark and light themes.
+- **Decluttered Header & Grouped Navigation Bar**:
+  - Redesigned the top navigation bar into 3 distinct, well-spaced functional clusters separated by subtle vertical dividers (`h-4 w-px bg-line/60`):
+    - *Tools Group*: Ghost pill buttons for `Compare` and `Batch` screener with responsive labels and icons.
+    - *Telemetry & Community Group*: Streamlined live API rate limit capsule and GitHub repository star counter badge.
+    - *Controls & Settings Group*: Clean theme toggle and GitHub Personal Access Token Vault button.
+  - Eliminated visual clutter and "border soup" by standardizing control heights (`h-8`), subtle translucent backgrounds (`bg-surface/50`), and balanced horizontal padding.
+- **Clean Home Navigation & URL State Management**:
+  - Configured home/logo navigation (`navLogoBtn` and `setView('hero')`) to automatically strip `/?u=username` query parameters from the browser address bar via `history.pushState(null, '', window.location.pathname)`.
+  - Added reset of the search input field upon returning to the hero view.
+  - Added `popstate` event listener to handle smooth browser Back and Forward history transitions between profile scans and the hero view.
 - **GitHub Repository Link & Live Star Counter**:
   - Added repository star button in the navigation bar with GitHub octocat icon and live stargazers count badge.
   - Implemented `GET /api/repo-info` endpoint with server-side caching (`_cache_set`/`_cache_get`) to query and return GitHub repository metadata, stars, and forks while respecting API rate limits.

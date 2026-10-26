@@ -35,8 +35,14 @@ function setView(view) {
   if (compareSection) compareSection.classList.toggle('hidden', view !== 'compare');
   if (actionDock) actionDock.classList.toggle('hidden', view !== 'dossier');
 
-  if (view === 'dossier') {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Smooth scroll to top on view changes
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Clean URL query parameters when returning to hero view
+  if (view === 'hero') {
+    if (window.location.search) {
+      history.pushState(null, '', window.location.pathname);
+    }
   }
 }
 
@@ -140,7 +146,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Nav
   initNav({
-    onHome: () => setView('hero'),
+    onHome: () => {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      setView('hero');
+    },
     onCompare: () => openModal('compareModal'),
     onBatch: () => openModal('batchModal'),
     onVault: () => openModal('vaultModal'),
@@ -179,7 +189,18 @@ window.addEventListener('DOMContentLoaded', () => {
   // Initialize Global Shortcuts
   initShortcuts();
 
-  // URL query parameter check: ?u=username
+  // Handle browser Back/Forward navigation
+  window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(window.location.search);
+    const u = params.get('u');
+    if (u) {
+      runScan(u);
+    } else {
+      setView('hero');
+    }
+  });
+
+  // Initial URL query parameter check: ?u=username
   const params = new URLSearchParams(window.location.search);
   const u = params.get('u');
   if (u) {

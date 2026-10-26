@@ -3,7 +3,7 @@
  * Bootstraps modules, coordinates view transitions, scans, comparisons, and keyboard shortcuts.
  */
 
-import { analyzeProfile, compareProfiles, clearLeaderboardClientCache } from './api.js';
+import { analyzeProfile, compareProfiles, clearLeaderboardClientCache, getQuickProfile } from './api.js';
 import { appState, getToken, getTheme, applyTheme, toggleTheme } from './state.js';
 import { showToast, parseTarget } from './utils.js';
 
@@ -22,6 +22,7 @@ import { initModals, openModal, closeModal, openWrappedModal } from './component
 import { renderLeaderboardView } from './components/leaderboard.js';
 import { exportPdf, exportShareCard, copyBadgeSnippet } from './export.js';
 import { initBackground } from './components/background.js';
+import { renderDossierSkeletons } from './components/skeletons.js';
 
 // View Transition Helper
 function setView(view) {
@@ -60,20 +61,91 @@ export function showLeaderboardPage() {
   setView('leaderboard');
 }
 
-// Main Scan Action
+let _activeScanId = 0;
+
+// Main Scan Action (Parallel Async: Quick Identity + Background Deep Scan)
 export async function runScan(rawUsername) {
   const username = parseTarget(rawUsername);
   if (!username) return;
 
-  showScan(username);
+  const currentScanId = ++_activeScanId;
+
+  const banner = document.getElementById('dossierScanBanner');
+  const scanTitle = document.getElementById('dossierScanTitle');
+  const scanStatus = document.getElementById('dossierScanStatus');
+  const scanProgress = document.getElementById('dossierScanProgress');
+  const scanPercent = document.getElementById('dossierScanPercent');
+  const iconSpin = document.getElementById('dossierScanIconSpin');
+  const iconDone = document.getElementById('dossierScanIconDone');
+
+  function updateBanner(pct, title, status) {
+    if (!banner) return;
+    if (pct !== undefined && scanProgress && scanPercent) {
+      scanProgress.style.width = `${pct}%`;
+      scanPercent.textContent = `${pct}%`;
+    }
+    if (title && scanTitle) scanTitle.textContent = title;
+    if (status && scanStatus) scanStatus.textContent = status;
+  }
+
+  // Set initial banner state & switch to dossier view immediately
+  if (banner) {
+    banner.classList.remove('hidden');
+    if (iconSpin) iconSpin.classList.remove('hidden');
+    if (iconDone) iconDone.classList.add('hidden');
+    updateBanner(15, `Scanning @${username}...`, 'Resolving identity & repositories...');
+  }
+
+  setView('dossier');
+  renderDossierSkeletons();
+
+  // Step ticker for visual progress while APIs run in parallel
+  let progressVal = 15;
+  const progressTimer = setInterval(() => {
+    if (_activeScanId !== currentScanId) {
+      clearInterval(progressTimer);
+      return;
+    }
+    progressVal = Math.min(88, progressVal + 12);
+    const steps = [
+      'Resolving identity & repositories...',
+      'Streaming public events & commit history...',
+      'Computing Developer Score™ and streaks...',
+      'Synthesizing codebase radar DNA...',
+      'Finalizing developer dossier...'
+    ];
+    const stepIdx = Math.min(steps.length - 1, Math.floor(progressVal / 20));
+    updateBanner(progressVal, `Scanning @${username}...`, steps[stepIdx]);
+  }, 350);
 
   try {
     const token = getToken();
-    const data = await analyzeProfile(username, token);
+
+    // Launch BOTH quick profile and full analysis concurrently in parallel!
+    const quickPromise = getQuickProfile(username, token);
+    const fullPromise = analyzeProfile(username, token);
+
+    // 1. FAST PATH: Quick profile arrives in ~100-200ms -> user views info immediately!
+    quickPromise
+      .then((quickData) => {
+        if (_activeScanId !== currentScanId) return;
+        if (!appState.activeDossier || appState.activeDossier.profile?.login?.toLowerCase() !== username.toLowerCase()) {
+          renderIdentity({ ...quickData, isScanning: true });
+          updateBanner(45, `Scanning @${username}...`, 'Profile identity loaded. Computing deep analytics...');
+        }
+      })
+      .catch(() => {});
+
+    // 2. FULL PATH: Complete analysis finishes -> seamlessly hydrate full data
+    const data = await fullPromise;
+    clearInterval(progressTimer);
+
+    if (_activeScanId !== currentScanId) return;
+
     appState.activeDossier = data;
     clearLeaderboardClientCache();
 
-    // Render all modular dossier components
+    // Render all modular dossier components with full calculated data
     renderIdentity(data);
     renderExplorer(data);
     renderGamification(data);
@@ -85,12 +157,24 @@ export async function runScan(rawUsername) {
     // Update browser URL
     history.pushState(null, '', `/?u=${encodeURIComponent(username)}`);
 
-    // Switch view to dossier
-    setView('dossier');
+    // Complete banner state
+    updateBanner(100, `Deep Scan Complete: @${username}`, 'All developer intelligence metrics calculated.');
+    if (iconSpin) iconSpin.classList.add('hidden');
+    if (iconDone) iconDone.classList.remove('hidden');
+
+    setTimeout(() => {
+      if (_activeScanId === currentScanId && banner) {
+        banner.classList.add('hidden');
+      }
+    }, 1800);
   } catch (err) {
+    clearInterval(progressTimer);
+    if (_activeScanId !== currentScanId) return;
+    if (banner) banner.classList.add('hidden');
     showToast(`Scan failed: ${err.message}`, 'alert-triangle');
-  } finally {
-    hideScan();
+    if (!appState.activeDossier) {
+      setView('hero');
+    }
   }
 }
 

@@ -3,6 +3,22 @@
  * Wraps all FastAPI endpoints with consistent error handling.
  */
 
+export async function getQuickProfile(username, token = null) {
+  const resp = await fetch('/api/quick-profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: username.trim(),
+      github_token: token || null,
+    }),
+  });
+  const data = await resp.json();
+  if (!resp.ok) {
+    throw new Error(data.detail || `Profile lookup failed (HTTP ${resp.status})`);
+  }
+  return data;
+}
+
 export async function analyzeProfile(username, token = null) {
   const resp = await fetch('/api/analyze', {
     method: 'POST',

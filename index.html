@@ -292,6 +292,33 @@
 			</section>
 			<!-- DOSSIER VIEW -->
 			<main id="dossierSection" class="relative z-10 hidden mx-auto max-w-[1320px] space-y-6 px-4 pb-36 pt-8 sm:px-6">
+				<!-- Live Scanning Telemetry Banner (non-blocking, parallel scan) -->
+				<div id="dossierScanBanner" class="hidden rounded-2xl border border-lime/30 bg-surface/90 p-4 shadow-lg backdrop-blur-xl">
+					<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+						<div class="flex items-center gap-3.5">
+							<div class="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-lime/30 bg-lime/10">
+								<svg id="dossierScanIconSpin" class="h-5 w-5 animate-spin text-lime" viewBox="0 0 24 24" fill="none">
+									<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+									<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+								</svg>
+								<svg id="dossierScanIconDone" class="hidden h-5 w-5 text-lime" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+							</div>
+							<div class="min-w-0 font-mono">
+								<div class="flex items-center gap-2">
+									<span id="dossierScanTitle" class="text-xs font-bold text-ink truncate">Deep Scanning Profile...</span>
+									<span id="dossierScanBadge" class="rounded bg-lime/10 px-1.5 py-0.5 text-[10px] font-semibold text-limeink uppercase">Active Telemetry</span>
+								</div>
+								<p id="dossierScanStatus" class="text-[11px] text-muted truncate">Streaming repositories, events & computing Developer Score™...</p>
+							</div>
+						</div>
+						<div class="flex items-center gap-3 sm:self-center">
+							<div class="h-1.5 w-full sm:w-44 overflow-hidden rounded-full bg-raised">
+								<div id="dossierScanProgress" class="h-full bg-lime transition-all duration-300" style="width: 25%;"></div>
+							</div>
+							<span id="dossierScanPercent" class="font-mono text-xs tabular-nums text-limeink font-medium">25%</span>
+						</div>
+					</div>
+				</div>
 				<!-- 1. Identity Card -->
 				<div id="identityCardContainer"></div>
 				<!-- 2. Quick Explorer Panels -->

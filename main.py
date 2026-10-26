@@ -49,7 +49,7 @@ from core.schemas import (
     _validate_token,
     _validate_username,
 )
-from core.service import _run_analysis
+from core.service import _get_quick_profile, _run_analysis
 from core.leaderboard import get_leaderboard, get_leaderboard_languages, get_profile_rank
 
 # Re-export key functions for backwards compatibility with tests and tooling
@@ -156,6 +156,14 @@ async def serve_spa() -> HTMLResponse:
 async def serve_favicon() -> FileResponse:
     """Serve the brand vector favicon."""
     return FileResponse(str(_static_dir / "icon.svg"), media_type="image/svg+xml")
+
+
+@limiter.limit("30/minute")
+@app.post("/api/quick-profile")
+async def quick_profile(request: Request, payload: AnalyzeRequest) -> Dict[str, Any]:
+    """Fast, lightweight endpoint returning core GitHub profile identity in ~100ms."""
+    token = payload.github_token or _get_server_token()
+    return await _get_quick_profile(payload.username, token)
 
 
 @limiter.limit("15/minute")

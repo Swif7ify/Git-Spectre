@@ -8,6 +8,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- **Parallel Async Scanning & Non-Blocking Dossier Hydration**:
+  - Implemented parallel async orchestration in `runScan()`: launches a lightweight quick-profile lookup (`POST /api/quick-profile`) concurrently alongside the deep multi-endpoint analysis (`POST /api/analyze`).
+  - **Instant Profile Visibility (~150ms)**: Renders the user's authentic identity card (avatar, name, @handle, bio, company, location, followers, public repos) in ~150ms instead of holding the user behind a blocking 4-second full-screen animation.
+  - **Non-Blocking Telemetry Scan Banner**: Replaced the full-screen modal lock with `#dossierScanBanner` displaying live step progression, animated radar telemetry, and percentage progress directly atop the dossier while deep background calculations (Developer Score™, radar DNA, commit streaks, heatmap, achievements, roast) run in parallel.
+  - **Futuristic Skeleton Loading States**: Added modular skeleton placeholders (`static/js/components/skeletons.js`) and radar sweep animation inside the score ring while background computations finish.
 - **Global Developer Leaderboard & Popularity Ranking System**:
   - Implemented a community-driven developer leaderboard ranking analyzed GitHub profiles based on verified check count (trending community interest), with secondary tie-breakers on Developer Score™ and total stars earned.
   - Multi-window timeframe filtering supporting **Today (`daily`)**, **This Month (`monthly`)**, **This Year (`yearly`)**, and **All-Time (`all`)**.

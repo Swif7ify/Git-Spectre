@@ -257,3 +257,57 @@ async def _run_analysis(
 
     _cache_set(cache_key, result)
     return result
+
+
+async def _get_quick_profile(username: str, token: Optional[str]) -> Dict[str, Any]:
+    """Fast, lightweight endpoint returning core GitHub profile identity in ~100ms."""
+    clean_username = username.strip()
+    cache_key = f"{clean_username.lower()}:{bool(token)}"
+    cached = _cache_get(cache_key)
+    if cached and "profile" in cached:
+        return {
+            "profile": cached["profile"],
+            "stats": cached.get("stats", {}),
+            "cached": True,
+            "leaderboard": cached.get("leaderboard"),
+            "quick": False,
+        }
+
+    quick_key = f"quick:{clean_username.lower()}:{bool(token)}"
+    cached_quick = _cache_get(quick_key)
+    if cached_quick:
+        return cached_quick
+
+    headers = _build_headers(token)
+    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
+        profile = await _fetch_profile(client, clean_username, headers)
+
+    out = {
+        "quick": True,
+        "cached": False,
+        "profile": {
+            "login": profile.get("login"),
+            "name": profile.get("name") or profile.get("login"),
+            "bio": profile.get("bio") or "No bio provided.",
+            "avatar_url": profile.get("avatar_url"),
+            "html_url": profile.get("html_url"),
+            "location": profile.get("location") or "Unknown",
+            "company": profile.get("company") or "Independent",
+            "blog": profile.get("blog") or "",
+            "twitter": profile.get("twitter_username") or "",
+            "created_at": profile.get("created_at", "")[:4],
+            "followers": profile.get("followers", 0),
+            "following": profile.get("following", 0),
+            "public_repos": profile.get("public_repos", 0),
+        },
+        "stats": {
+            "total_repos": profile.get("public_repos", 0),
+            "total_stars": 0,
+            "own_repos": profile.get("public_repos", 0),
+            "forked_repos": 0,
+        },
+        "score": {"total": 0, "grade": "—"},
+        "archetype": {"label": "Analyzing Codebase...", "glow": "#8B6CFF"},
+    }
+    _cache_set(quick_key, out, ttl=120)
+    return out

@@ -93,3 +93,14 @@ class TestBatchValidation:
         too_many = [f"user{i}" for i in range(11)]
         resp = client.post("/api/batch", json={"usernames": too_many})
         assert resp.status_code == 422
+
+
+class TestQuickProfileRoute:
+    def test_quick_profile_validation_empty(self):
+        resp = client.post("/api/quick-profile", json={"username": ""})
+        assert resp.status_code == 422
+
+    def test_quick_profile_invalid_username(self):
+        resp = client.post("/api/quick-profile", json={"username": "-invalid--"})
+        assert resp.status_code == 422
+

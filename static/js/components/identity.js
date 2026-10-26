@@ -21,6 +21,7 @@ export function renderIdentity(dossier) {
   const container = document.getElementById('identityCardContainer');
   if (!container) return;
 
+  const isScanning = Boolean(dossier.isScanning);
   const totalScore = Math.max(0, Math.min(1000, Number(score.total) || 0));
   const grade = score.grade || 'E';
   const archColor = archetype.glow || '#8B6CFF';
@@ -193,21 +194,42 @@ export function renderIdentity(dossier) {
             <div class="relative mx-auto mt-5 h-[164px] w-[164px]">
               <svg viewBox="0 0 164 164" class="-rotate-90 w-full h-full">
                 <circle cx="82" cy="82" r="${radius}" stroke-width="10" class="fill-none stroke-line" />
-                <circle cx="82" cy="82" r="${radius}" stroke-width="10" stroke-linecap="round"
-                  stroke-dasharray="${circumference}" stroke-dashoffset="${strokeOffset}"
-                  class="fill-none stroke-accent transition-all duration-1000 ease-out" />
+                ${isScanning ? `
+                  <circle cx="82" cy="82" r="${radius}" stroke-width="10" stroke-linecap="round"
+                    stroke-dasharray="${circumference}" stroke-dashoffset="${circumference * 0.7}"
+                    class="fill-none stroke-lime animate-spin origin-center" />
+                ` : `
+                  <circle cx="82" cy="82" r="${radius}" stroke-width="10" stroke-linecap="round"
+                    stroke-dasharray="${circumference}" stroke-dashoffset="${strokeOffset}"
+                    class="fill-none stroke-accent transition-all duration-1000 ease-out" />
+                `}
               </svg>
               <div class="absolute inset-0 grid place-items-center text-center">
                 <div>
-                  <div id="scoreRingNumber" class="font-mono text-4xl font-bold leading-none tracking-tight text-ink tabular-nums">0</div>
-                  <div class="mt-2 inline-flex rounded-md bg-lime px-2 py-0.5 font-mono text-xs font-bold text-onlime">${esc(grade)}</div>
+                  ${isScanning ? `
+                    <div class="font-mono text-xs font-bold uppercase tracking-wider text-limeink animate-pulse">Scanning</div>
+                    <div class="mt-1.5 inline-flex rounded-md bg-lime/10 border border-lime/30 px-2 py-0.5 font-mono text-[10px] font-semibold text-limeink">Analyzing</div>
+                  ` : `
+                    <div id="scoreRingNumber" class="font-mono text-4xl font-bold leading-none tracking-tight text-ink tabular-nums">0</div>
+                    <div class="mt-2 inline-flex rounded-md bg-lime px-2 py-0.5 font-mono text-xs font-bold text-onlime">${esc(grade)}</div>
+                  `}
                 </div>
               </div>
             </div>
 
             <!-- Breakdown -->
             <ul class="mt-6 space-y-3">
-              ${breakdown.map(b => `
+              ${isScanning ? ['Volume & Scope', 'Impact & Stars', 'Consistency', 'Diversity'].map(label => `
+                <li>
+                  <div class="flex items-baseline justify-between text-xs">
+                    <span class="text-muted">${label}</span>
+                    <span class="font-mono text-[10px] text-limeink animate-pulse uppercase">Computing</span>
+                  </div>
+                  <div class="mt-1 h-1 overflow-hidden rounded-full bg-line">
+                    <div class="h-full rounded-full bg-lime/50 animate-pulse" style="width: 45%"></div>
+                  </div>
+                </li>
+              `).join('') : breakdown.map(b => `
                 <li>
                   <div class="flex items-baseline justify-between text-xs">
                     <span class="text-muted">${esc(b.label)}</span>
@@ -249,9 +271,14 @@ export function renderIdentity(dossier) {
   `;
 
   // Animate stats
-  animCount(document.getElementById('scoreRingNumber'), totalScore);
-  animCount(document.getElementById('statOwnRepos'), stats.own_repos ?? stats.total_repos ?? 0);
-  animCount(document.getElementById('statTotalStars'), stats.total_stars ?? 0);
+  if (!isScanning) {
+    animCount(document.getElementById('scoreRingNumber'), totalScore);
+    animCount(document.getElementById('statTotalStars'), stats.total_stars ?? 0);
+  } else {
+    const starEl = document.getElementById('statTotalStars');
+    if (starEl) starEl.innerHTML = '<span class="text-xs text-muted font-normal animate-pulse">Analyzing...</span>';
+  }
+  animCount(document.getElementById('statOwnRepos'), stats.own_repos ?? profile.public_repos ?? 0);
   animCount(document.getElementById('statFollowers'), profile.followers ?? 0);
   animCount(document.getElementById('statFollowing'), profile.following ?? 0);
 }

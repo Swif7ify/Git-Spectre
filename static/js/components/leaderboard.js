@@ -87,18 +87,18 @@ export function renderLeaderboardView({ onOpenDossier, onBackHome }) {
       </div>
 
       <!-- Loading State Indicator -->
-      <div id="lbLoading" class="hidden py-8 text-center font-mono text-xs text-muted">
-        <div class="inline-flex items-center gap-2">
-          <svg class="h-4 w-4 animate-spin text-lime" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-          <span>Loading developer rankings...</span>
+      <div id="lbLoading" class="hidden py-16 text-center font-mono text-xs text-muted">
+        <div class="inline-flex flex-col items-center justify-center gap-3">
+          <svg class="h-6 w-6 animate-spin text-lime" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <span class="tracking-wider uppercase text-[11px] text-muted">Loading developer rankings...</span>
         </div>
       </div>
 
       <!-- Top 3 Podium Area -->
       <div id="lbPodiumContainer" class="hidden"></div>
 
-      <!-- Full Ranked Table -->
-      <div class="rounded-2xl border border-line bg-surface/50 overflow-hidden shadow-sm">
+      <!-- Full Ranked Table Container (hidden during fetch to avoid empty header flicker) -->
+      <div id="lbTableContainer" class="hidden rounded-2xl border border-line bg-surface/50 overflow-hidden shadow-sm">
         <div class="scroll-thin overflow-x-auto">
           <table class="w-full min-w-[700px] text-left text-xs font-mono">
             <thead>
@@ -198,10 +198,13 @@ function updateTabStyles() {
 export async function fetchAndRenderRankings() {
   const loading = document.getElementById('lbLoading');
   const podium = document.getElementById('lbPodiumContainer');
+  const tableContainer = document.getElementById('lbTableContainer');
   const tableBody = document.getElementById('lbTableBody');
   const headerTotal = document.getElementById('lbHeaderTotal');
 
   if (loading) loading.classList.remove('hidden');
+  if (podium) podium.classList.add('hidden');
+  if (tableContainer) tableContainer.classList.add('hidden');
 
   try {
     const data = await getLeaderboard({
@@ -218,10 +221,12 @@ export async function fetchAndRenderRankings() {
 
     renderPodium(podium, list.slice(0, 3));
     renderTable(tableBody, list);
+    if (tableContainer) tableContainer.classList.remove('hidden');
   } catch (err) {
     if (tableBody) {
       tableBody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-xs text-danger font-mono">Failed to load rankings: ${esc(err.message)}</td></tr>`;
     }
+    if (tableContainer) tableContainer.classList.remove('hidden');
   } finally {
     if (loading) loading.classList.add('hidden');
   }

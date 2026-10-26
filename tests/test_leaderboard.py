@@ -22,6 +22,7 @@ from core.leaderboard import (
     _get_connection,
     _hash_client_ip,
     get_leaderboard,
+    get_leaderboard_languages,
     get_profile_rank,
     init_leaderboard_db,
     is_profile_eligible,
@@ -225,3 +226,17 @@ class TestLeaderboardApiRoutes:
         data = resp.json()
         assert data["username"] == "guido"
         assert data["daily"]["checks"] == 1
+
+    def test_api_get_leaderboard_languages(self):
+        dev1 = _make_dummy_dossier("rustacean", score=880, lang="Rust")
+        dev2 = _make_dummy_dossier("gopher", score=850, lang="Go")
+        _record(dev1, client_ip="6.6.6.1")
+        _record(dev2, client_ip="6.6.6.2")
+
+        resp = client.get("/api/leaderboard/languages")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["total"] >= 2
+        assert "Rust" in data["languages"]
+        assert "Go" in data["languages"]
+        assert any(d["language"] == "Rust" and d["count"] >= 1 for d in data["details"])

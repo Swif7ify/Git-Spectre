@@ -121,4 +121,26 @@ export async function getLeaderboardRank(username) {
   }
 }
 
+let _cachedLanguages = null;
+let _cachedLanguagesEpoch = 0;
+const LANG_CACHE_TTL_MS = 60 * 1000;
+
+export async function getLeaderboardLanguages(forceRefresh = false) {
+  const now = Date.now();
+  if (!forceRefresh && _cachedLanguages && (now - _cachedLanguagesEpoch) < LANG_CACHE_TTL_MS) {
+    return _cachedLanguages;
+  }
+  try {
+    const resp = await fetch('/api/leaderboard/languages');
+    if (!resp.ok) return _cachedLanguages || { total: 0, languages: [], details: [] };
+    const data = await resp.json();
+    _cachedLanguages = data;
+    _cachedLanguagesEpoch = now;
+    return data;
+  } catch (err) {
+    console.error('getLeaderboardLanguages error:', err);
+    return _cachedLanguages || { total: 0, languages: [], details: [] };
+  }
+}
+
 

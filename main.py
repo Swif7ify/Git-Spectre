@@ -50,7 +50,7 @@ from core.schemas import (
     _validate_username,
 )
 from core.service import _run_analysis
-from core.leaderboard import get_leaderboard, get_profile_rank
+from core.leaderboard import get_leaderboard, get_leaderboard_languages, get_profile_rank
 
 # Re-export key functions for backwards compatibility with tests and tooling
 __all__ = [
@@ -419,6 +419,14 @@ async def leaderboard_endpoint(
             detail=f"Invalid period '{period}'. Valid options: {', '.join(sorted(valid_periods))}",
         )
     return get_leaderboard(period=clean_period, limit=limit, language=language, query=q)
+
+
+@limiter.limit("60/minute")
+@app.get("/api/leaderboard/languages")
+async def leaderboard_languages_endpoint(request: Request) -> Dict[str, Any]:
+    """Retrieve distinct programming languages represented across ranked profiles."""
+    langs = get_leaderboard_languages()
+    return {"total": len(langs), "languages": [l["language"] for l in langs], "details": langs}
 
 
 @limiter.limit("30/minute")

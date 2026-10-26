@@ -220,6 +220,18 @@ WITH ranked AS (
 SELECT rank_num, check_count FROM ranked WHERE LOWER(login) = ?;
 ```
 
+### 6.3 Dynamic Languages Aggregation Query
+Aggregates distinct primary languages and developer counts across tracked profiles:
+
+```sql
+SELECT primary_language, COUNT(*) AS count
+FROM leaderboard_profiles
+WHERE primary_language IS NOT NULL AND TRIM(primary_language) != ''
+GROUP BY primary_language
+ORDER BY count DESC, primary_language ASC;
+```
+*Note*: Cached in-memory via `core/cache.py` (`leaderboard:languages`) and automatically invalidated when new profile checks are committed to eliminate redundant table scans.
+
 ---
 
 ## 7. Migration & Backup Policy

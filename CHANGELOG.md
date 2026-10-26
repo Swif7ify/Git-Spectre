@@ -18,7 +18,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
     - Profile eligibility gatekeeper (`is_profile_eligible`) filtering bot accounts (`[bot]`, `type == 'Bot'`), organizations (`type == 'Organization'`), and zero-activity hollow accounts.
   - **New REST API Endpoints**:
     - `GET /api/leaderboard`: Query ranked profiles by `period`, `limit`, `language`, and `q` search query with rate limiting.
+    - `GET /api/leaderboard/languages`: Retrieve distinct primary programming languages across all ranked developers with real-time representation counts.
     - `GET /api/leaderboard/rank/{username}`: Fetch a developer's real-time rank and check metrics across all timeframes.
+  - **Dynamic Language Filter & Two-Tier Caching Engine**:
+    - Replaced hardcoded language dropdown options with dynamic aggregation querying `SELECT primary_language, COUNT(*) FROM leaderboard_profiles GROUP BY primary_language`.
+    - Server-side in-memory TTL caching (`core/cache.py`) eliminating redundant SQLite table scans, with automatic cache invalidation whenever new profile checks are committed.
+    - Client-side in-memory TTL caching (60s) in `static/js/api.js` to prevent duplicate network calls across tab transitions while displaying accurate developer counts per language (e.g. `Python (14)`).
   - **Dedicated Full-Page Rankings View (`static/js/components/leaderboard.js`)**:
     - Full-page responsive SPA view (`#leaderboardSection` / `/?view=leaderboard`) replacing modal overlay for an expansive, focused developer browsing experience.
     - Clean executive-grade UI/UX with professional typography, zero emoji usage, and refined SVG vector iconography.

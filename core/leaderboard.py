@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from core.cache import _cache_get, _cache_set
 from core.config import BASE_DIR, logger
 
 # Database path resolution (supports local dev & Vercel serverless /tmp)
@@ -205,6 +206,7 @@ def record_profile_check(
                 (login, ip_hash, now, date_utc, month_utc, year_utc),
             )
             conn.commit()
+            _cache_set("leaderboard:languages", None)
             return cur.rowcount > 0
     except Exception as e:
         logger.error("Failed to record profile check in leaderboard: %s", e)
@@ -394,3 +396,36 @@ def get_profile_rank(username: str) -> Dict[str, Any]:
     }
 
     return result
+
+
+def get_leaderboard_languages() -> List[Dict[str, Any]]:
+    """
+    Retrieve distinct primary languages across all tracked developer profiles with counts.
+    Cached in-memory to eliminate redundant database scans on high-traffic queries.
+    """
+    cache_key = "leaderboard:languages"
+    cached = _cache_get(cache_key)
+    if cached is not None:
+        return cached
+
+    sql = """
+        SELECT primary_language, COUNT(*) AS count
+        FROM leaderboard_profiles
+        WHERE primary_language IS NOT NULL AND TRIM(primary_language) != ''
+        GROUP BY primary_language
+        ORDER BY count DESC, primary_language ASC;
+    """
+    languages: List[Dict[str, Any]] = []
+    try:
+        with _get_connection() as conn:
+            rows = conn.execute(sql).fetchall()
+            for row in rows:
+                languages.append({
+                    "language": row["primary_language"],
+                    "count": int(row["count"]),
+                })
+        _cache_set(cache_key, languages)
+    except Exception as e:
+        logger.error("Failed to query leaderboard languages: %s", e)
+
+    return languages

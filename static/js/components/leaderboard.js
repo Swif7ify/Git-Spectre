@@ -4,7 +4,7 @@
  * Strictly uses SVG vector icons and crisp, professional typography (no emojis or AI slop text).
  */
 
-import { getLeaderboard } from '../api.js';
+import { getLeaderboard, getLeaderboardLanguages } from '../api.js';
 import { esc, avatarUrl, full } from '../utils.js';
 
 let _activePeriod = 'daily';
@@ -82,15 +82,6 @@ export function renderLeaderboardView({ onOpenDossier, onBackHome }) {
           </div>
           <select id="lbLangSelect" class="rounded-xl border border-line bg-surface px-3 py-2 font-mono text-xs text-ink outline-none focus:border-accent transition-colors">
             <option value="">All Languages</option>
-            <option value="Python">Python</option>
-            <option value="TypeScript">TypeScript</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="Rust">Rust</option>
-            <option value="Go">Go</option>
-            <option value="C++">C++</option>
-            <option value="Java">Java</option>
-            <option value="C">C</option>
-            <option value="Ruby">Ruby</option>
           </select>
         </div>
       </div>
@@ -166,7 +157,29 @@ export function renderLeaderboardView({ onOpenDossier, onBackHome }) {
   }
 
   updateTabStyles();
+  populateLanguageOptions();
   fetchAndRenderRankings();
+}
+
+async function populateLanguageOptions() {
+  const select = document.getElementById('lbLangSelect');
+  if (!select) return;
+
+  try {
+    const res = await getLeaderboardLanguages();
+    const details = res.details || [];
+    const currentSelection = _activeLanguage;
+
+    let html = '<option value="">All Languages</option>';
+    for (const item of details) {
+      if (!item.language) continue;
+      const isSel = item.language === currentSelection ? 'selected' : '';
+      html += `<option value="${esc(item.language)}" ${isSel}>${esc(item.language)} (${item.count})</option>`;
+    }
+    select.innerHTML = html;
+  } catch (err) {
+    console.error('Failed to populate dynamic languages:', err);
+  }
 }
 
 function updateTabStyles() {

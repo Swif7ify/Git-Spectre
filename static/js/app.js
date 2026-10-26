@@ -3,7 +3,7 @@
  * Bootstraps modules, coordinates view transitions, scans, comparisons, and keyboard shortcuts.
  */
 
-import { analyzeProfile, compareProfiles } from './api.js';
+import { analyzeProfile, compareProfiles, clearLeaderboardClientCache } from './api.js';
 import { appState, getToken, getTheme, applyTheme, toggleTheme } from './state.js';
 import { showToast, parseTarget } from './utils.js';
 
@@ -71,6 +71,7 @@ export async function runScan(rawUsername) {
     const token = getToken();
     const data = await analyzeProfile(username, token);
     appState.activeDossier = data;
+    clearLeaderboardClientCache();
 
     // Render all modular dossier components
     renderIdentity(data);

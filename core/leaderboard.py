@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from core.cache import _cache_get, _cache_set
+from core.cache import _cache_delete_prefix, _cache_get, _cache_set
 from core.config import BASE_DIR, logger
 
 # Database path resolution (supports local dev & Vercel serverless /tmp)
@@ -206,7 +206,8 @@ def record_profile_check(
                 (login, ip_hash, now, date_utc, month_utc, year_utc),
             )
             conn.commit()
-            _cache_set("leaderboard:languages", None)
+            if cur.rowcount > 0:
+                _cache_delete_prefix("leaderboard:")
             return cur.rowcount > 0
     except Exception as e:
         logger.error("Failed to record profile check in leaderboard: %s", e)
@@ -237,6 +238,15 @@ def get_leaderboard(
         valid_period = "daily"
 
     safe_limit = max(1, min(int(limit), 100))
+    clean_lang = (language or "").strip().lower()
+    clean_q = (query or "").strip().lower()
+
+    # Serve from in-memory cache if available to prevent query spam
+    cache_key = f"leaderboard:{valid_period}:{safe_limit}:{clean_lang}:{clean_q}"
+    cached_data = _cache_get(cache_key)
+    if cached_data is not None:
+        return cached_data
+
     now_utc = datetime.now(timezone.utc)
     date_utc = now_utc.strftime("%Y-%m-%d")
     month_utc = now_utc.strftime("%Y-%m")
@@ -322,11 +332,17 @@ def get_leaderboard(
         "developers": developers,
         "leaderboard": developers,
     }
+    _cache_set(cache_key, response, ttl=60.0)
+    return response
 
 
 def get_profile_rank(username: str) -> Dict[str, Any]:
     """Retrieve a developer's rank and check count across daily, monthly, yearly, and all-time."""
     clean_login = username.strip().lower()
+    cache_key = f"leaderboard:rank:{clean_login}"
+    cached_rank = _cache_get(cache_key)
+    if cached_rank is not None:
+        return cached_rank
     now_utc = datetime.now(timezone.utc)
     date_utc = now_utc.strftime("%Y-%m-%d")
     month_utc = now_utc.strftime("%Y-%m")
@@ -395,6 +411,7 @@ def get_profile_rank(username: str) -> Dict[str, Any]:
         "checks": result["ranks"].get("all", {}).get("check_count", 0),
     }
 
+    _cache_set(cache_key, result, ttl=60.0)
     return result
 
 

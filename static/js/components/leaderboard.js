@@ -4,7 +4,7 @@
  * Strictly uses SVG vector icons and crisp, professional typography (no emojis or AI slop text).
  */
 
-import { getLeaderboard, getLeaderboardLanguages } from '../api.js';
+import { getLeaderboard, getLeaderboardLanguages, hasLeaderboardCache } from '../api.js';
 import { esc, avatarUrl, full } from '../utils.js';
 
 let _activePeriod = 'daily';
@@ -43,24 +43,8 @@ export function renderLeaderboardView({ onOpenDossier, onBackHome }) {
           </button>
           <div class="flex items-center gap-3">
             <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-ink">Developer Rankings</h1>
-            <span class="rounded-full border border-lime/30 bg-lime/10 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-limeink">Community Verified</span>
           </div>
           <p class="mt-1 text-xs sm:text-sm text-muted">GitHub developer profiles ranked by verified community checks and popularity interest.</p>
-        </div>
-
-        <!-- Telemetry Stats Pill -->
-        <div class="flex items-center gap-4 rounded-xl border border-line bg-surface/60 px-4 py-2.5 text-xs font-mono">
-          <div>
-            <div class="text-[10px] uppercase text-muted">Total Profiles</div>
-            <div id="lbHeaderTotal" class="text-sm font-semibold text-ink">—</div>
-          </div>
-          <div class="h-6 w-px bg-line/60"></div>
-          <div>
-            <div class="text-[10px] uppercase text-muted">Anti-Spam</div>
-            <div class="text-sm font-semibold text-limeink flex items-center gap-1">
-              ${ICONS.shield} Active
-            </div>
-          </div>
         </div>
       </div>
 
@@ -202,9 +186,18 @@ export async function fetchAndRenderRankings() {
   const tableBody = document.getElementById('lbTableBody');
   const headerTotal = document.getElementById('lbHeaderTotal');
 
-  if (loading) loading.classList.remove('hidden');
-  if (podium) podium.classList.add('hidden');
-  if (tableContainer) tableContainer.classList.add('hidden');
+  const isCached = hasLeaderboardCache({
+    period: _activePeriod,
+    limit: 50,
+    language: _activeLanguage,
+    q: _searchQuery,
+  });
+
+  if (!isCached) {
+    if (loading) loading.classList.remove('hidden');
+    if (podium) podium.classList.add('hidden');
+    if (tableContainer) tableContainer.classList.add('hidden');
+  }
 
   try {
     const data = await getLeaderboard({

@@ -92,7 +92,43 @@ export async function getRepoInfo() {
   }
 }
 
-export async function getLeaderboard({ period = 'daily', limit = 50, language = '', q = '' } = {}) {
+// In-memory request cache for leaderboard queries to prevent network spam on timeframe toggling
+const _leaderboardCache = new Map();
+const LEADERBOARD_CACHE_TTL_MS = 60 * 1000;
+
+export function clearLeaderboardClientCache() {
+  _leaderboardCache.clear();
+  _cachedLanguages = null;
+  _cachedLanguagesEpoch = 0;
+}
+
+export function hasLeaderboardCache({ period = 'daily', limit = 50, language = '', q = '' } = {}) {
+  const cacheKey = `${period}:${limit}:${(language || '').trim().toLowerCase()}:${(q || '').trim().toLowerCase()}`;
+  if (_leaderboardCache.has(cacheKey)) {
+    const entry = _leaderboardCache.get(cacheKey);
+    return (Date.now() - entry.timestamp) < LEADERBOARD_CACHE_TTL_MS;
+  }
+  return false;
+}
+
+export async function getLeaderboard({
+  period = 'daily',
+  limit = 50,
+  language = '',
+  q = '',
+  forceRefresh = false,
+} = {}) {
+  const cacheKey = `${period}:${limit}:${(language || '').trim().toLowerCase()}:${(q || '').trim().toLowerCase()}`;
+  const now = Date.now();
+
+  if (!forceRefresh && _leaderboardCache.has(cacheKey)) {
+    const entry = _leaderboardCache.get(cacheKey);
+    if ((now - entry.timestamp) < LEADERBOARD_CACHE_TTL_MS) {
+      return entry.data;
+    }
+    _leaderboardCache.delete(cacheKey);
+  }
+
   try {
     const params = new URLSearchParams();
     if (period) params.append('period', period);
@@ -104,9 +140,20 @@ export async function getLeaderboard({ period = 'daily', limit = 50, language = 
     if (!resp.ok) {
       throw new Error(`Failed to load leaderboard (HTTP ${resp.status})`);
     }
-    return await resp.json();
+    const data = await resp.json();
+
+    _leaderboardCache.set(cacheKey, { timestamp: now, data });
+    if (_leaderboardCache.size > 100) {
+      const oldestKey = _leaderboardCache.keys().next().value;
+      _leaderboardCache.delete(oldestKey);
+    }
+
+    return data;
   } catch (err) {
     console.error('getLeaderboard error:', err);
+    if (_leaderboardCache.has(cacheKey)) {
+      return _leaderboardCache.get(cacheKey).data;
+    }
     return { period, total: 0, leaderboard: [] };
   }
 }

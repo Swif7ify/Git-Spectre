@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import pytest
 from fastapi.testclient import TestClient
 
+from core.cache import _cache_clear
 from core.leaderboard import (
     _get_connection,
     _hash_client_ip,
@@ -36,10 +37,12 @@ client = TestClient(app)
 @pytest.fixture(autouse=True)
 def isolated_db(tmp_path, monkeypatch):
     """Use an isolated SQLite test database for each test function."""
+    _cache_clear()
     test_db = tmp_path / "test_spectre_leaderboard.db"
     monkeypatch.setattr("core.leaderboard._get_db_path", lambda: test_db)
     init_leaderboard_db()
     yield test_db
+    _cache_clear()
 
 
 def _make_dummy_dossier(login="octocat", score=750, stars=120, lang="Python"):
@@ -198,6 +201,23 @@ class TestLeaderboardQueries:
         assert rank_data["monthly"]["rank"] == 1
         assert rank_data["yearly"]["rank"] == 1
         assert rank_data["all_time"]["rank"] == 1
+
+    def test_leaderboard_query_caching_and_invalidation(self):
+        """Leaderboard queries must be cached in-memory and invalidated upon new checks."""
+        dev1 = _make_dummy_dossier("cacher1", score=800, lang="Rust")
+        _record(dev1, client_ip="9.9.9.1")
+
+        r1 = get_leaderboard(period="daily")
+        assert len(r1["leaderboard"]) == 1
+
+        r2 = get_leaderboard(period="daily")
+        assert r2 == r1
+
+        dev2 = _make_dummy_dossier("cacher2", score=850, lang="Rust")
+        _record(dev2, client_ip="9.9.9.2")
+
+        r3 = get_leaderboard(period="daily")
+        assert len(r3["leaderboard"]) == 2
 
 
 class TestLeaderboardApiRoutes:

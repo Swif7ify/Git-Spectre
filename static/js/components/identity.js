@@ -3,79 +3,150 @@
  * Profile identity, archetype badge, persona badge, roast, score ring with breakdown, and stat strip.
  */
 
-import { esc, safeUrl, compact, full, animCount, avatarUrl, icon } from '../utils.js';
+import {
+	esc,
+	safeUrl,
+	compact,
+	full,
+	animCount,
+	avatarUrl,
+	icon,
+} from "../utils.js";
 
 export function renderIdentity(dossier) {
-  const {
-    profile = {},
-    stats = {},
-    archetype = {},
-    score = {},
-    peak_hour = {},
-    star_velocity = 0,
-    roast = '',
-    orgs = [],
-    cached = false
-  } = dossier;
+	const {
+		profile = {},
+		stats = {},
+		archetype = {},
+		score = {},
+		peak_hour = {},
+		star_velocity = 0,
+		roast = "",
+		orgs = [],
+		cached = false,
+	} = dossier;
 
-  const container = document.getElementById('identityCardContainer');
-  if (!container) return;
+	const container = document.getElementById("identityCardContainer");
+	if (!container) return;
 
-  const totalScore = Math.max(0, Math.min(1000, Number(score.total) || 0));
-  const grade = score.grade || 'E';
-  const archColor = archetype.glow || '#8B6CFF';
+	const totalScore = Math.max(0, Math.min(1000, Number(score.total) || 0));
+	const grade = score.grade || "E";
+	const archColor = archetype.glow || "#8B6CFF";
 
-  // SVG Score ring geometry
-  const radius = 72;
-  const circumference = 2 * Math.PI * radius;
-  const strokeOffset = circumference * (1 - totalScore / 1000);
+	// SVG Score ring geometry
+	const radius = 72;
+	const circumference = 2 * Math.PI * radius;
+	const strokeOffset = circumference * (1 - totalScore / 1000);
 
-  // Score breakdown bars (handles both dict and array formats)
-  let breakdown = [];
-  if (Array.isArray(score.breakdown)) {
-    breakdown = score.breakdown;
-  } else if (score.breakdown && typeof score.breakdown === 'object') {
-    const limits = { stars: 300, followers: 200, diversity: 150, repos: 100, age: 80, activity: 70 };
-    const labels = { stars: 'Stars Impact', followers: 'Followers', diversity: 'Language Diversity', repos: 'Repositories', age: 'Account Age', activity: 'Active Days' };
-    breakdown = Object.entries(score.breakdown).map(([k, v]) => ({
-      label: labels[k] || k,
-      value: Number(v) || 0,
-      max: limits[k] || 100
-    }));
-  } else {
-    breakdown = [
-      { label: 'Volume & Scope', value: Math.round(totalScore * 0.25), max: 250 },
-      { label: 'Impact & Stars', value: Math.round(totalScore * 0.25), max: 250 },
-      { label: 'Consistency',    value: Math.round(totalScore * 0.25), max: 250 },
-      { label: 'Diversity',      value: Math.round(totalScore * 0.25), max: 250 }
-    ];
-  }
+	// Score breakdown bars (handles both dict and array formats)
+	let breakdown = [];
+	if (Array.isArray(score.breakdown)) {
+		breakdown = score.breakdown;
+	} else if (score.breakdown && typeof score.breakdown === "object") {
+		const limits = {
+			stars: 300,
+			followers: 200,
+			diversity: 150,
+			repos: 100,
+			age: 80,
+			activity: 70,
+		};
+		const labels = {
+			stars: "Stars Impact",
+			followers: "Followers",
+			diversity: "Language Diversity",
+			repos: "Repositories",
+			age: "Account Age",
+			activity: "Active Days",
+		};
+		breakdown = Object.entries(score.breakdown).map(([k, v]) => ({
+			label: labels[k] || k,
+			value: Number(v) || 0,
+			max: limits[k] || 100,
+		}));
+	} else {
+		breakdown = [
+			{
+				label: "Volume & Scope",
+				value: Math.round(totalScore * 0.25),
+				max: 250,
+			},
+			{
+				label: "Impact & Stars",
+				value: Math.round(totalScore * 0.25),
+				max: 250,
+			},
+			{
+				label: "Consistency",
+				value: Math.round(totalScore * 0.25),
+				max: 250,
+			},
+			{
+				label: "Diversity",
+				value: Math.round(totalScore * 0.25),
+				max: 250,
+			},
+		];
+	}
 
-  // Persona
-  const personaText = peak_hour && peak_hour.persona && peak_hour.persona !== 'Ghost Coder'
-    ? `<span class="inline-flex items-center gap-2 rounded-full border border-line bg-raised px-3 py-1.5 text-xs text-ink">
+	// Persona
+	const personaText =
+		peak_hour && peak_hour.persona && peak_hour.persona !== "Ghost Coder"
+			? `<span class="inline-flex items-center gap-2 rounded-full border border-line bg-raised px-3 py-1.5 text-xs text-ink">
         <span class="font-medium text-accent">${esc(peak_hour.persona)}</span>
-        <span class="text-muted">· peaks ${esc(peak_hour.hour || '00:00')} · ${esc(peak_hour.day || 'weekdays')}s</span>
+        <span class="text-muted">· peaks ${esc(peak_hour.hour || "00:00")} · ${esc(peak_hour.day || "weekdays")}s</span>
       </span>`
-    : '';
+			: "";
 
-  // Organizations
-  const orgsHtml = orgs.length
-    ? `<div class="mt-5 flex flex-wrap items-center gap-2">
+	// Leaderboard Rank Badge
+	const lb = dossier.leaderboard;
+	let leaderboardBadge = "";
+	if (lb && lb.eligible) {
+		if (lb.daily && lb.daily.rank) {
+			leaderboardBadge = `
+        <button type="button" data-nav-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.daily.rank} Today (${lb.daily.checks} check${lb.daily.checks === 1 ? "" : "s"}). Click to view rankings.">
+          ${icon("flame", "w-3 h-3 text-limeink shrink-0")}
+          <span>Ranked #${lb.daily.rank} Today (${full(lb.daily.checks)} check${lb.daily.checks === 1 ? "" : "s"})</span>
+        </button>
+      `;
+		} else if (lb.monthly && lb.monthly.rank) {
+			leaderboardBadge = `
+        <button type="button" data-nav-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-lime/40 bg-lime/10 px-3 py-1 font-mono text-[11px] font-semibold text-limeink transition-all hover:bg-lime/20 hover:scale-105 active:scale-95" title="Ranked #${lb.monthly.rank} This Month. Click to view rankings.">
+          ${icon("award", "w-3 h-3 text-limeink shrink-0")}
+          <span>Ranked #${lb.monthly.rank} This Month</span>
+        </button>
+      `;
+		} else if (lb.all_time && lb.all_time.rank) {
+			leaderboardBadge = `
+        <button type="button" data-nav-leaderboard class="inline-flex items-center gap-1.5 rounded-full border border-line bg-raised px-3 py-1 font-mono text-[11px] font-semibold text-ink transition-all hover:border-accent hover:scale-105 active:scale-95" title="Ranked #${lb.all_time.rank} All-Time. Click to view rankings.">
+          ${icon("star", "w-3 h-3 text-ink shrink-0")}
+          <span>Ranked #${lb.all_time.rank} All-Time</span>
+        </button>
+      `;
+		}
+	}
+
+	// Organizations
+	const orgsHtml = orgs.length
+		? `<div class="mt-5 flex flex-wrap items-center gap-2">
         <span class="mr-1 text-xs text-muted">Organizations</span>
-        ${orgs.map(o => `
+        ${orgs
+			.map(
+				(o) => `
           <a href="${safeUrl(o.url || `https://github.com/${o.login}`)}" target="_blank" rel="noreferrer"
             class="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface py-0.5 pl-0.5 pr-2.5 text-xs text-ink transition-colors duration-150 hover:border-accent/60">
             <img src="${avatarUrl(o.login, 40)}" class="h-5 w-5 rounded-md object-cover" alt="" />
             ${esc(o.login)}
           </a>
-        `).join('')}
+        `,
+			)
+			.join("")}
       </div>`
-    : '';
+		: "";
 
-  // Roast
-  const roastHtml = roast
-    ? `<figure class="mt-6 overflow-hidden rounded-xl border border-line bg-raised">
+	// Roast
+	const roastHtml = roast
+		? `<figure class="mt-6 overflow-hidden rounded-xl border border-line bg-raised">
         <figcaption class="flex items-center justify-between border-b border-line px-4 py-2 font-mono text-[11px] text-muted">
           <span>// roast.exe</span>
           <span class="flex gap-1.5" aria-hidden="true">
@@ -88,9 +159,9 @@ export function renderIdentity(dossier) {
           <span class="text-limeink font-bold">&gt; </span>${esc(roast)}
         </blockquote>
       </figure>`
-    : '';
+		: "";
 
-  container.innerHTML = `
+	container.innerHTML = `
     <section class="overflow-hidden rounded-2xl border border-line bg-surface">
       <div class="grid lg:grid-cols-[minmax(0,1fr)_340px]">
         <!-- Left details column -->
@@ -110,14 +181,18 @@ export function renderIdentity(dossier) {
                     ${esc(profile.name || profile.login)}
                   </a>
                 </h1>
-                ${cached ? `
+                ${
+					cached
+						? `
                   <span class="inline-flex items-center gap-1.5 rounded-full bg-lime/15 px-2.5 py-0.5 font-mono text-[11px] font-medium text-limeink">
-                    ${icon('zap', 'w-3 h-3 text-limeink')} Cached · last 5 min
+                    ${icon("zap", "w-3 h-3 text-limeink")} Cached · last 5 min
                   </span>
-                ` : ''}
+                `
+						: ""
+				}
               </div>
               <p class="mt-1 font-mono text-sm text-muted">@${esc(profile.login)}</p>
-              ${profile.bio ? `<p class="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/80">${esc(profile.bio)}</p>` : ''}
+              ${profile.bio ? `<p class="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/80">${esc(profile.bio)}</p>` : ""}
             </div>
           </div>
 
@@ -125,25 +200,30 @@ export function renderIdentity(dossier) {
             <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[11px] font-bold tracking-[0.14em] text-ink"
               style="border-color:${archColor}; box-shadow:0 0 0 3px ${archColor}1f, 0 0 20px -6px ${archColor}">
               <span class="h-2 w-2 rounded-full" style="background:${archColor}" aria-hidden="true"></span>
-              ${esc(archetype.label || 'Code Craftsman')}
+              ${esc(archetype.label || "Code Craftsman")}
             </span>
             ${personaText}
+            ${leaderboardBadge}
           </div>
-          ${archetype.description ? `<p class="mt-2.5 max-w-2xl text-xs text-muted leading-relaxed">${esc(archetype.description)}</p>` : ''}
+          ${archetype.description ? `<p class="mt-2.5 max-w-2xl text-xs text-muted leading-relaxed">${esc(archetype.description)}</p>` : ""}
 
           <!-- Metadata list -->
           <ul class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted">
-            ${profile.location ? `<li class="flex items-center gap-1.5">${icon('map-pin', 'w-3.5 h-3.5 text-muted shrink-0')} ${esc(profile.location)}</li>` : ''}
-            ${profile.company ? `<li class="flex items-center gap-1.5">${icon('building', 'w-3.5 h-3.5 text-muted shrink-0')} ${esc(profile.company)}</li>` : ''}
-            ${profile.created_at ? `<li class="flex items-center gap-1.5">${icon('calendar', 'w-3.5 h-3.5 text-muted shrink-0')} Joined ${esc(profile.created_at)}</li>` : ''}
-            ${profile.blog ? `
+            ${profile.location ? `<li class="flex items-center gap-1.5">${icon("map-pin", "w-3.5 h-3.5 text-muted shrink-0")} ${esc(profile.location)}</li>` : ""}
+            ${profile.company ? `<li class="flex items-center gap-1.5">${icon("building", "w-3.5 h-3.5 text-muted shrink-0")} ${esc(profile.company)}</li>` : ""}
+            ${profile.created_at ? `<li class="flex items-center gap-1.5">${icon("calendar", "w-3.5 h-3.5 text-muted shrink-0")} Joined ${esc(profile.created_at)}</li>` : ""}
+            ${
+				profile.blog
+					? `
               <li>
-                <a href="${safeUrl(profile.blog.startsWith('http') ? profile.blog : 'https://' + profile.blog)}"
+                <a href="${safeUrl(profile.blog.startsWith("http") ? profile.blog : "https://" + profile.blog)}"
                   target="_blank" rel="noreferrer" class="flex items-center gap-1.5 text-accent hover:underline">
-                  ${icon('link', 'w-3.5 h-3.5 text-accent shrink-0')} ${esc(profile.blog.replace(/^https?:\/\//, '').slice(0, 30))}
+                  ${icon("link", "w-3.5 h-3.5 text-accent shrink-0")} ${esc(profile.blog.replace(/^https?:\/\//, "").slice(0, 30))}
                 </a>
               </li>
-            ` : ''}
+            `
+					: ""
+			}
           </ul>
 
           ${orgsHtml}
@@ -178,7 +258,9 @@ export function renderIdentity(dossier) {
 
             <!-- Breakdown -->
             <ul class="mt-6 space-y-3">
-              ${breakdown.map(b => `
+              ${breakdown
+					.map(
+						(b) => `
                 <li>
                   <div class="flex items-baseline justify-between text-xs">
                     <span class="text-muted">${esc(b.label)}</span>
@@ -188,7 +270,9 @@ export function renderIdentity(dossier) {
                     <div class="h-full rounded-full bg-accent" style="width:${Math.round((b.value / b.max) * 100)}%"></div>
                   </div>
                 </li>
-              `).join('')}
+              `,
+					)
+					.join("")}
             </ul>
           </div>
         </aside>
@@ -204,7 +288,7 @@ export function renderIdentity(dossier) {
           <dt class="text-xs text-muted">Total stars</dt>
           <dd class="mt-1 flex flex-wrap items-baseline gap-2">
             <span class="font-mono text-2xl font-semibold tabular-nums text-ink" id="statTotalStars">0</span>
-            ${star_velocity > 0 ? `<span class="inline-flex items-center gap-1 rounded-md bg-lime/15 px-1.5 py-0.5 font-mono text-[11px] font-medium text-limeink">${icon('zap', 'w-3 h-3 text-limeink')} ${star_velocity}/yr</span>` : ''}
+            ${star_velocity > 0 ? `<span class="inline-flex items-center gap-1 rounded-md bg-lime/15 px-1.5 py-0.5 font-mono text-[11px] font-medium text-limeink">${icon("zap", "w-3 h-3 text-limeink")} ${star_velocity}/yr</span>` : ""}
           </dd>
         </div>
         <div class="bg-surface px-6 py-4">
@@ -219,10 +303,16 @@ export function renderIdentity(dossier) {
     </section>
   `;
 
-  // Animate stats
-  animCount(document.getElementById('scoreRingNumber'), totalScore);
-  animCount(document.getElementById('statOwnRepos'), stats.own_repos ?? stats.total_repos ?? 0);
-  animCount(document.getElementById('statTotalStars'), stats.total_stars ?? 0);
-  animCount(document.getElementById('statFollowers'), profile.followers ?? 0);
-  animCount(document.getElementById('statFollowing'), profile.following ?? 0);
+	// Animate stats
+	animCount(document.getElementById("scoreRingNumber"), totalScore);
+	animCount(
+		document.getElementById("statOwnRepos"),
+		stats.own_repos ?? stats.total_repos ?? 0,
+	);
+	animCount(
+		document.getElementById("statTotalStars"),
+		stats.total_stars ?? 0,
+	);
+	animCount(document.getElementById("statFollowers"), profile.followers ?? 0);
+	animCount(document.getElementById("statFollowing"), profile.following ?? 0);
 }

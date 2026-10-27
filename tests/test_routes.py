@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import pytest
 from fastapi.testclient import TestClient
 
-from main import app
+from main import APP_VERSION, APP_VERSION_SHORT, app
 
 client = TestClient(app)
 
@@ -27,7 +27,9 @@ class TestRootRoute:
         assert 'id="spectre-telemetry"' in html
         assert 'id="searchForm"' in html
         assert 'id="dossierSection"' in html
+        assert 'id="leaderboardSection"' in html
         assert '/static/js/app.js' in html
+        assert APP_VERSION_SHORT in html
 
 
 class TestStaticAssets:
@@ -57,6 +59,29 @@ class TestHealthEndpoint:
         assert resp.status_code == 200
         data = resp.json()
         assert data.get("status") == "ok"
+        assert data.get("version") == APP_VERSION
+
+
+class TestVersionEndpoint:
+    def test_version_info(self):
+        resp = client.get("/api/version")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data.get("version") == APP_VERSION
+        assert data.get("short") == APP_VERSION_SHORT
+        assert "major" in data
+
+
+class TestRepoInfoEndpoint:
+    def test_repo_info(self):
+        resp = client.get("/api/repo-info")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "repo" in data
+        assert "url" in data
+        assert "stars" in data
+        assert "forks" in data
+
 
 
 class TestBatchValidation:

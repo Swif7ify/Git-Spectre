@@ -1,5 +1,4 @@
 tests/
-scripts/
 .pytest_cache/
 .git/
 .github/

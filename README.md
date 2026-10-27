@@ -6,7 +6,7 @@
 ![GitHub REST API](https://img.shields.io/badge/GitHub%20REST%20API-v3-181717?style=flat-square&logo=github&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://git-spectre.vercel.app/)
-![Version](https://img.shields.io/badge/version-2.2-22d3ee?style=flat-square)
+![Version](https://img.shields.io/badge/version-3.0-22d3ee?style=flat-square)
 
 > 🚀 **[https://git-spectre.vercel.app/](https://git-spectre.vercel.app/)** — live, no setup required.
 
@@ -22,7 +22,7 @@ So I built **Git-Spectre** — a "Threat Intel"-style dossier generator for any 
 
 ---
 
-## What's in v2.2
+## What's in v3.0
 
 ### ✨ New Features
 

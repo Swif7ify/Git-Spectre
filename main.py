@@ -49,8 +49,19 @@ from core.schemas import (
     _validate_token,
     _validate_username,
 )
+from core.badge import (
+    GRADE_COLORS,
+    generate_dossier_card,
+    generate_not_found_badge,
+    generate_pill_badge,
+)
 from core.service import _run_analysis
-from core.leaderboard import get_leaderboard, get_leaderboard_languages, get_profile_rank
+from core.leaderboard import (
+    get_cached_profile_record,
+    get_leaderboard,
+    get_leaderboard_languages,
+    get_profile_rank,
+)
 
 # Re-export key functions for backwards compatibility with tests and tooling
 __all__ = [
@@ -438,41 +449,143 @@ async def profile_rank_endpoint(request: Request, username: str) -> Dict[str, An
 
 
 @app.get("/api/badge/{username}", include_in_schema=False)
+@app.get("/api/badge/card/{username}", include_in_schema=False)
 async def badge_svg(
+    request: Request,
     username: str = FPath(
         ...,
         pattern=r"^[a-zA-Z0-9][a-zA-Z0-9\-]{0,37}[a-zA-Z0-9]$|^[a-zA-Z0-9]$",
         description="GitHub username",
     ),
+    style: str = "pill",
+    metric: str = "score",
+    theme: str = "spectre",
+    border: bool = True,
 ) -> Response:
-    """Return a dynamic shields.io-style SVG badge: Dev Score + Grade."""
+    """
+    Return dynamic vector SVG badges and cards for GitHub Profile READMEs.
+    Fully compatible with GitHub's Camo image proxy and markdown image embeds.
+    """
+    # If accessed via /api/badge/card/{username}, default style to card
+    if "/api/badge/card/" in request.url.path:
+        style = "card"
+
+    clean_user = username.strip()
+    style_clean = style.lower().strip()
+    metric_clean = metric.lower().strip()
+    theme_clean = theme.lower().strip()
+
     token = _get_server_token()
+    data: Optional[Dict[str, Any]] = None
+
     try:
-        data = await _run_analysis(username.strip(), token)
-    except HTTPException:
-        svg = _make_badge_svg("Git-Spectre", "not found", "#6b7280")
+        data = await _run_analysis(clean_user, token)
+    except Exception:
+        # Fallback to local SQLite database if live API fails / is rate-limited
+        db_profile = get_cached_profile_record(clean_user)
+        if db_profile:
+            data = {
+                "profile": {
+                    "login": db_profile["login"],
+                    "name": db_profile.get("name"),
+                    "public_repos": db_profile.get("public_repos", 0),
+                    "stars_earned": db_profile.get("stars_earned", 0),
+                },
+                "score": {
+                    "total": db_profile.get("dev_score", 0),
+                    "tier": db_profile.get("score_tier", "B"),
+                    "grade": db_profile.get("score_tier", "B"),
+                },
+                "archetype": {
+                    "title": db_profile.get("archetype_title", "CODE CRAFTSMAN"),
+                    "label": db_profile.get("archetype_title", "CODE CRAFTSMAN"),
+                },
+                "languages": {db_profile["primary_language"]: 100} if db_profile.get("primary_language") else {},
+                "dev_level": {"level": db_profile.get("dev_level", 1)},
+                "streaks": {"longest": 0, "current": 0},
+            }
+
+    if not data:
+        svg = generate_not_found_badge(clean_user, style="card" if style_clean == "card" else "pill", theme=theme_clean)
         return Response(
-            svg, media_type="image/svg+xml", headers={"Cache-Control": "no-cache"}
+            svg,
+            media_type="image/svg+xml; charset=utf-8",
+            headers={"Cache-Control": "public, max-age=120"},
         )
 
-    sc = data["score"]
-    grade_colors = {
-        "S+": "#f59e0b",
-        "S": "#10b981",
-        "A": "#06b6d4",
-        "B": "#8b5cf6",
-        "C": "#f97316",
-        "D": "#ef4444",
-        "E": "#6b7280",
-    }
-    color = grade_colors.get(sc["grade"], "#22d3ee")
-    label = f"Score {sc['total']} · {sc['grade']}"
-    svg = _make_badge_svg("Git-Spectre", label, color)
+    p = data.get("profile", {})
+    sc = data.get("score", {})
+    arc = data.get("archetype", {})
+    langs = data.get("languages", {})
+    streaks = data.get("streaks", {})
+    total_stars = sum(r.get("stargazers_count", 0) for r in data.get("top_repos", [])) or p.get("stars_earned", 0)
+
+    # Rank metadata
+    try:
+        rank_data = get_profile_rank(clean_user)
+    except Exception:
+        rank_data = None
+
+    if style_clean == "card":
+        svg = generate_dossier_card(
+            profile=p,
+            score=sc,
+            archetype=arc,
+            languages=langs,
+            rank_info=rank_data,
+            streaks=streaks,
+            total_stars=total_stars,
+            theme=theme_clean,
+            border=border,
+        )
+    else:
+        # Determine left / right labels based on selected metric
+        tier = str(sc.get("tier") or sc.get("grade") or "B").upper()
+        accent_col = GRADE_COLORS.get(tier, "#10b981")
+
+        if metric_clean == "rank":
+            rank_num = rank_data.get("all_time", {}).get("rank") if rank_data else None
+            rank_display = f"#{rank_num}" if rank_num else "Tracked"
+            left_text = "Git-Spectre"
+            right_text = f"Rank {rank_display}"
+            accent_col = "#06b6d4"
+        elif metric_clean == "archetype":
+            arc_label = str(arc.get("title") or arc.get("label") or "Craftsman")
+            left_text = "Archetype"
+            right_text = arc_label
+            accent_col = "#8b5cf6"
+        elif metric_clean == "level":
+            lvl = data.get("dev_level", {}).get("level", 1)
+            left_text = "Git-Spectre"
+            right_text = f"Level {lvl}"
+            accent_col = "#f59e0b"
+        elif metric_clean == "streak":
+            stk = streaks.get("longest") or streaks.get("current") or 0
+            left_text = "Streak"
+            right_text = f"{stk} Days"
+            accent_col = "#f97316"
+        else:
+            # Default score + tier
+            left_text = "Git-Spectre"
+            right_text = f"Score {sc.get('total', 0)} · {tier}"
+
+        pill_style = style_clean if style_clean in ("cyber", "for-the-badge", "flat") else "flat"
+        svg = generate_pill_badge(
+            left=left_text,
+            right=right_text,
+            color=accent_col,
+            style=pill_style,
+            theme=theme_clean,
+        )
+
     return Response(
         svg,
-        media_type="image/svg+xml",
-        headers={"Cache-Control": "public, max-age=600"},
+        media_type="image/svg+xml; charset=utf-8",
+        headers={
+            "Cache-Control": "public, max-age=1800, s-maxage=1800, stale-while-revalidate=86400",
+        },
     )
+
 
 
 if __name__ == "__main__":

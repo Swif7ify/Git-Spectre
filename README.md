@@ -268,6 +268,39 @@ Returns a self-contained dark HTML card (~2KB). Embed in any HTML page:
 
 ---
 
+### `GET /api/badge/{username}` & `GET /api/badge/card/{username}`
+
+Generates dynamic, **GitHub Camo-compatible vector SVGs** for embedding directly into GitHub Profile READMEs.
+
+#### 1. Compact Pill Badges (Shields style)
+```markdown
+[![Git-Spectre](https://git-spectre.vercel.app/api/badge/torvalds)](https://git-spectre.vercel.app/?u=torvalds)
+```
+
+**Customization Query Parameters:**
+* `style`: `pill` (default), `cyber` (tactical glow), `for-the-badge` (chunky uppercase)
+* `metric`: `score` (Score + Tier), `rank` (Global Leaderboard Rank), `archetype`, `streak`, `level`
+* `theme`: `spectre` (default), `dark`, `tokyo`, `matrix`, `light`
+
+Example:
+```markdown
+[![Git-Spectre Rank](https://git-spectre.vercel.app/api/badge/torvalds?metric=rank&theme=spectre)](https://git-spectre.vercel.app/?u=torvalds)
+```
+
+#### 2. Rich Dossier Profile Card (Stats & Languages)
+```markdown
+[![Git-Spectre Dossier](https://git-spectre.vercel.app/api/badge/card/torvalds?theme=spectre)](https://git-spectre.vercel.app/?u=torvalds)
+```
+Displays a sleek ~495×195 tactical SVG card showcasing:
+* Dev Score gauge (0–1000) & Grade badge (S+, S, A, B...)
+* Archetype classification tag
+* Global leaderboard rank & earned star count
+* Proportional top language distribution bar with official language colors
+* Longest streak / repository metrics
+
+
+---
+
 ### `GET /api/rate-limit`
 
 Returns current GitHub API quota:

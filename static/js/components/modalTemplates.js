@@ -140,7 +140,91 @@ export function mountModalTemplates() {
         </div>
       </div>
     </div>
+
+    <!-- GitHub Profile Badge Studio Modal -->
+    <div id="badgeModal" class="hidden modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+      <div class="relative w-full max-w-2xl rounded-2xl border border-line bg-surface shadow-2xl p-6">
+        <div class="flex items-start justify-between border-b border-line pb-4 mb-5">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="font-mono text-sm font-semibold tracking-wider text-ink uppercase">GitHub Profile Badge Studio</h2>
+              <span class="inline-flex items-center rounded-full bg-lime/10 px-2 py-0.5 text-[10px] font-mono font-medium text-lime">CAMO SAFE</span>
+            </div>
+            <p class="text-xs text-muted mt-0.5">Embed dynamic live-updating stats directly in your GitHub Profile README.</p>
+          </div>
+          <button type="button" data-close-modal="badgeModal" class="text-muted hover:text-ink text-lg font-bold">×</button>
+        </div>
+
+        <!-- Live Preview Stage -->
+        <div class="relative flex min-h-[160px] items-center justify-center rounded-xl border border-line bg-canvas/80 p-5 overflow-hidden mb-5">
+          <div id="badgePreviewContainer" class="flex items-center justify-center w-full max-w-lg transition-all">
+            <div class="text-xs font-mono text-muted animate-pulse">Rendering preview...</div>
+          </div>
+        </div>
+
+        <!-- Options Configuration -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+          <!-- Format / Style -->
+          <div>
+            <label class="block font-mono text-[11px] text-muted mb-1.5 uppercase tracking-wider">Format</label>
+            <select id="badgeFormatSelect" class="w-full rounded-xl border border-line bg-canvas px-3 py-2 font-mono text-xs text-ink outline-none focus:border-accent">
+              <option value="card" selected>Dossier Card (README)</option>
+              <option value="pill">Compact Pill (Shields)</option>
+              <option value="cyber">Cyber Pill (Tactical)</option>
+              <option value="for-the-badge">Chunky (For-The-Badge)</option>
+            </select>
+          </div>
+
+          <!-- Metric (for pills) -->
+          <div id="badgeMetricGroup">
+            <label class="block font-mono text-[11px] text-muted mb-1.5 uppercase tracking-wider">Metric</label>
+            <select id="badgeMetricSelect" class="w-full rounded-xl border border-line bg-canvas px-3 py-2 font-mono text-xs text-ink outline-none focus:border-accent">
+              <option value="score" selected>Dev Score &amp; Tier</option>
+              <option value="rank">Global Rank</option>
+              <option value="archetype">Archetype</option>
+              <option value="streak">Active Streak</option>
+              <option value="level">Dev Level</option>
+            </select>
+          </div>
+
+          <!-- Theme -->
+          <div>
+            <label class="block font-mono text-[11px] text-muted mb-1.5 uppercase tracking-wider">Theme</label>
+            <select id="badgeThemeSelect" class="w-full rounded-xl border border-line bg-canvas px-3 py-2 font-mono text-xs text-ink outline-none focus:border-accent">
+              <option value="spectre" selected>Spectre (Dark Neon)</option>
+              <option value="dark">GitHub Dark</option>
+              <option value="tokyo">Tokyo Night</option>
+              <option value="matrix">Hacker Matrix</option>
+              <option value="light">Clean Light</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Embed Snippet Box -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-[11px] text-muted uppercase tracking-wider">Snippet Output</span>
+            <div class="flex gap-2">
+              <button type="button" id="badgeCopyMdBtn" class="inline-flex items-center gap-1.5 rounded-lg bg-lime px-3 py-1.5 font-mono text-xs font-bold text-onlime hover:brightness-105 active:scale-95 transition-all">
+                Copy Markdown
+              </button>
+              <button type="button" id="badgeCopyHtmlBtn" class="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 font-mono text-xs font-medium text-ink hover:bg-raised transition-colors">
+                HTML
+              </button>
+              <button type="button" id="badgeCopyUrlBtn" class="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 font-mono text-xs font-medium text-ink hover:bg-raised transition-colors">
+                Raw URL
+              </button>
+            </div>
+          </div>
+          <div class="relative">
+            <input id="badgeSnippetInput" readonly type="text" class="w-full rounded-xl border border-line bg-canvas px-3.5 py-2.5 font-mono text-xs text-ink select-all outline-none" />
+          </div>
+        </div>
+
+      </div>
+    </div>
   `;
+
 
   document.body.appendChild(container);
 }
